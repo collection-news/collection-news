@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Head>
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           <link rel="manifest" href="/manifest.json" />
-          <link rel="apple-touch-icon" href="apple-icon-180x180-dunplab-manifest-47312.png" />
+          <link rel="apple-touch-icon" href="apple-icon-180x180-dunplab-manifest-45521.png" />
         </Head>
         <Layout>
           <Component {...pageProps} />
