@@ -52,7 +52,7 @@ export const Header: React.FC = () => {
             h="full"
             data-cy="about-us-btn"
           >
-            關於
+            關於我們
           </Button>
         </Link>
       </Flex>
