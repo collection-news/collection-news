@@ -1,4 +1,4 @@
-import { Button, Popover, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react'
+import { Button, Popover, PopoverCloseButton, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react'
 import * as React from 'react'
 import { DayPicker, ModifierStatus, SelectSingleEventHandler } from 'react-day-picker'
 import { zhTW } from 'date-fns/locale'
@@ -20,13 +20,14 @@ export const DatePicker = ({ onSelect, defaultMonth }: DatePickerProps) => {
     onClose()
   }
   return (
-    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy>
+    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy closeOnBlur={false}>
       <PopoverTrigger>
         <Button leftIcon={<AiOutlineCalendar />} colorScheme="theme" size="sm" borderRadius="sm">
           選擇日期
         </Button>
       </PopoverTrigger>
       <PopoverContent borderRadius="sm" className={classes.wrapper}>
+        <PopoverCloseButton />
         <DayPicker
           onSelect={_onSelect}
           defaultMonth={defaultMonth}
