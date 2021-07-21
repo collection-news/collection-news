@@ -14,7 +14,7 @@ export const ImageBlock: React.FC<Props> = ({ url, caption }) => {
     <Flex mb={4} justify="center">
       <Box border="1px" borderRadius="sm" borderColor="theme.400" bgColor="theme.400" w={['80%', '80%', '60%']}>
         <Flex justify="center">
-          <Box minHeight={300} w="full">
+          <Box w="full">
             <Image src={url} alt={caption || ''} fallback={<Empty />} />
           </Box>
         </Flex>
