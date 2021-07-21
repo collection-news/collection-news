@@ -1,4 +1,4 @@
-import { IconButton, Flex } from '@chakra-ui/react'
+import { IconButton, Flex, Button, Tag, Badge } from '@chakra-ui/react'
 import React from 'react'
 import { Carousel as RCarousel } from 'react-responsive-carousel'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
@@ -41,12 +41,12 @@ export const Carousel: React.FC<Props> = ({ children }) => {
         </Flex>
       )}
       renderIndicator={(clickHandler, isSelected, index, label) => (
-        <IconButton
+        <Tag
           borderRadius="sm"
           aria-label="next"
           onClick={clickHandler}
-          colorScheme="theme"
-          disabled={isSelected}
+          bg={isSelected ? 'theme.600' : 'theme.200'}
+          cursor="pointer"
           h={2}
           mr={2}
         />
