@@ -43,6 +43,7 @@ export const Carousel: React.FC<Props> = ({ children }) => {
       renderIndicator={(clickHandler, isSelected, index, label) => (
         <Tag
           borderRadius="sm"
+          size="sm"
           aria-label="next"
           onClick={clickHandler}
           bg={isSelected ? 'theme.600' : 'theme.200'}
