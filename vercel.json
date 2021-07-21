@@ -1,0 +1,9 @@
+{
+  "functions": {
+    "src/pages/api/**/*.ts": {
+      "memory": 512,
+      "maxDuration": 10
+    }
+  },
+  "regions": ["hnd1"]
+}

@@ -1,0 +1,40 @@
+name: Cypress integration test
+
+on:
+  push:
+    branches:
+      - development
+  pull_request:
+
+jobs:
+  cypress:
+    name: Cypress integration test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: setup env
+        run: |
+          mkdir -p .vercel
+          echo "$VERCEL_PROJECT_JSON" > .vercel/project.json
+          npm run setenv -- --token "$VERCEL_TOKEN"
+        env:
+          VERCEL_PROJECT_JSON: ${{ secrets.VERCEL_PROJECT_JSON }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - uses: cypress-io/github-action@v2
+        id: cypress
+        with:
+          # spec: cypress/integration/sanity/**/*
+          browser: chrome
+          headless: true
+          build: npm run build
+          start: npm run start
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 30
+        env:
+          # pass GitHub token to allow accurately detecting a build vs a re-run build
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APP_AWS_ACCESS_KEY_ID: ${{ secrets.APP_AWS_ACCESS_KEY_ID }}
+          APP_AWS_SECRET_ACCESS_KEY: ${{ secrets.APP_AWS_SECRET_ACCESS_KEY }}

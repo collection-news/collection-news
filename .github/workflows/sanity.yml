@@ -1,0 +1,38 @@
+name: Sanity check
+
+on:
+  push:
+    branches:
+      - master
+      - development
+  pull_request:
+
+jobs:
+  testing:
+    name: Sanity check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm install
+      - run: npm run lint
+      - name: setup env
+        run: |
+          mkdir -p .vercel
+          echo "$VERCEL_PROJECT_JSON" > .vercel/project.json
+          npm run setenv -- --token "$VERCEL_TOKEN"
+        env:
+          VERCEL_PROJECT_JSON: ${{ secrets.VERCEL_PROJECT_JSON }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - run: npm run build
+        env:
+          APP_AWS_ACCESS_KEY_ID: ${{ secrets.APP_AWS_ACCESS_KEY_ID }}
+          APP_AWS_SECRET_ACCESS_KEY: ${{ secrets.APP_AWS_SECRET_ACCESS_KEY }}

@@ -1,0 +1,76 @@
+{
+  "name": "collection-news",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "sitemap": "ts-node src/scripts/genSitemap.ts",
+    "prebuild": "npm run sitemap",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint --cache",
+    "setenv": "vercel env pull .env.local",
+    "v": "vercel",
+    "cypress:open": "cypress open",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.21.0",
+    "@aws-sdk/lib-dynamodb": "^3.21.0",
+    "@aws-sdk/util-dynamodb": "^3.21.0",
+    "@brainhubeu/react-carousel": "^2.0.4",
+    "@chakra-ui/icons": "^1.0.14",
+    "@chakra-ui/react": "^1.6.5",
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "@mdx-js/loader": "^1.6.22",
+    "@next/mdx": "^11.0.1",
+    "date-fns": "^2.22.1",
+    "dayjs": "^1.10.6",
+    "dotenv": "^10.0.0",
+    "framer-motion": "^4.1.17",
+    "immer": "^9.0.5",
+    "next": "11.0.1",
+    "ramda": "^0.27.1",
+    "react": "17.0.2",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-day-picker": "^8.0.0-beta.29",
+    "react-dom": "17.0.2",
+    "react-icons": "^4.2.0",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-query": "^3.18.1",
+    "react-responsive-carousel": "^3.2.19",
+    "react-use": "^17.2.4",
+    "sitemap": "^7.0.0",
+    "string-strip-html": "^8.3.0",
+    "yup": "^0.32.9"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@types/mdx-js__react": "^1.5.4",
+    "@types/ramda": "^0.27.44",
+    "@types/react": "17.0.14",
+    "@types/react-custom-scrollbars": "^4.0.8",
+    "cypress": "^7.7.0",
+    "eslint": "7.30.0",
+    "eslint-config-next": "11.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^7.0.1",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.2",
+    "ts-node": "^10.1.0",
+    "typescript": "4.3.5",
+    "vercel": "^23.0.1"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --cache --fix"
+    ],
+    "*.{json,less,scss,css}": [
+      "prettier --write"
+    ]
+  }
+}
