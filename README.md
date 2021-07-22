@@ -100,6 +100,6 @@ npm run dev
 
 This software is released under [the MIT License](LICENSE) in [GitHub](https://github.com/appledailybackup/collection-news). Logo the on this site is licensed under a Creative Commons [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/). Next Digital Ltd. maintain the copyright of all the content of Apply Daily. For enquiries, please contact us at <a href="mailto:info@collection.news">info@collection.news</a>.
 
-本軟件在 [MIT 許可證](LICENSE)下發佈在[GitHub](https://github.com/appledailybackup/collection-news)，而本網站上的徽標根據創用CC [姓名標示-非商業性-相同方式分享 4.0 國際 (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW)分享。壹傳媒集團保留《蘋果日報》所有內容的版權。如有查詢，請聯絡我們 <a href="mailto:info@collection.news">info@collection.news</a>。
+本軟件在 [MIT 許可證](LICENSE)下發佈在[GitHub](https://github.com/appledailybackup/collection-news)，而本網站上的徽標根據創用CC [姓名標示-非商業性-相同方式分享 4.0 國際 (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW)分享。「壹傳媒有限公司」保留《蘋果日報》所有內容的版權。如有查詢，請聯絡我們 <a href="mailto:info@collection.news">info@collection.news</a>。
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
