@@ -2,7 +2,6 @@ import React from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { stripHtml } from 'string-strip-html'
-import logoFull from '../assets/logoFull.svg'
 
 type NonArticleHeadProps = {
   title: string
@@ -14,8 +13,8 @@ function useURLAndLogoSrc() {
     ? `${process.env.APP_DOMAIN}${router.asPath}` // server-side
     : window.location.href // client-side
   const logoSrc = process.env.APP_DOMAIN
-    ? `${process.env.APP_DOMAIN}${logoFull.src}`
-    : window.location.origin + logoFull.src
+    ? `${process.env.APP_DOMAIN}/og-banner.png` // server-side
+    : window.location.origin + '/og-banner.png' // client-side
   return { url, logoSrc }
 }
 
