@@ -7,9 +7,9 @@ import React from 'react'
 import { ArticleListView } from '../../../../components/ArticleList'
 import { CategoryList } from '../../../../components/CategoryList'
 import { ContentWrapper } from '../../../../components/ContentWrapper'
-import { HtmlHead } from '../../../../components/HtmlHead'
+import { NonArticleHead } from '../../../../components/HtmlHead'
 import { YearSelector } from '../../../../components/YearSelector'
-import { appleDailyCategoryList } from '../../../../constants/appleDailyCategory'
+import { appleDailyCategoryMap } from '../../../../constants/appleDailyCategory'
 import { useArticlesQuery } from '../../../../hooks'
 import { getArticlesByDateAndCat } from '../../../../services/dynamo'
 import { ArticleListResponse, GetArticlesByDateAndCatRequest } from '../../../../types/api'
@@ -60,8 +60,9 @@ export default function HistoryPage({ initData, queryParams }: ArticleListPagePr
   const { query } = useRouter()
   const { data, fetchNextPage, hasNextPage, isFetching } = useArticlesQuery(initData, queryParams)
   const displayDate = getZhFormatFromDateParam(publishDate)
-  const cat = appleDailyCategoryList.find(_ => _.category === category)
+  const cat = appleDailyCategoryMap[category || '']
   const title = cat ? `當年今日 - ${displayDate} - ${cat.text}` : `當年今日 - ${displayDate}`
+  const ogTitle = `${title} | 果靈聞庫`
   const articles = data?.pages.map(({ data }) => data).flat() || []
 
   const getHref = ({ category }: { category?: string }) => {
@@ -75,7 +76,7 @@ export default function HistoryPage({ initData, queryParams }: ArticleListPagePr
 
   return (
     <>
-      <HtmlHead title={title} />
+      <NonArticleHead title={ogTitle} />
       <CategoryList getHref={getHref} isInCategory={isInCategory} />
       <ContentWrapper>
         <Heading my={4}>當年今日</Heading>

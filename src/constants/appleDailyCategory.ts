@@ -31,7 +31,14 @@ export enum appleDailyCategory {
   US = 'us',
 }
 
-export const appleDailyCategoryList = [
+type CategoryMetadata = {
+  category: appleDailyCategory
+  text: string
+  color: string
+  lastDay: string
+}
+
+export const appleDailyCategoryList: CategoryMetadata[] = [
   // order matters here
   { category: appleDailyCategory.UNKNOWN, text: '未分類', color: 'gray.300', lastDay: '20210623' }, // unknown are the majority of the content: ;
   { category: appleDailyCategory.REAL_TIME, text: '即時', color: 'red.300', lastDay: '20201218' },
@@ -64,3 +71,8 @@ export const appleDailyCategoryList = [
   { category: appleDailyCategory.ADFUND, text: '慈善', color: 'yellow.300', lastDay: '20210623' },
   { category: appleDailyCategory.SKIPPED_HK, text: 'skipped-hk', color: 'teal.300', lastDay: '20210507' },
 ]
+
+export const appleDailyCategoryMap = appleDailyCategoryList.reduce((map, obj) => {
+  map[obj.category] = obj
+  return map
+}, {} as Record<string, CategoryMetadata>)

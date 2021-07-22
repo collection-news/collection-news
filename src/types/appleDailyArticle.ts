@@ -1,12 +1,12 @@
 import { appleDailyCategory } from '../constants/appleDailyCategory'
 import { mediaType } from '../constants/mediaType'
 
-type TextBlock = {
+export type TextBlock = {
   type: 'text'
   content: string
 }
 
-type HeaderBlock = {
+export type HeaderBlock = {
   type: 'header'
   level: number
   content: string
@@ -20,7 +20,7 @@ export type ImageBlock = {
   caption: string | null
 }
 
-type HTMLBlock = {
+export type HTMLBlock = {
   type: 'html' // raw_html
   content: string
 }

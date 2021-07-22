@@ -3,13 +3,15 @@ import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { nth, path } from 'ramda'
 import * as React from 'react'
+import { useMemo } from 'react'
 import { ArticleListView } from '../../components/ArticleList'
 
 import { CategoryList } from '../../components/CategoryList'
 import { ContentWrapper } from '../../components/ContentWrapper'
 import { DatePicker } from '../../components/DatePicker'
-import { HtmlHead } from '../../components/HtmlHead'
+import { NonArticleHead } from '../../components/HtmlHead'
 import { lastDayOfAppleDaily } from '../../constants'
+import { appleDailyCategoryMap } from '../../constants/appleDailyCategory'
 import { useArticlesQuery } from '../../hooks'
 import { getArticlesByDateAndCat } from '../../services/dynamo'
 import { ArticleListResponse, GetArticlesByDateAndCatRequest } from '../../types/api'
@@ -54,7 +56,7 @@ export async function getStaticPaths() {
   // Pre-render /appledaily at build time
   // { fallback: blocking } will server-render pages
   // on-demand if the path doesn't exist.
-  return { paths: [{ params: { media: 'appledaily', path: [] } }], fallback: 'blocking' }
+  return { paths: [{ params: { media: 'appledaily', path: ['20210623'] } }], fallback: 'blocking' }
 }
 
 export type ArticleListPageIndexProps = {
@@ -65,7 +67,7 @@ export type ArticleListPageIndexProps = {
 export default function Home({ initData, queryParams }: ArticleListPageIndexProps) {
   const { publishDate, media, category } = queryParams
   const router = useRouter()
-  const { query } = router
+  const { query, asPath } = router
   const { data, fetchNextPage, hasNextPage, isFetching } = useArticlesQuery(initData, queryParams)
   const articles = data?.pages.map(({ data }) => data).flat() || []
 
@@ -83,14 +85,24 @@ export default function Home({ initData, queryParams }: ArticleListPageIndexProp
       : `/${media}/${lastDay || lastDayOfAppleDaily}`
   }
 
-  const isInCategory = (category?: string) => {
-    const currentCategory = path(['path', 1], query)
-    return category === currentCategory
-  }
+  const currentCategory: string | undefined = path(['path', 1], query)
+  const currentDate: string | undefined = path(['path', 0], query)
+  const isInCategory = (category?: string) => currentCategory === category
+
+  const ogTitle = useMemo(() => {
+    if (asPath === '/' || asPath === '/appledaily/20210623' || !currentDate) {
+      return '果靈聞庫'
+    }
+    return (
+      getZhFormatFromDateParam(currentDate) +
+      (currentCategory ? ` - ${appleDailyCategoryMap[currentCategory]?.text || ''}` : '') +
+      ' | 果靈聞庫'
+    )
+  }, [asPath, currentCategory, currentDate])
 
   return (
     <>
-      <HtmlHead title="果靈聞庫" />
+      <NonArticleHead title={ogTitle} />
       <CategoryList getHref={getHref} isInCategory={isInCategory} />
       <ContentWrapper>
         <Heading my={4}>昔日蘋果</Heading>
