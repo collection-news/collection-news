@@ -75,7 +75,7 @@ export const AppleDailyArticle: React.FC<Props> = ({ article }) => {
         <Text color="gray.500" my={2}>
           蘋果日報 {article.publishTimestamp ? getFullFormatFromTs(article.publishTimestamp) : '未知'}
         </Text>
-        <NativeShareBtn title={article.title} text={desc} />
+        <NativeShareBtn />
       </Flex>
       <Box my={2}>
         {filterTag(article.tags || []).map((tag, index) => (

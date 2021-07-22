@@ -1,4 +1,4 @@
-export function useWebShare(title: string, text: string) {
+export function useWebShare() {
   const onShare = () => {
     if (navigator.share) {
       let url = document.location.href
@@ -8,8 +8,7 @@ export function useWebShare(title: string, text: string) {
       }
       navigator
         .share({
-          title: title,
-          text: text,
+          title: document.querySelector('title')?.textContent || '',
           url: url,
         })
         .then(() => console.log('Successful share'))
