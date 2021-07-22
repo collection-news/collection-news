@@ -56,7 +56,7 @@ export async function getStaticPaths() {
   // Pre-render /appledaily at build time
   // { fallback: blocking } will server-render pages
   // on-demand if the path doesn't exist.
-  return { paths: [{ params: { media: 'appledaily', path: [] } }], fallback: 'blocking' }
+  return { paths: [{ params: { media: 'appledaily', path: ['20210623'] } }], fallback: 'blocking' }
 }
 
 export type ArticleListPageIndexProps = {
@@ -90,15 +90,14 @@ export default function Home({ initData, queryParams }: ArticleListPageIndexProp
   const isInCategory = (category?: string) => currentCategory === category
 
   const ogTitle = useMemo(() => {
-    if (asPath === '/' || !currentDate) {
+    if (asPath === '/' || asPath === '/appledaily/20210623' || !currentDate) {
       return '果靈聞庫'
-    } else {
-      return (
-        getZhFormatFromDateParam(currentDate) +
-        (currentCategory ? ` - ${appleDailyCategoryMap[currentCategory]?.text || ''}` : '') +
-        ' | 果靈聞庫'
-      )
     }
+    return (
+      getZhFormatFromDateParam(currentDate) +
+      (currentCategory ? ` - ${appleDailyCategoryMap[currentCategory]?.text || ''}` : '') +
+      ' | 果靈聞庫'
+    )
   }, [asPath, currentCategory, currentDate])
 
   return (
