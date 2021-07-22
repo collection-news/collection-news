@@ -1,6 +1,6 @@
 <div align="center">
   <h1>
-    聞庫 | 果靈
+    果靈·聞庫
   </h1>
   This is the repository for <a href="https://collection.news">collection.news</a>
   <br/>
