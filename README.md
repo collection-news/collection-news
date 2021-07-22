@@ -93,7 +93,7 @@ npm run dev
 * Article API have `cache-control: public, max-age=604800, s-maxage=604800, immutable` header, i.e. 7 days client side cache, too.
 * Cloudflare applied "Cache Everything" rule with
   * `cdn.collection.news` Edge Cache TTL: a month and,
-  * `collection.news` Edge Cache TTL: 4 hours
+  * `collection.news` Edge Cache TTL: 2 hours
 
 
 ## :page_facing_up: License
