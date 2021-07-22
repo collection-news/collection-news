@@ -60,9 +60,9 @@ export const AppleDailyArticle: React.FC<Props> = ({ article }) => {
   return (
     <>
       <ArticleHead title={article.title} imgUrl={imgSrc?.url} desc={desc} />
-
+      <Heading data-cy="article-title" dangerouslySetInnerHTML={{ __html: article.title }} my={4} />
       <Box position="sticky" zIndex="sticky" top="header">
-        <Fade in={y > 80}>
+        <Fade in={y > 80} unmountOnExit>
           <Box position="absolute" w="100%">
             <Heading size="md" py={2} bg="bg.500" dangerouslySetInnerHTML={{ __html: article.title }} isTruncated />
             <Divider />
@@ -70,7 +70,6 @@ export const AppleDailyArticle: React.FC<Props> = ({ article }) => {
         </Fade>
       </Box>
 
-      <Heading data-cy="article-title" dangerouslySetInnerHTML={{ __html: article.title }} my={4} />
       <Text color="gray.500" my={2}>
         蘋果日報 {article.publishTimestamp ? getFullFormatFromTs(article.publishTimestamp) : '未知'}
       </Text>
