@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Article, Story, Video } from '../types/appleDailyArticle'
 import { getCoverImageUrlFromStory } from '../utils/dataHelper'
 import { getFullFormatFromTs } from '../utils/date'
-import { appleDailyCategoryList } from '../constants/appleDailyCategory'
+import { appleDailyCategoryMap } from '../constants/appleDailyCategory'
 import { Empty } from './Empty'
 import { ArticleImage } from './Image'
 
@@ -95,7 +95,7 @@ const AppleDailyStoryCard: React.FC<{ story: Story }> = ({ story }) => {
 }
 
 const CategoryTag = ({ category }: { category: string }) => {
-  const catData = appleDailyCategoryList.find(_ => _.category === category)
+  const catData = appleDailyCategoryMap[category]
   return (
     <Tag mr={2} size="sm" bgColor={catData?.color || 'gray.400'} borderRadius="sm">
       {catData?.text || '未知'}

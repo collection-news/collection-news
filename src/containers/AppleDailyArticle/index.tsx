@@ -3,8 +3,8 @@ import React from 'react'
 
 import { HeaderBlock, HTMLBlock, ImageBlock, ListBlock, TableBlock, VideoBlock } from '../../components/ArticleBlocks'
 import { Article, ContentElement, Story } from '../../types/appleDailyArticle'
-import { HtmlHead } from '../../components/HtmlHead'
-import { getCoverImageUrlFromStory } from '../../utils/dataHelper'
+import { ArticleHead } from '../../components/HtmlHead'
+import { getArticleDesc, getCoverImageUrlFromStory } from '../../utils/dataHelper'
 import { isEmpty, trim } from 'ramda'
 import { getFullFormatFromTs } from '../../utils/date'
 import { Carousel } from '../../components/Carousel'
@@ -53,12 +53,13 @@ const filterTag = (tags: string[]) =>
 
 export const AppleDailyArticle: React.FC<Props> = ({ article }) => {
   const { y } = useWindowScroll()
-
   // FIXME: not yet handle video
   const imgSrc = getCoverImageUrlFromStory(article as Story)
+  const desc = getArticleDesc(article)
+
   return (
     <>
-      <HtmlHead title={article.title} imgUrl={imgSrc?.url} />
+      <ArticleHead title={article.title} imgUrl={imgSrc?.url} desc={desc} />
 
       <Box position="sticky" zIndex="sticky" top="header">
         <Fade in={y > 80}>
