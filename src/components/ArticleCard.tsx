@@ -7,7 +7,7 @@ import { getCoverImageUrlFromStory } from '../utils/dataHelper'
 import { getFullFormatFromTs } from '../utils/date'
 import { appleDailyCategoryList } from '../constants/appleDailyCategory'
 import { Empty } from './Empty'
-import { Image } from './Image'
+import { ArticleImage } from './Image'
 
 type Props = { article: Article }
 
@@ -73,7 +73,7 @@ const AppleDailyStoryCard: React.FC<{ story: Story }> = ({ story }) => {
         borderRadius="sm"
       >
         <AspectRatio ratio={16 / 9}>
-          <Image src={coverImg?.url} alt={coverImg?.caption || ''} />
+          <ArticleImage src={coverImg?.url} alt={coverImg?.caption || ''} />
         </AspectRatio>
         <Box m={2}>
           <Text
