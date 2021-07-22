@@ -23,6 +23,7 @@
     "@chakra-ui/react": "^1.6.5",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "@fontsource/noto-sans-tc": "^4.5.0",
     "@mdx-js/loader": "^1.6.22",
     "@next/mdx": "^11.0.1",
     "date-fns": "^2.22.1",
