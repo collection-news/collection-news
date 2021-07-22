@@ -1,4 +1,4 @@
-import { Box, Divider, Heading, Text, Tag, Fade } from '@chakra-ui/react'
+import { Box, Divider, Heading, Text, Tag, Fade, Flex } from '@chakra-ui/react'
 import React from 'react'
 
 import { HeaderBlock, HTMLBlock, ImageBlock, ListBlock, TableBlock, VideoBlock } from '../../components/ArticleBlocks'
@@ -9,6 +9,7 @@ import { isEmpty, trim } from 'ramda'
 import { getFullFormatFromTs } from '../../utils/date'
 import { Carousel } from '../../components/Carousel'
 import { useWindowScroll } from 'react-use'
+import { NativeShareBtn } from '../../components/NativeShareBtn'
 
 type Props = {
   article: Article
@@ -70,9 +71,12 @@ export const AppleDailyArticle: React.FC<Props> = ({ article }) => {
         </Fade>
       </Box>
 
-      <Text color="gray.500" my={2}>
-        蘋果日報 {article.publishTimestamp ? getFullFormatFromTs(article.publishTimestamp) : '未知'}
-      </Text>
+      <Flex direction="row">
+        <Text color="gray.500" my={2}>
+          蘋果日報 {article.publishTimestamp ? getFullFormatFromTs(article.publishTimestamp) : '未知'}
+        </Text>
+        <NativeShareBtn />
+      </Flex>
       <Box my={2}>
         {filterTag(article.tags || []).map((tag, index) => (
           <Tag key={index} mr={2} borderRadius="sm" bg="brand.400">
