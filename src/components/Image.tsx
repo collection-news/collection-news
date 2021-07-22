@@ -5,7 +5,7 @@ import { Empty } from './Empty'
 import { isNil } from 'ramda'
 import { useUpdateEffect } from 'react-use'
 
-export const Image: React.FC<ImageProps> = ({ onLoad, src, onError, ...props }) => {
+export const ArticleImage: React.FC<ImageProps> = ({ onLoad, src, onError, ...props }) => {
   const [loading, setLoading] = useState(!isNil(src))
 
   useUpdateEffect(() => {
@@ -28,17 +28,21 @@ export const Image: React.FC<ImageProps> = ({ onLoad, src, onError, ...props }) 
       src={src}
       onLoad={handleImageLoad}
       onError={handleError}
-      fallback={
-        <Flex h={333} w="full" justifyContent="center" alignItems="center">
-          {loading ? (
-            <Spinner size="lg" color="theme.500" speed="0.9s" />
-          ) : (
-            <Box w="full" h="full">
-              <Empty />
-            </Box>
-          )}
-        </Flex>
-      }
+      fallback={<ImageFallback loading={loading} />}
     />
+  )
+}
+
+const ImageFallback: React.FC<{ loading: boolean }> = ({ loading }) => {
+  return (
+    <Flex h={333} w="full" justifyContent="center" alignItems="center">
+      {loading ? (
+        <Spinner size="lg" color="theme.500" speed="0.9s" />
+      ) : (
+        <Box w="full" h="full">
+          <Empty />
+        </Box>
+      )}
+    </Flex>
   )
 }
