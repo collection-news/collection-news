@@ -1,3 +1,4 @@
+# To by pass Vercel pricing plan limtation
 name: Deploy development
 
 on:
@@ -8,7 +9,7 @@ on:
 jobs:
   testing:
     name: Trigger deploy to Vercel
-    # To by pass Vercel pricing plan limtation
+    if: ${{ github.actor != 'appledailyarchive' }}
     runs-on: ubuntu-latest
     env:
       DEPLOYMENT_HOOK: ${{ secrets.DEPLOYMENT_HOOK }}
