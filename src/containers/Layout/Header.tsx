@@ -2,15 +2,23 @@ import { Box, Button, Flex, IconButton, Spacer } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import * as React from 'react'
+import Image from 'next/image'
+import { BsSearch } from 'react-icons/bs'
 
 import { mediaType } from '../../constants/mediaType'
 import { maxYearForToday } from '../../utils/date'
 import logoFull from '../../assets/logoFull.svg'
-import Image from 'next/image'
+import { featureFlags } from '../../utils/config'
+
+const menuBtnProps = {
+  colorScheme: 'theme',
+  _hover: { bg: 'brand.500', color: 'theme.500' },
+  h: 'full',
+}
 
 export const Header: React.FC = () => {
   const { query } = useRouter()
-
+  const showSearch = featureFlags.showSearchBtn
   return (
     <Box as="header" h="header" bg="theme.500" position="sticky" top="0" zIndex="overlay">
       <Flex align="center" h="full">
@@ -33,25 +41,18 @@ export const Header: React.FC = () => {
           }}
           passHref
         >
-          <Button
-            as="a"
-            colorScheme="theme"
-            _hover={{ bg: 'brand.500', color: 'theme.500' }}
-            h="full"
-            data-cy="history-btn"
-          >
+          <Button as="a" data-cy="history-btn" {...menuBtnProps}>
             當年今日
           </Button>
         </Link>
         <Spacer />
+        {showSearch && (
+          <Link href="/search" passHref>
+            <IconButton aria-label="Search" icon={<BsSearch />} {...menuBtnProps} />
+          </Link>
+        )}
         <Link href="/about-us" passHref>
-          <Button
-            as="a"
-            colorScheme="theme"
-            _hover={{ bg: 'brand.500', color: 'theme.500' }}
-            h="full"
-            data-cy="about-us-btn"
-          >
+          <Button as="a" data-cy="about-us-btn" {...menuBtnProps}>
             關於我們
           </Button>
         </Link>
