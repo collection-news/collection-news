@@ -24,10 +24,6 @@ jobs:
             ${{ runner.os }}-node-
       - run: npm install
       - run: npm run lint
-      - name: test actor
-        env:
-          GITHUB_ACTOR: ${{ github.actor }}
-        run: echo "$GITHUB_ACTOR"
       - name: setup env
         run: |
           mkdir -p .vercel
