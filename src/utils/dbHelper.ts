@@ -3,18 +3,20 @@ import produce from 'immer'
 import { Article } from '../types/appleDailyArticle'
 
 const ASSET_CDN_HOST = process.env.APP_ASSET_CDN_HOST
+const resizeParams = '/cdn-cgi/image/fit=scale-down,width=640,metadata=none,onerror=redirect,f=auto'
 
 function replaceUrlDomain2CDN(url: string) {
   try {
     // more defensive to handle malform data
     const newURL = new URL(url)
     ASSET_CDN_HOST && (newURL.host = ASSET_CDN_HOST)
+    ASSET_CDN_HOST && (newURL.pathname = resizeParams + newURL.pathname)
     return newURL.href
   } catch (error) {
     const regex = new RegExp(/^[A-Z0-9]*\.(jpg|png|gif|jpeg)$/, 'g')
     const shouldReplace = regex.test(url)
     if (shouldReplace && ASSET_CDN_HOST) {
-      return `https://${ASSET_CDN_HOST}/appledaily-ipfs-media/${url}`
+      return `https://${ASSET_CDN_HOST}${resizeParams}/appledaily-ipfs-media/${url}`
     } else {
       return url
     }
