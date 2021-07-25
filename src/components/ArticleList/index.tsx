@@ -24,8 +24,8 @@ export const ArticleListView = ({ articles, hasNextPage, fetchNextPage, isFetchi
       endMessage={<End />}
     >
       <SimpleGrid minChildWidth="288px" spacing={6} mb={6}>
-        {articles.map((article, idx) => (
-          <AppleDailyArticleCard key={idx} article={article} />
+        {articles.map(article => (
+          <AppleDailyArticleCard key={article.articleId} article={article} />
         ))}
       </SimpleGrid>
     </InfiniteScroll>
