@@ -7,7 +7,7 @@
   <br/>
   <div align="center">
     <a href="https://collection.news/about-us">
-      <p>關於我們</p>
+      <p>關於我們 | About us</p>
     </a>
     <a href="https://collection.news/">
       <img width="70%" src="/docs/logo.png">
