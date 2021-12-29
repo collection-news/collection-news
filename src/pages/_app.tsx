@@ -1,14 +1,15 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import type { AppProps } from 'next/app'
+import Head from 'next/head'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
-import { Layout } from '../containers/Layout'
-import { ProgressBar } from '../components/ProgressBar'
-import { theme } from '../theme'
-import '../styles/globals.css'
+import '@fontsource/noto-sans-tc'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import Head from 'next/head'
+
+import { ProgressBar } from '../components/ProgressBar'
+import { Layout } from '../containers/Layout'
+import { theme } from '../theme'
 
 // Create a client
 const queryClient = new QueryClient()
