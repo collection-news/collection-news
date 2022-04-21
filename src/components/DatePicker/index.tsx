@@ -1,21 +1,21 @@
 import { Button, Popover, PopoverCloseButton, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react'
 import * as React from 'react'
-import { DayPicker, ModifierStatus, SelectSingleEventHandler } from 'react-day-picker'
+import { DayPicker, SelectSingleEventHandler } from 'react-day-picker'
 import { zhTW } from 'date-fns/locale'
 import { AiOutlineCalendar } from 'react-icons/ai'
 import classes from './index.module.css'
 
-import 'react-day-picker/style.css'
+import 'react-day-picker/dist/style.css'
 import colors from '../../theme/foundations/colors'
 
 type DatePickerProps = {
   onSelect: SelectSingleEventHandler
-  defaultMonth: Date
+  range: [Date, Date]
 }
 
-export const DatePicker = ({ onSelect, defaultMonth }: DatePickerProps) => {
+export const DatePicker = ({ onSelect, range: [firstDay, lastDay] }: DatePickerProps) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
-  const _onSelect = (day: Date | undefined, selectedDay: Date, modifiers: ModifierStatus, e: React.MouseEvent) => {
+  const _onSelect: SelectSingleEventHandler = (day, selectedDay, modifiers, e) => {
     onSelect(day, selectedDay, modifiers, e)
     onClose()
   }
@@ -30,14 +30,14 @@ export const DatePicker = ({ onSelect, defaultMonth }: DatePickerProps) => {
         <PopoverCloseButton />
         <DayPicker
           onSelect={_onSelect}
-          defaultMonth={defaultMonth}
+          defaultMonth={lastDay}
           locale={zhTW}
           mode="single"
           captionLayout="dropdown"
-          fromDate={new Date(2002, 0, 1)}
-          toDate={new Date(2021, 5, 24)}
+          fromDate={firstDay}
+          toDate={lastDay}
           classNames={classes}
-          modifierStyles={{
+          modifiersStyles={{
             selected: { borderRadius: '2px', backgroundColor: colors.theme[500] },
             day: { borderRadius: '2px', backgroundColor: colors.theme[500] },
           }}

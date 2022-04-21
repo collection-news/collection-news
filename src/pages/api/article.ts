@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import * as yup from 'yup'
+import { media } from '../../constants/media'
 
 import { getArticlesByDateAndCat } from '../../services/dynamo'
 import { ArticleListResponse, OrderOption } from '../../types/api'
@@ -25,14 +26,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const { media, publishDate, category, nextCursor, limit, order, getVideo } = params
     const o = order as OrderOption | undefined
     const resp = await getArticlesByDateAndCat(
-      { media, publishDate, category, getVideo },
+      { media: media as media, publishDate, category, getVideo },
       { limit, nextCursor, order: o }
     )
     if (!isDev) {
       res.setHeader('Cache-Control', 'public, max-age=604800, s-maxage=604800, immutable')
     }
     return res.status(200).json(resp)
-  } catch (error) {
+  } catch (error: any) {
     return res.status(400).json(error)
   }
 }

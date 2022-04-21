@@ -1,5 +1,5 @@
 import { isNil, reject } from 'ramda'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useInfiniteQuery } from 'react-query'
 import { GetArticlesByDateAndCatRequest, ArticleListResponse } from '../types/api'
 
@@ -19,7 +19,8 @@ export function useArticlesQuery(initData: ArticleListResponse, queryParams: Get
     },
     [queryParams]
   )
-  return useInfiniteQuery(queryKey, fetchArticleList, {
+
+  const queryProps = useInfiniteQuery(queryKey, fetchArticleList, {
     getNextPageParam: (lastPage, pages) => {
       return lastPage.nextCursor
     },
@@ -30,4 +31,8 @@ export function useArticlesQuery(initData: ArticleListResponse, queryParams: Get
     refetchIntervalInBackground: false,
     refetchOnMount: false,
   })
+
+  const flattedData = useMemo(() => (queryProps.data?.pages || []).map(({ data }) => data).flat(), [queryProps.data])
+
+  return { ...queryProps, flattedData }
 }

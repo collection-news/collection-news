@@ -1,5 +1,9 @@
 import { stripHtml } from 'string-strip-html'
-import { Article, HTMLBlock, ImageBlock, TextBlock } from '../types/appleDailyArticle'
+import { mediaMap } from '../constants/mediaMeta'
+import { Article, HTMLBlock, ImageBlock, TextBlock } from '../types/article'
+import randomColor from 'randomcolor'
+import { media } from '../constants/media'
+import { CategoryItem } from '../types/mediaMeta'
 
 export const getCoverImageUrlFromStory = (article: Article): ImageBlock | null => {
   return article.type === 'video'
@@ -19,3 +23,16 @@ export const getArticleDesc = (article: Article): string => {
     return stripHtml(block?.content || '').result
   }
 }
+
+export const getMedia = (matchKey?: media) => mediaMap.find(({ key }) => key === matchKey)
+
+export const getTitle = (title: string, matchKey?: media) => {
+  const matchedMedia = mediaMap.find(({ key }) => key === matchKey)
+
+  return `${title} | ${matchedMedia ? `${matchedMedia.brandName}•` : ''}聞庫`
+}
+
+export const getCategory = (list: CategoryItem[], matchEngName?: string) =>
+  list.find(({ engName }) => engName === matchEngName)
+
+export const getCategoryColor = (name: string) => randomColor({ luminosity: 'light', seed: name })

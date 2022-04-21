@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex, Box } from '@chakra-ui/react'
-import { Stream } from '../../types/appleDailyArticle'
+import { Stream } from '../../types/article'
 
 type Props = {
   streams: Stream[]

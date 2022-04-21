@@ -39,3 +39,4 @@ yarn-error.log*
 # others
 public/*.xml
 .idea/
+tsconfig.tsbuildinfo

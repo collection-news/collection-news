@@ -2,25 +2,27 @@ import { AspectRatio, Box, Flex, Tag, Text, Tooltip } from '@chakra-ui/react'
 import * as React from 'react'
 import Link from 'next/link'
 
-import { Article, Story, Video } from '../types/appleDailyArticle'
-import { getCoverImageUrlFromStory } from '../utils/dataHelper'
+import { Article, Story, Video } from '../types/article'
+import { getCategory, getCategoryColor, getCoverImageUrlFromStory, getMedia } from '../utils/dataHelper'
 import { getFullFormatFromTs } from '../utils/date'
-import { appleDailyCategoryMap } from '../constants/appleDailyCategory'
 import { Empty } from './Empty'
 import { ArticleImage } from './Image'
+import { CategoryItem } from '../types/mediaMeta'
 
 type Props = { article: Article }
 
-export const AppleDailyArticleCard: React.FC<Props> = ({ article }) => {
+export const ArticleCard: React.FC<Props> = ({ article }) => {
+  const categoryList = getMedia(article.media)?.categoryList || []
+  const category = getCategory(categoryList, article.category)
   switch (article.type) {
     case 'video':
-      return <AppleDailyVideoCard story={article as Video} />
+      return <VideoCard story={article as Video} category={category} />
     case 'story':
-      return <AppleDailyStoryCard story={article as Story} />
+      return <StoryCard story={article as Story} category={category} />
   }
 }
 
-const AppleDailyVideoCard: React.FC<{ story: Video }> = ({ story }) => {
+const VideoCard: React.FC<{ story: Video; category?: CategoryItem }> = ({ story, category }) => {
   return (
     <Tooltip label="尚未支援影片文章" aria-label="Not supported article type">
       <Flex
@@ -49,7 +51,7 @@ const AppleDailyVideoCard: React.FC<{ story: Video }> = ({ story }) => {
             <Tag mr={2} size="sm" bgColor="gray.400" borderRadius="sm">
               影片
             </Tag>
-            <CategoryTag category={story.category} />
+            <CategoryTag category={category} />
             {story.publishTimestamp && <Text fontSize="sm">{getFullFormatFromTs(story.publishTimestamp)}</Text>}
           </Flex>
         </Box>
@@ -58,8 +60,9 @@ const AppleDailyVideoCard: React.FC<{ story: Video }> = ({ story }) => {
   )
 }
 
-const AppleDailyStoryCard: React.FC<{ story: Story }> = ({ story }) => {
+const StoryCard: React.FC<{ story: Story; category?: CategoryItem }> = ({ story, category }) => {
   const coverImg = getCoverImageUrlFromStory(story)
+
   return (
     <Link href={`/${story.media}/articles/${story.articleId}`} passHref>
       <Box
@@ -85,7 +88,7 @@ const AppleDailyStoryCard: React.FC<{ story: Story }> = ({ story }) => {
             minH={12}
           />
           <Flex align="center">
-            <CategoryTag category={story.category} />
+            <CategoryTag category={category} />
             {story.publishTimestamp && <Text fontSize="sm">{getFullFormatFromTs(story.publishTimestamp)}</Text>}
           </Flex>
         </Box>
@@ -94,11 +97,10 @@ const AppleDailyStoryCard: React.FC<{ story: Story }> = ({ story }) => {
   )
 }
 
-const CategoryTag = ({ category }: { category: string }) => {
-  const catData = appleDailyCategoryMap[category]
+const CategoryTag = ({ category }: { category?: CategoryItem }) => {
   return (
-    <Tag mr={2} size="sm" bgColor={catData?.color || 'gray.400'} borderRadius="sm">
-      {catData?.text || '未知'}
+    <Tag mr={2} size="sm" bgColor={category ? getCategoryColor(category.engName) : 'gray.300'} borderRadius="sm">
+      {category?.chiName || '未知'}
     </Tag>
   )
 }

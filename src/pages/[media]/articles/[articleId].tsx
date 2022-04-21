@@ -2,38 +2,20 @@
 import { GetStaticProps } from 'next'
 
 import { getArticle } from '../../../services/dynamo'
-import { Article as AppleDailyArticleType } from '../../../types/appleDailyArticle'
-import { AppleDailyArticle } from '../../../containers/AppleDailyArticle'
-import { mediaType } from '../../../constants/mediaType'
+import { Article as ArticleType } from '../../../types/article'
+import { Article } from '../../../containers/Article'
 import { ContentWrapper } from '../../../components/ContentWrapper'
-
-type Props = {
-  article: AppleDailyArticleType
-}
-
-const getArticleRender = (article: AppleDailyArticleType) => {
-  switch (article.media) {
-    case mediaType.APPLE_DAILY:
-      return <AppleDailyArticle article={article} />
-    default:
-      // TODO: 404 page
-      return <div>404</div>
-  }
-}
-
-const ArticlePage: React.FC<Props> = props => <ContentWrapper>{getArticleRender(props.article)}</ContentWrapper>
-
-export default ArticlePage
+import { media } from '../../../constants/media'
 
 type Params = {
-  media: string
+  media: media
   articleId: string
 }
 
 // This function gets called at build time on server-side.
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const { media, articleId } = params as Params
   const article = await getArticle({ articleId, media })
   if (!article) {
@@ -58,3 +40,15 @@ export async function getStaticPaths() {
   // on-demand if the path doesn't exist.
   return { paths: [], fallback: 'blocking' }
 }
+
+type Props = {
+  article: ArticleType
+}
+
+const ArticlePage = ({ article }: Props) => (
+  <ContentWrapper>
+    <Article article={article} />
+  </ContentWrapper>
+)
+
+export default ArticlePage
