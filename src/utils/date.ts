@@ -1,4 +1,3 @@
-import { lastDayOfAppleDaily } from '../constants'
 import { dayjs } from './dayjs'
 
 export function getTodayOfTheHistory(year: string): string {
@@ -7,8 +6,8 @@ export function getTodayOfTheHistory(year: string): string {
     .format('YYYYMMDD')
 }
 
-export function maxYearForToday(): number {
-  return dayjs().year(2021).isAfter(getDate(lastDayOfAppleDaily)) ? 2020 : 2021
+export function maxYearForToday(lastDay: string): number {
+  return dayjs().year(2021).isAfter(getDate(lastDay)) ? 2020 : 2021
 }
 
 export function getDateParamFromDate(date: Date | string): string {
@@ -29,13 +28,4 @@ export function getFullFormatFromTs(ts: string): string {
 
 export function getDate(date: string) {
   return dayjs(date, 'YYYYMMDD')
-}
-
-export function getStartEndDateFromYear(year: number) {
-  const d = getDate(year + '0101')
-  if (year !== 2021) {
-    return [d.startOf('year'), d.endOf('year')]
-  } else {
-    return [d.startOf('year'), getDate(lastDayOfAppleDaily)]
-  }
 }

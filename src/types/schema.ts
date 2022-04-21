@@ -1,17 +1,13 @@
-import { omit } from 'ramda'
 import * as yup from 'yup'
-import { appleDailyCategory } from '../constants/appleDailyCategory'
-import { mediaType } from '../constants/mediaType'
+import { media } from '../constants/media'
 
-const mediaTypeValues = Object.keys(mediaType).map(key => mediaType[key as keyof typeof mediaType])
-const appleDailyCategoryValues = Object.keys(appleDailyCategory).map(
-  key => appleDailyCategory[key as keyof typeof appleDailyCategory]
-)
+const mediaTypeValues = Object.values(media)
 
 export const articleListQueryParamsSchema = yup.object().shape({
   media: yup.string().required().oneOf(mediaTypeValues),
   publishDate: yup.string().matches(/[0-9]{8}/),
-  category: yup.string().oneOf(appleDailyCategoryValues),
+  // TODO: fix category type
+  category: yup.string(),
 })
 
 export const historyPagePathParamsSchema = yup.object().shape({
@@ -20,5 +16,6 @@ export const historyPagePathParamsSchema = yup.object().shape({
     .string()
     .required()
     .matches(/20[0-9]{2}/),
-  category: yup.string().oneOf(appleDailyCategoryValues),
+  // TODO: fix category type
+  category: yup.string(),
 })

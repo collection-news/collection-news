@@ -4,10 +4,11 @@ import { DynamoDBDocument, QueryCommandOutput } from '@aws-sdk/lib-dynamodb'
 import { NativeAttributeValue } from '@aws-sdk/util-dynamodb'
 import * as R from 'ramda'
 
-import { Article, BaseArticle } from '../types/appleDailyArticle'
+import { Article, BaseArticle } from '../types/article'
 import { ArticleIdsResponse, ArticleListResponse, DynamoDBOption, GetArticlesByDateAndCatRequest } from '../types/api'
 import { isDev } from '../utils/config'
-import { replaceCDNDomainForArticle } from '../utils/dbHelper'
+import { replaceCDNDomainForArticle, unGZipArticle } from '../utils/dbHelper'
+import { media } from '../constants/media'
 
 const useProfileCredentials = isDev && !process.env.APP_AWS_ACCESS_KEY_ID && !process.env.APP_AWS_SECRET_ACCESS_KEY
 
@@ -18,13 +19,20 @@ const dynamoClient = new DynamoDBClient({
     : {
         accessKeyId: process.env.APP_AWS_ACCESS_KEY_ID || '',
         secretAccessKey: process.env.APP_AWS_SECRET_ACCESS_KEY || '',
+        sessionToken: process.env.APP_AWS_SESSION_TOKEN,
       },
 })
 const ddbDocClient = DynamoDBDocument.from(dynamoClient, { marshallOptions: { removeUndefinedValues: true } })
 
-function mediaToTableName(media: string) {
-  // Since we have APPLE only
-  return process.env.APP_DYNAMODB_TABLE_NAME
+function mediaToTableName(key: media) {
+  switch (key) {
+    case media.APPLE_DAILY:
+      return process.env.APP_APPLE_DAILY_DYNAMODB_TABLE_NAME
+    case media.THE_STAND_NEWS:
+      return process.env.APP_THE_STAND_NEWS_DYNAMODB_TABLE_NAME
+    default:
+      return null
+  }
 }
 
 export async function getArticle({
@@ -32,13 +40,16 @@ export async function getArticle({
   media,
 }: {
   articleId: string
-  media: string
+  media: media
 }): Promise<Article | undefined> {
+  const tableName = mediaToTableName(media)
+  if (!tableName) return undefined
+
   const resp = await ddbDocClient.get({
     Key: { articleId },
-    TableName: mediaToTableName(media),
+    TableName: tableName,
   })
-  return resp.Item ? replaceCDNDomainForArticle(resp.Item as Article) : resp.Item
+  return resp.Item ? unGZipArticle(replaceCDNDomainForArticle(resp.Item as Article)) : resp.Item
 }
 
 type LastEvaluatedKeyType = {
@@ -83,7 +94,7 @@ export async function getArticlesByDateAndCat(
   return convertArticleQueryResp(resp)
 }
 
-const PAGE_SIZE = 18 // Have 1,2,3 as common mutiple that fit list view columns
+const PAGE_SIZE = 18 // Have 1,2,3 as common multiple that fit list view columns
 const BATCH_LIMIT = 36
 
 async function _getArticlesByDateAndCat(
@@ -94,8 +105,13 @@ async function _getArticlesByDateAndCat(
   const { limit = PAGE_SIZE, order = 'desc', nextCursor } = option
   const { media, publishDate, category, getVideo = false } = request
   console.log('getArticlesByDateAndCat', { ...request, ...option })
+
+  const tableName = mediaToTableName(media)
+
+  if (!tableName) return { Items: [], LastEvaluatedKey: {}, $metadata: {} }
+
   const input = {
-    TableName: mediaToTableName(media),
+    TableName: tableName,
     IndexName: 'DateTimeIndex',
     ...(getVideo ? {} : { ExpressionAttributeNames: { '#T': 'type' } }),
     ExpressionAttributeValues: {
@@ -173,15 +189,17 @@ function convertArticleIdsQueryResp(resp: QueryCommandOutput): ArticleIdsRespons
   }
 }
 
-export async function getArticleIdsByDate(
-  request: { date: string },
+export async function getArticleIds(
+  request: { date: string; media: media },
   option: { nextCursor: string | null }
 ): Promise<ArticleIdsResponse> {
+  const { date, media } = request
+  const tableName = mediaToTableName(media)
+  if (!tableName) return { ids: [], hasMore: false, nextCursor: null }
   const { nextCursor } = option
-  const { date } = request
-  console.log('getArticleIdsByDate', { ...request, ...option })
+  console.log('getArticleIds', { ...request, ...option })
   const input = {
-    TableName: process.env.APP_DYNAMODB_TABLE_NAME,
+    TableName: tableName,
     IndexName: 'DateTimeIndex',
     ExpressionAttributeValues: {
       ':publishDate': date,

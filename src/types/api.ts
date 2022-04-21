@@ -1,4 +1,5 @@
-import { Article } from './appleDailyArticle'
+import { media } from '../constants/media'
+import { Article } from './article'
 
 export type ArticleListResponse = {
   articles: Article[]
@@ -13,7 +14,7 @@ export type ArticleIdsResponse = {
 }
 
 export type GetArticlesByDateAndCatRequest = {
-  media: string
+  media: media
   publishDate: string
   category?: string
   getVideo?: boolean

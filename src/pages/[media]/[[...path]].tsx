@@ -1,8 +1,8 @@
-import { Heading, Box, Flex, Divider } from '@chakra-ui/react'
+import { Heading, Box, Divider } from '@chakra-ui/react'
+import dayjs from 'dayjs'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { nth, path } from 'ramda'
-import * as React from 'react'
+import React, { useCallback } from 'react'
 import { useMemo } from 'react'
 import { ArticleListView } from '../../components/ArticleList'
 
@@ -10,28 +10,40 @@ import { CategoryList } from '../../components/CategoryList'
 import { ContentWrapper } from '../../components/ContentWrapper'
 import { DatePicker } from '../../components/DatePicker'
 import { NonArticleHead } from '../../components/HtmlHead'
-import { lastDayOfAppleDaily } from '../../constants'
-import { appleDailyCategoryMap } from '../../constants/appleDailyCategory'
+import { media } from '../../constants/media'
+import { mediaMap } from '../../constants/mediaMeta'
 import { useArticlesQuery } from '../../hooks'
 import { getArticlesByDateAndCat } from '../../services/dynamo'
 import { ArticleListResponse, GetArticlesByDateAndCatRequest } from '../../types/api'
+import { CategoryItem, MediaMetaForProps } from '../../types/mediaMeta'
 import { articleListQueryParamsSchema } from '../../types/schema'
+import { getCategory, getMedia } from '../../utils/dataHelper'
 import { getDateParamFromDate, getZhFormatFromDateParam } from '../../utils/date'
+import { getMedataMetaForPros } from '../../utils/metaHelper'
 
 // This function gets called at build time on server-side.
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
 export const getStaticProps: GetStaticProps<ArticleListPageIndexProps> = async ({ params }) => {
-  const { media, path } = params as {
-    media: string
+  const { media, path: [publishDate, category] = [] } = params as {
+    media: media
     path?: [publishDate: string | undefined, category: string | undefined]
   }
 
-  const category = nth(1, path || [])
-  const publishDate = nth(0, path || [])
+  const currentMedia = getMedia(media)
+
+  if (!currentMedia) {
+    return { notFound: true, revalidate: false }
+  }
+
+  const {
+    range: [, lastDay],
+    categoryList,
+  } = currentMedia
+
   const queryParams = {
     media,
-    publishDate: publishDate || lastDayOfAppleDaily,
+    publishDate: publishDate || lastDay,
     getVideo: true,
     ...(category ? { category } : {}),
   }
@@ -44,7 +56,12 @@ export const getStaticProps: GetStaticProps<ArticleListPageIndexProps> = async (
   const resp = await getArticlesByDateAndCat(queryParams)
 
   return {
-    props: { initData: resp, queryParams },
+    props: {
+      initData: resp,
+      queryParams,
+      currentCategory: getCategory(categoryList, category) || null,
+      currentMedia: getMedataMetaForPros(currentMedia),
+    },
     revalidate: 3600,
   }
 }
@@ -53,74 +70,85 @@ export const getStaticProps: GetStaticProps<ArticleListPageIndexProps> = async (
 // It may be called again, on a serverless function, if
 // the path has not been generated.
 export async function getStaticPaths() {
-  // Pre-render /appledaily at build time
+  // Pre-render the last date at build time
   // { fallback: blocking } will server-render pages
   // on-demand if the path doesn't exist.
-  return { paths: [{ params: { media: 'appledaily', path: ['20210623'] } }], fallback: 'blocking' }
+  return {
+    paths: Object.entries(mediaMap).map(([media, map]) => ({ params: { media, path: [map.range[1]] } })),
+    fallback: 'blocking',
+  }
 }
 
 export type ArticleListPageIndexProps = {
   initData: ArticleListResponse
   queryParams: GetArticlesByDateAndCatRequest
+  currentCategory: CategoryItem | null
+  currentMedia: MediaMetaForProps
 }
 
-export default function Home({ initData, queryParams }: ArticleListPageIndexProps) {
-  const { publishDate, media, category } = queryParams
+export default function Home({
+  initData,
+  queryParams,
+  currentCategory,
+  currentMedia: {
+    brandNameShorthand,
+    brandName,
+    range: [mediaFirstDay, mediaLastDay],
+    categoryList,
+    count,
+  },
+}: ArticleListPageIndexProps) {
   const router = useRouter()
-  const { query, asPath } = router
-  const { data, fetchNextPage, hasNextPage, isFetching } = useArticlesQuery(initData, queryParams)
-  const articles = data?.pages.map(({ data }) => data).flat() || []
+  const { asPath } = router
+  const { flattedData, fetchNextPage, hasNextPage, isFetching } = useArticlesQuery(initData, queryParams)
 
-  const onSelectDate = (day: Date | undefined) => {
-    if (day) {
-      router.push(
-        category ? `/${media}/${getDateParamFromDate(day)}/${category}` : `/${media}/${getDateParamFromDate(day)}`
-      )
-    }
-  }
-
-  const getHref = ({ category, lastDay }: { category?: string; lastDay?: string }) => {
-    return category
-      ? `/${media}/${lastDay || lastDayOfAppleDaily}/${category}`
-      : `/${media}/${lastDay || lastDayOfAppleDaily}`
-  }
-
-  const currentCategory: string | undefined = path(['path', 1], query)
-  const currentDate: string | undefined = path(['path', 0], query)
-  const isInCategory = (category?: string) => currentCategory === category
+  const { publishDate: currentDate, media } = queryParams
 
   const ogTitle = useMemo(() => {
-    if (asPath === '/' || asPath === '/appledaily/20210623' || !currentDate) {
-      return '果靈聞庫'
-    }
-    return (
-      getZhFormatFromDateParam(currentDate) +
-      (currentCategory ? ` - ${appleDailyCategoryMap[currentCategory]?.text || ''}` : '') +
-      ' | 果靈聞庫'
-    )
-  }, [asPath, currentCategory, currentDate])
+    if (asPath === '/' || asPath === `/${media}/${mediaLastDay}` || !currentDate) return `${brandName}•聞庫`
+    return `${getZhFormatFromDateParam(currentDate)}${
+      currentCategory ? ` - ${currentCategory?.chiName || ''}` : ''
+    } | ${brandName}•聞庫`
+  }, [asPath, currentCategory, currentDate, brandName, media, mediaLastDay])
+
+  const getHref = useCallback(
+    ({ category, date }: { category?: string; date?: string }) => {
+      return category ? `/${media}/${date || mediaLastDay}/${category}` : `/${media}/${date || mediaLastDay}`
+    },
+    [media, mediaLastDay]
+  )
+
+  const onSelectDate = useCallback(
+    (day?: Date) => {
+      day && router.push(getHref({ category: currentCategory?.engName, date: getDateParamFromDate(day) }))
+    },
+    [currentCategory?.engName, router, getHref]
+  )
 
   return (
     <>
       <NonArticleHead title={ogTitle} />
-      <CategoryList getHref={getHref} isInCategory={isInCategory} />
+      <CategoryList categoryList={categoryList} currentCategory={currentCategory} getHref={getHref} total={count} />
       <ContentWrapper>
-        <Heading my={4}>昔日蘋果</Heading>
+        <Heading my={4}>昔日{brandNameShorthand}</Heading>
         <Box position="sticky" zIndex="overlay" top="headerAndCad">
           <Box position="absolute" right={0}>
             <Box my={2}>
-              <DatePicker onSelect={onSelectDate} defaultMonth={new Date(2021, 5, 23) /* 2021 June 23 */} />
+              <DatePicker
+                onSelect={onSelectDate}
+                range={[dayjs(mediaFirstDay).toDate(), dayjs(mediaLastDay).toDate()]}
+              />
             </Box>
           </Box>
         </Box>
         <Box fontSize="xl" top="headerAndCad" position="sticky" zIndex="sticky" bg="bg.500">
           <Box py={2} data-cy="list-view-date">
-            {getZhFormatFromDateParam(publishDate)}
+            {getZhFormatFromDateParam(currentDate)}
           </Box>
           <Divider />
         </Box>
         <ArticleListView
-          articles={articles}
+          articles={flattedData}
           hasNextPage={!!hasNextPage}
           fetchNextPage={fetchNextPage}
           isFetching={isFetching}

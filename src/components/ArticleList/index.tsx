@@ -2,8 +2,8 @@ import { SimpleGrid } from '@chakra-ui/react'
 import * as React from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
-import { AppleDailyArticleCard } from '../ArticleCard'
-import { Article } from '../../types/appleDailyArticle'
+import { ArticleCard } from '../ArticleCard'
+import { Article } from '../../types/article'
 import { End } from './End'
 import { Loading } from '../Loading'
 
@@ -25,7 +25,7 @@ export const ArticleListView = ({ articles, hasNextPage, fetchNextPage, isFetchi
     >
       <SimpleGrid minChildWidth="288px" spacing={6} mb={6}>
         {articles.map(article => (
-          <AppleDailyArticleCard key={article.articleId} article={article} />
+          <ArticleCard key={article.articleId} article={article} />
         ))}
       </SimpleGrid>
     </InfiniteScroll>

@@ -2,6 +2,8 @@ import React from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { stripHtml } from 'string-strip-html'
+import { media } from '../constants/media'
+import { getTitle } from '../utils/dataHelper'
 
 type NonArticleHeadProps = {
   title: string
@@ -30,7 +32,7 @@ export const NonArticleHead: React.FC<NonArticleHeadProps> = ({ title }) => {
       <meta property="og:title" content={title} key="title" />
       <meta property="og:description" content="" />
       <meta property="og:url" content={url} />
-      <meta property="og:site_name" content="果靈聞庫" />
+      <meta property="og:site_name" content="聞庫" />
       <meta property="og:image" content={logoSrc} />
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
@@ -46,12 +48,13 @@ type ArticleHeadProp = {
   title: string
   imgUrl?: string
   desc: string
+  media?: media
 }
 
-export const ArticleHead: React.FC<ArticleHeadProp> = ({ title, imgUrl, desc }) => {
+export const ArticleHead: React.FC<ArticleHeadProp> = ({ title, imgUrl, desc, media }) => {
   const { url, logoSrc } = useURLAndLogoSrc()
   const safeTitle = stripHtml(title).result
-  const ogTitle = `${safeTitle} | 果靈聞庫`
+  const ogTitle = getTitle(safeTitle, media)
   return (
     <Head>
       <title>{ogTitle}</title>
@@ -62,7 +65,7 @@ export const ArticleHead: React.FC<ArticleHeadProp> = ({ title, imgUrl, desc }) 
       <meta property="og:title" content={ogTitle} key="title" />
       <meta property="og:description" content={desc} />
       <meta property="og:url" content={url} />
-      <meta property="og:site_name" content="果靈聞庫" />
+      <meta property="og:site_name" content="聞庫" />
       <meta property="og:image" content={imgUrl || logoSrc} />
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />

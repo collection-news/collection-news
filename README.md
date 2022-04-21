@@ -1,14 +1,11 @@
 <div align="center">
   <h1>
-    果靈·聞庫
+    聞庫
   </h1>
   This is the repository for <a href="https://collection.news">collection.news</a>
   <br/>
   <br/>
   <div align="center">
-    <a href="https://collection.news/about-us">
-      <p>關於我們 | About us</p>
-    </a>
     <a href="https://collection.news/">
       <img width="70%" src="/docs/logo.png">
     </a>
@@ -24,6 +21,7 @@
 - [:world_map: System architecture](#world_map-system-architecture)
 - [:hammer_and_wrench: Technical choice](#hammer_and_wrench-technical-choice)
 - [:zap: A note on cache behavior](#zap-a-note-on-cache-behavior)
+- [:zap: A note on sitemap](#zap-a-note-on-sitemap)
 - [:page_facing_up: License](#page_facing_up-license)
 
 ## :rocket: Development
@@ -59,11 +57,10 @@ npm run dev
   * `/<media_slug>/history/<year_slug>/`
   * `/<media_slug>/history/<year_slug>/<category_slug>`
   * Pseudo SQL `SELECT * FROM `appledaily_table` WHERE date = '20190721' AND category = 'local';`
+* 內文 - Article content
+  * `/<media_slug>/articles/<article_id>/`
 * Home page
   * `/`
-  * It will eventually be render the same as `/appledaily/20210623`, i.e. last day of appledaily
-* About us
-  * `/about-us`
 * Search page
   * `/search`
   * Not fully functional yet due to Google indexing mechanism
@@ -96,10 +93,16 @@ npm run dev
   * `collection.news` Edge Cache TTL: 2 hours
 
 
+## :world_map: A note on sitemap
+
+* Sitemap index is generated at build time in `prebuild` script.
+* Site map logic are inside `src/scripts/genSitemap.ts` & `src/pages/api/sitemap/[media]/[date].ts`. `next.config.js` will do the mapping for dynamic sitemap generation.
+* Root sitemap index (`/sitemap.xml`) contain links to all sitemap group by date. e.g. `/sitemap/appledaily/20210623.xml`
+
 ## :page_facing_up: License
 
-This software is released under [the MIT License](LICENSE) in [GitHub](https://github.com/appledailybackup/collection-news). Logo the on this site is licensed under a Creative Commons [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/). Next Digital Ltd. maintain the copyright of all the content of Apply Daily. For enquiries, please contact us at <a href="mailto:info@collection.news">info@collection.news</a>.
+This software is released under [the MIT License](LICENSE) in [GitHub](https://github.com/appledailybackup/collection-news). Logo the on this site is licensed under a Creative Commons [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/). Next Digital Ltd. maintain the copyright of all the content of Apply Daily. Best Pencil (Hong Kong) Ltd. maintain the copyright of all the content of Stand News. For enquiries, please contact us at <a href="mailto:info@collection.news">info@collection.news</a>.
 
-本軟件在 [MIT 許可證](LICENSE)下發佈在[GitHub](https://github.com/appledailybackup/collection-news)，而本網站上的徽標根據創用CC [姓名標示-非商業性-相同方式分享 4.0 國際 (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW)分享。「壹傳媒有限公司」保留《蘋果日報》所有內容的版權。如有查詢，請聯絡我們 <a href="mailto:info@collection.news">info@collection.news</a>。
+本軟件在 [MIT 許可證](LICENSE)下發佈在[GitHub](https://github.com/appledailybackup/collection-news)，而本網站上的徽標根據創用CC [姓名標示-非商業性-相同方式分享 4.0 國際 (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW)分享。「壹傳媒有限公司」保留《蘋果日報》所有內容的版權。「立場新聞信託」保留《立場新聞》所有內容的版權。如有查詢，請聯絡我們 <a href="mailto:info@collection.news">info@collection.news</a>。
 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>

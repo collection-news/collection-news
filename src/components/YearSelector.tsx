@@ -1,19 +1,29 @@
 import { Box, Button, HStack, Flex } from '@chakra-ui/react'
+import dayjs from 'dayjs'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useMemo } from 'react'
 import HScrollBar from './HScrollBar'
 
-// Generate string array ["2021", "2020", ..., 19 years ago]
-const yearList = Array.from({ length: 20 }).map((_, delta) => `${2021 - delta}`)
+type Props = {
+  selectedYear: string
+  range: [string, string]
+}
 
-export const YearSelector = () => {
+export const YearSelector = ({ selectedYear, range: [start, end] }: Props) => {
   const { query, pathname } = useRouter()
 
-  const selectedYear = query.year as string
+  const yearList = useMemo(() => {
+    const endDayjs = dayjs(end, 'YYYYMMDD')
+    const startDayjs = dayjs(start, 'YYYYMMDD')
+    const diffYear = endDayjs.diff(startDayjs, 'year')
+
+    return Array.from({ length: diffYear + 1 }).map((_, delta) => `${endDayjs.get('year') - delta}`)
+  }, [start, end])
+
   return (
     <HScrollBar>
-      <Flex spacing="0" alignItems="center">
+      <Flex gap="0" alignItems="center">
         {yearList.map(year => {
           const selected = selectedYear === year
           return (

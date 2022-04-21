@@ -1,8 +1,6 @@
 /* eslint-disable react/display-name */
-import { chakra, Box, Flex, Text, Heading, Image } from '@chakra-ui/react'
+import { chakra, Text, Heading, Image } from '@chakra-ui/react'
 import { MDXProvider } from '@mdx-js/react'
-import { IconButton } from '@chakra-ui/react'
-import { AiFillGithub } from 'react-icons/ai'
 
 export const Markdown: React.FC = ({ children }) => (
   <MDXProvider
@@ -12,19 +10,16 @@ export const Markdown: React.FC = ({ children }) => (
       img: Image,
       h1: p => <Heading my={6} as="h1" {...p} />,
       h2: p => <Heading my={4} as="h2" size="lg" {...p} />,
-      h3: p => <Heading as="h3" size="md" mt={4} mb={2} {...p} />,
-      h4: p => <Heading as="h4" size="sm" my={2} {...p} />,
+      h3: p => <Heading as="h3" size="md" my={4} {...p} />,
+      h4: p => <Heading as="h4" size="sm" mt="4" mb="2" {...p} />,
       h5: p => <Heading as="h5" size="xs" {...p} />,
       ol: p => <chakra.ol sx={{ listStylePosition: 'inside' }} {...p} />,
       p: p => <Text as="p" mb={2} {...p} />,
       a: p => (
         <chakra.a
-          color="theme.400"
-          borderColor="theme.400"
           borderBottomWidth="1px"
           borderStyle="dotted"
           _hover={{
-            color: 'theme.100',
             borderBottomWidth: '2px',
             borderColor: 'theme.100',
           }}
@@ -33,34 +28,6 @@ export const Markdown: React.FC = ({ children }) => (
       ),
     }}
   >
-    <Box mb={10}>
-      {children}
-      <Footer />
-    </Box>
+    {children}
   </MDXProvider>
 )
-
-const Footer: React.FC = () => {
-  return (
-    <Flex align="center">
-      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-        <Image
-          alt="Creative Commons License"
-          src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"
-          border={0}
-          display="inline-block"
-        />
-      </a>
-      <a href="https://github.com/appledailybackup/collection-news" target="_blank" rel="noreferrer">
-        <IconButton
-          color="theme.700"
-          aria-label="GitHub repository"
-          isRound
-          variant="link"
-          size="lg"
-          icon={<AiFillGithub />}
-        />
-      </a>
-    </Flex>
-  )
-}

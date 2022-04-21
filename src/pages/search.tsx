@@ -1,6 +1,5 @@
 import { Text, Box } from '@chakra-ui/react'
 import { GetStaticProps } from 'next'
-import Script from 'next/script'
 import React from 'react'
 
 import { ContentWrapper } from '../components/ContentWrapper'
@@ -16,26 +15,23 @@ export const getStaticProps: GetStaticProps<SearchPageProps> = async ({ params }
   return { props: { indexedCount }, revalidate: 7200 }
 }
 
+const googleSearchHtml = `
+<script async src="https://cse.google.com/cse.js?cx=a6fb8c7f8fe6c2f5f"> </script>
+<div class="gcse-search"></div>
+`
+
 export default function SearchPage({ indexedCount }: SearchPageProps) {
   const indexedCountStr = new Intl.NumberFormat().format(indexedCount)
-  const totalCountStr = new Intl.NumberFormat().format(2230271)
   return (
     <>
-      <NonArticleHead title="搜尋 | 果靈聞庫" />
-      <Script
-        async
-        src="https://cse.google.com/cse.js?cx=a6fb8c7f8fe6c2f5f"
-        strategy="beforeInteractive"
-        key="google-search"
-      />
+      <NonArticleHead title="搜尋 | 聞庫" />
       <ContentWrapper>
         {indexedCount && (
           <Box mt={2} ml={4}>
-            <Text as="p">{`Google現己索引 ${indexedCountStr}/${totalCountStr} 篇文章`}</Text>
-            <Text as="p">{'暫時未能搜尋所有文章，敬請原諒。'}</Text>
+            <Text as="p">{`Google現己索引 ${indexedCountStr} 篇文章`}</Text>
           </Box>
         )}
-        <div className="gcse-search"></div>
+        <div dangerouslySetInnerHTML={{ __html: googleSearchHtml }} />
       </ContentWrapper>
     </>
   )
