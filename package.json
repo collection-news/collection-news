@@ -15,6 +15,9 @@
     "cypress:open": "cypress open",
     "prepare": "husky install"
   },
+  "engines": {
+    "node": "^14.0.0"
+  },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.74.0",
     "@aws-sdk/lib-dynamodb": "3.74.0",
@@ -22,6 +25,7 @@
     "@brainhubeu/react-carousel": "2.0.4",
     "@chakra-ui/icons": "1.1.7",
     "@chakra-ui/react": "1.8.8",
+    "@chakra-ui/system": "1.12.1",
     "@emotion/react": "11.9.0",
     "@emotion/styled": "11.8.1",
     "@mdx-js/loader": "2.1.1",
