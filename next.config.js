@@ -1,41 +1,34 @@
-const config = {
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx?$/,
+})
+
+module.exports = withMDX({
   reactStrictMode: true,
   poweredByHeader: false,
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
-  headers: () => [
-    {
-      source: '/',
-      headers: [
-        {
-          key: 'Link',
-          value: '<https://collection.news>; rel="canonical"',
-        },
-      ],
-    },
-    {
-      source: '/:path*',
-      headers: [
-        {
-          key: 'Link',
-          value: '<https://collection.news/:path*>; rel="canonical"',
-        },
-      ],
-    },
-  ],
-  webpack: config => {
-    config.module.rules.push({
-      test: /\.mdx?$/,
-      use: [
-        {
-          loader: '@mdx-js/loader',
-          options: { providerImportSource: '@mdx-js/react' },
-        },
-      ],
-    })
-
-    return config
+  headers: async () => {
+    return [
+      {
+        source: '/',
+        headers: [
+          {
+            key: 'Link',
+            value: '<https://collection.news>; rel="canonical"',
+          },
+        ],
+      },
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Link',
+            value: '<https://collection.news/:path*>; rel="canonical"',
+          },
+        ],
+      },
+    ]
   },
-  rewrites: () => [
+  rewrites: async () => [
     {
       source: '/sitemap/:media/:date.xml',
       destination: '/api/sitemap/:media/:date',
@@ -45,6 +38,4 @@ const config = {
       destination: '/api/robots',
     },
   ],
-}
-
-export default config
+})
