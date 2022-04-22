@@ -1,17 +1,17 @@
 import {
   Box,
   Button,
+  Divider,
   Flex,
   Heading,
-  IconButton,
   HStack,
+  IconButton,
+  Image as ChakraImage,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Divider,
-  Image as ChakraImage,
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import React from 'react'
@@ -24,19 +24,14 @@ import QA from '../containers/Q&A.mdx'
 import CopyRightContent from '../containers/CopyRight.mdx'
 import { AiFillGithub } from 'react-icons/ai'
 import { getZhFormatFromDateParam } from '../utils/date'
-import Image from 'next/image'
-import coverImage from '../assets/coverImage.svg'
 import { mediaMap } from '../constants/mediaMeta'
+import Banner from '../components/Banner'
 
-const index = () => {
+const Index: React.FC = () => {
   return (
     <>
       <NonArticleHead title="聞庫" />
-      <Flex bg="theme.500" h="calc(100vh - 48px)" color="white" justifyContent="center" alignItems="center">
-        <Box w="100%" maxW="400px" px="4">
-          <Image src={coverImage} alt="cover" />
-        </Box>
-      </Flex>
+      <Banner />
       <Box pt="8">
         <Flex justifyContent="center">
           <Heading as="h3" size="md" px="4" py="2" borderRadius="sm" bg="theme.500" color="white">
@@ -138,4 +133,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Index
