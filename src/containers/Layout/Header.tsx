@@ -1,4 +1,4 @@
-import { Box, Button, Flex, IconButton, Spacer } from '@chakra-ui/react'
+import { Box, Button, Flex, IconButton, Spacer, Link as ChLink } from '@chakra-ui/react'
 import Link from 'next/link'
 import * as React from 'react'
 import Image from 'next/image'
@@ -66,7 +66,7 @@ export const Header = ({
         )}
         <Spacer />
         {showSearch && (
-          <Link href="/search" passHref>
+          <ChLink href="/search">
             <IconButton
               aria-label="Search"
               icon={<BsSearch />}
@@ -74,7 +74,7 @@ export const Header = ({
               colorScheme="theme"
               data-cy="header-search-btn"
             />
-          </Link>
+          </ChLink>
         )}
       </Flex>
     </Box>
