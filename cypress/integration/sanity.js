@@ -19,7 +19,7 @@ describe('Sanity check', () => {
   })
 
   specify('History page with category', () => {
-    cy.visit('/appledaily/history/2019/breaking')
+    cy.visit('/appledaily/history/2019/local')
     checkArticle()
   })
 
