@@ -21,12 +21,7 @@
     "transpileOnly": true,
     "files": true,
     "compilerOptions": {
-      "module": "esnext",
-      "target": "es2018"
-    },
-    "esm": true,
-    "moduleTypes": {
-      "src/**": "cjs"
+      "module": "CommonJS"
     }
   }
 }
