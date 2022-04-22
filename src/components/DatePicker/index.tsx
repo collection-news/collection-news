@@ -20,7 +20,7 @@ export const DatePicker = ({ onSelect, range: [firstDay, lastDay] }: DatePickerP
     onClose()
   }
   return (
-    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy closeOnBlur={false}>
+    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy closeOnBlur={false} computePositionOnMount>
       <PopoverTrigger>
         <Button leftIcon={<AiOutlineCalendar />} colorScheme="theme" size="sm" borderRadius="sm">
           選擇日期
