@@ -3,7 +3,10 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { stripHtml } from 'string-strip-html'
 import { media } from '../constants/media'
-import { getTitle } from '../utils/dataHelper'
+import { Article } from 'schema-dts'
+import { jsonLdScriptProps } from 'react-schemaorg'
+import { getMedia, getTitle } from '../utils/dataHelper'
+import { getFormatForJsonLd, getISOFormatFromTs } from '../utils/date'
 
 type NonArticleHeadProps = {
   title: string
@@ -49,12 +52,15 @@ type ArticleHeadProp = {
   imgUrl?: string
   desc: string
   media?: media
+  publishTimestamp: string | null
 }
 
-export const ArticleHead: React.FC<ArticleHeadProp> = ({ title, imgUrl, desc, media }) => {
+export const ArticleHead: React.FC<ArticleHeadProp> = ({ title, imgUrl, desc, media, publishTimestamp }) => {
   const { url, logoSrc } = useURLAndLogoSrc()
   const safeTitle = stripHtml(title).result
   const ogTitle = getTitle(safeTitle, media)
+  const mediaData = getMedia(media)
+  const safeImgUrl = imgUrl || logoSrc
   return (
     <Head>
       <title>{ogTitle}</title>
@@ -66,13 +72,44 @@ export const ArticleHead: React.FC<ArticleHeadProp> = ({ title, imgUrl, desc, me
       <meta property="og:description" content={desc} />
       <meta property="og:url" content={url} />
       <meta property="og:site_name" content="聞庫" />
-      <meta property="og:image" content={imgUrl || logoSrc} />
+      <meta property="og:image" content={safeImgUrl} />
+      {publishTimestamp && <meta property="article:published_time" content={getISOFormatFromTs(publishTimestamp)} />}
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content={url} />
       <meta property="twitter:title" content={ogTitle} />
       <meta property="twitter:description" content={desc} />
-      <meta property="twitter:image" content={imgUrl || logoSrc} />
+      <meta property="twitter:image" content={safeImgUrl} />
+      {/* JSON-LD */}
+      <script
+        {...jsonLdScriptProps<Article>({
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': url,
+          },
+          ...(mediaData
+            ? {
+                author: {
+                  '@type': 'Organization',
+                  name: mediaData.brandName,
+                },
+              }
+            : {}),
+          publisher: {
+            '@type': 'Organization',
+            name: '聞庫',
+            logo: {
+              '@type': 'ImageObject',
+              url: logoSrc,
+            },
+          },
+          headline: ogTitle,
+          image: safeImgUrl,
+          datePublished: publishTimestamp ? getFormatForJsonLd(publishTimestamp) : '',
+        })}
+      />
     </Head>
   )
 }

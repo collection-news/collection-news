@@ -1,4 +1,4 @@
-import { Box, Divider, Heading, Text, Tag, Fade, Flex, Code } from '@chakra-ui/react'
+import { Box, Code, Divider, Fade, Flex, Heading, Tag, Text } from '@chakra-ui/react'
 import React from 'react'
 
 import { HeaderBlock, HTMLBlock, ImageBlock, ListBlock, TableBlock, VideoBlock } from '../../components/ArticleBlocks'
@@ -54,8 +54,7 @@ const filterTag = (tags: string[]) =>
   tags.filter(tag => {
     if (!tag || isEmpty(trim(tag))) return false
     if (blackListedPrefix.some(prefix => tag.startsWith(prefix))) return false
-    if (!isNaN(Number(tag))) return false
-    return true
+    return isNaN(Number(tag))
   })
 
 export const Article: React.FC<Props> = ({ article }) => {
@@ -67,7 +66,13 @@ export const Article: React.FC<Props> = ({ article }) => {
 
   return (
     <>
-      <ArticleHead title={article.title} imgUrl={imgSrc?.url} desc={desc} media={media?.key} />
+      <ArticleHead
+        title={article.title}
+        imgUrl={imgSrc?.url}
+        desc={desc}
+        media={media?.key}
+        publishTimestamp={article.publishTimestamp}
+      />
       <Heading data-cy="article-title" dangerouslySetInnerHTML={{ __html: article.title }} my={4} />
       <Box position="sticky" zIndex="sticky" top="header">
         <Fade in={y > 80} unmountOnExit>
@@ -77,7 +82,6 @@ export const Article: React.FC<Props> = ({ article }) => {
           </Box>
         </Fade>
       </Box>
-
       <Flex direction="row">
         <Text color="gray.500" my={2}>
           {media?.brandName} {article.publishTimestamp ? getFullFormatFromTs(article.publishTimestamp) : '未知'}

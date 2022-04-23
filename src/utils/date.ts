@@ -26,6 +26,14 @@ export function getFullFormatFromTs(ts: string): string {
   return dayjs(ts).format('YYYY/MM/DD HH:mm')
 }
 
+export function getISOFormatFromTs(ts: string): string {
+  return dayjs(ts).toISOString()
+}
+
+export function getFormatForJsonLd(ts: string): string {
+  return dayjs(ts).format('YYYY-MM-DD')
+}
+
 export function getDate(date: string) {
   return dayjs(date, 'YYYYMMDD')
 }
