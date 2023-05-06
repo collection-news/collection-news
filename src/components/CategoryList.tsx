@@ -17,7 +17,7 @@ type CategoryListProps = {
 export const CategoryList = ({ getHref, total, categoryList, currentCategory }: CategoryListProps) => {
   return (
     <Flex justifyContent="center" bg="theme.300" position="sticky" top="header" zIndex="sticky" color="white">
-      <Link href={{ pathname: getHref({}) }} passHref>
+      <Link href={{ pathname: getHref({}) }}>
         <BasicCategoryBtn data-cy="show-all-category-btn" bg="theme.400" count={total}>
           全部
         </BasicCategoryBtn>
@@ -56,7 +56,6 @@ const CategoryBtn = ({ text, category, color, href, isInCategory, count }: Categ
       href={{
         pathname: href,
       }}
-      passHref
     >
       <BasicCategoryBtn
         _hover={{ bg: color }}
@@ -78,15 +77,7 @@ type BasicCategoryBtnProps = {
 const BasicCategoryBtn = forwardRef(({ children, count, ...rest }: BasicCategoryBtnProps, ref: any) => {
   return (
     <Tooltip label={`${count}篇文章`}>
-      <Button
-        ref={ref}
-        as="a"
-        width="full"
-        bg="theme.300"
-        size="sm"
-        _hover={{ bg: 'theme.500' }}
-        {...reject(isNil, rest)}
-      >
+      <Button ref={ref} width="full" bg="theme.300" size="sm" _hover={{ bg: 'theme.500' }} {...reject(isNil, rest)}>
         <Text px="0">{children}</Text>
       </Button>
     </Tooltip>

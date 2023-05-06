@@ -1,7 +1,7 @@
 import { Box, Button, Flex, IconButton, Spacer, Link as ChLink } from '@chakra-ui/react'
 import Link from 'next/link'
 import * as React from 'react'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import { BsSearch } from 'react-icons/bs'
 
 import { maxYearForToday } from '../../utils/date'
@@ -34,9 +34,8 @@ export const Header = ({
         </NavDropdown>
         {mediaMeta && (
           <>
-            <Link href={`/${mediaMeta.key}`} passHref>
+            <Link href={`/${mediaMeta.key}`}>
               <IconButton
-                as="a"
                 aria-label="Media Home"
                 colorScheme="theme"
                 icon={<Logo src={mediaDescMap.find(_ => _.key === mediaMeta.key)?.logoFullWhite} />}
@@ -50,9 +49,8 @@ export const Header = ({
                 pathname: '/[media]/history/[year]',
                 query: { media: mediaMeta.key, year: maxYearForToday(mediaMeta.range[1]) },
               }}
-              passHref
             >
-              <Button as="a" data-cy="history-btn" colorScheme="theme">
+              <Button data-cy="history-btn" colorScheme="theme">
                 當年今日
               </Button>
             </Link>

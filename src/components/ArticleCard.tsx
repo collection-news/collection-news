@@ -64,9 +64,8 @@ const StoryCard: React.FC<{ story: Story; category?: CategoryItem }> = ({ story,
   const coverImg = getCoverImageUrlFromStory(story)
 
   return (
-    <Link href={`/${story.media}/articles/${story.articleId}`} passHref>
+    <Link href={`/${story.media}/articles/${story.articleId}`}>
       <Box
-        as="a"
         border="1px"
         borderColor="theme.100"
         boxShadow="base"

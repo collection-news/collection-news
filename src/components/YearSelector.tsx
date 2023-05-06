@@ -27,7 +27,7 @@ export const YearSelector = ({ selectedYear, range: [start, end] }: Props) => {
         {yearList.map(year => {
           const selected = selectedYear === year
           return (
-            <Link key={year} href={{ pathname, query: { ...query, year } }} passHref>
+            <Link key={year} href={{ pathname, query: { ...query, year } }}>
               <Button
                 flexShrink={0}
                 size={selected ? 'md' : 'sm'}
@@ -35,7 +35,6 @@ export const YearSelector = ({ selectedYear, range: [start, end] }: Props) => {
                 color={selected ? 'white' : 'gray.400'}
                 fontWeight={selected ? 'bold' : 'semibold'}
                 _hover={{ color: selected ? 'white' : 'gray.500' }}
-                as="a"
                 my={2}
                 borderRadius="sm"
               >
