@@ -22,7 +22,7 @@ export const NavDropdown: React.FC<Props> = ({ children, showMainPage = true }) 
       <PopoverContent borderRadius="sm" w={60} borderWidth={4} borderColor="theme.400" bg="theme.500">
         {showMainPage && (
           <>
-            <Link href="/" passHref>
+            <Link href="/">
               <IconButton
                 justifyContent="flex-start"
                 aria-label="Home"
@@ -30,6 +30,7 @@ export const NavDropdown: React.FC<Props> = ({ children, showMainPage = true }) 
                 icon={<Logo src={collectionNewsLogoWhite} />}
                 data-cy="header-home-btn"
                 h="full"
+                w="full"
                 paddingLeft={2}
                 onClick={close}
               />
@@ -38,13 +39,14 @@ export const NavDropdown: React.FC<Props> = ({ children, showMainPage = true }) 
           </>
         )}
         {mediaDescMap.map(({ key, logoFullWhite }) => (
-          <Link key={key} href={`/${key}`} passHref>
+          <Link key={key} href={`/${key}`}>
             <IconButton
               justifyContent="flex-start"
               aria-label="Media Home"
               colorScheme="theme"
               icon={<Logo src={logoFullWhite} />}
               data-cy={`header-media-${key}-btn`}
+              w="full"
               h="full"
               paddingLeft={2}
               onClick={close}

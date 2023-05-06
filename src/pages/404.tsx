@@ -9,24 +9,17 @@ const Custom404Page = () => (
   <>
     <NonArticleHead title="找不到 | 聞庫" />
     <Center>
-      <Box justifyContent="center" py={10} my={50}>
-        <Image
-          src={logoError}
-          alt="404icon"
-          width={500}
-          height={120}
-          style={{
-            maxWidth: '100%',
-            height: 'auto',
-          }}
-        />
-        <Heading textAlign="center">404 Not Found</Heading>
-        <Flex justifyContent="center" mt="4">
-          <Link href="/" passHref legacyBehavior>
+      <Flex flexDirection="column" justifyContent="center" alignItems="center" alignContent="center" py={10} my={50}>
+        <Image src={logoError} alt="404icon" width={200} height={200} />
+        <Heading textAlign="center" py={4}>
+          404 找不到
+        </Heading>
+        <Flex justifyContent="center">
+          <Link href="/">
             <Button>回到主頁</Button>
           </Link>
         </Flex>
-      </Box>
+      </Flex>
     </Center>
   </>
 )

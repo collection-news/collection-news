@@ -1,7 +1,7 @@
 import { Box, Center } from '@chakra-ui/react'
 import React from 'react'
 import { use100vh } from 'react-div-100vh'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import coverImage from '../assets/coverImage.svg'
 
 const Banner: React.FC = () => {
@@ -10,7 +10,14 @@ const Banner: React.FC = () => {
   return (
     <Center bg="theme.500" color="white" h={bannerHeightStyle}>
       <Box w="100%" maxW="500px" px="4">
-        <Image src={coverImage} alt="cover" />
+        <Image
+          src={coverImage}
+          alt="cover"
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+          }}
+        />
       </Box>
     </Center>
   )

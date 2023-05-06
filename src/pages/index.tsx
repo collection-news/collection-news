@@ -74,7 +74,7 @@ const Index: React.FC = () => {
                   </Box>
                 </ContentWrapper>
                 <Flex justifyContent="center" mt="4">
-                  <Link href={`/${key}`} key={key} passHref legacyBehavior>
+                  <Link href={`/${key}`} key={key}>
                     <Button size="md" data-cy="show-articles-btn">
                       查閱所有文章
                     </Button>
