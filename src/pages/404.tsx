@@ -22,7 +22,7 @@ const Custom404Page = () => (
         />
         <Heading textAlign="center">404 Not Found</Heading>
         <Flex justifyContent="center" mt="4">
-          <Link href="/" passHref>
+          <Link href="/" passHref legacyBehavior>
             <Button>回到主頁</Button>
           </Link>
         </Flex>
