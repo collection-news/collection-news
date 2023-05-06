@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
 import { Divider, IconButton, Popover, PopoverContent, PopoverTrigger } from '@chakra-ui/react'
 import Link from 'next/link'
-import Image from 'next/image'
 import collectionNewsLogoWhite from '../assets/collectionNewsLogoWhite.svg'
 import { mediaDescMap } from '../constants/mediaMeta/desc'
+import Logo from './Logo'
 
-export const NavDropdown: React.FC<{ showMainPage?: boolean }> = ({ children, showMainPage = true }) => {
+type Props = {
+  showMainPage?: boolean
+  children: React.ReactNode
+}
+
+export const NavDropdown: React.FC<Props> = ({ children, showMainPage = true }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const open = () => setIsOpen(prev => !prev)
@@ -22,7 +27,7 @@ export const NavDropdown: React.FC<{ showMainPage?: boolean }> = ({ children, sh
                 justifyContent="flex-start"
                 aria-label="Home"
                 colorScheme="theme"
-                icon={<Image src={collectionNewsLogoWhite} alt="logo" height="48px" width="80px" />}
+                icon={<Logo src={collectionNewsLogoWhite} />}
                 data-cy="header-home-btn"
                 h="full"
                 paddingLeft={2}
@@ -38,7 +43,7 @@ export const NavDropdown: React.FC<{ showMainPage?: boolean }> = ({ children, sh
               justifyContent="flex-start"
               aria-label="Media Home"
               colorScheme="theme"
-              icon={<Image src={logoFullWhite} alt="logo" height="48px" width="80px" />}
+              icon={<Logo src={logoFullWhite} />}
               data-cy={`header-media-${key}-btn`}
               h="full"
               paddingLeft={2}

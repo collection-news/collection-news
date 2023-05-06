@@ -1,7 +1,7 @@
 import { Box, Button, Flex, IconButton, Spacer, Link as ChLink } from '@chakra-ui/react'
 import Link from 'next/link'
 import * as React from 'react'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import { BsSearch } from 'react-icons/bs'
 
 import { maxYearForToday } from '../../utils/date'
@@ -10,6 +10,7 @@ import { HamburgerIcon } from '@chakra-ui/icons'
 import { NavDropdown } from '../../components/NavDropdown'
 import { MediaMeta } from '../../types/mediaMeta'
 import { mediaDescMap } from '../../constants/mediaMeta/desc'
+import Logo from '../../components/Logo'
 
 export const Header = ({
   mediaMeta,
@@ -38,14 +39,7 @@ export const Header = ({
                 as="a"
                 aria-label="Media Home"
                 colorScheme="theme"
-                icon={
-                  <Image
-                    src={mediaDescMap.find(_ => _.key === mediaMeta.key)?.logoFullWhite}
-                    alt="logo"
-                    height="48px"
-                    width="80px"
-                  />
-                }
+                icon={<Logo src={mediaDescMap.find(_ => _.key === mediaMeta.key)?.logoFullWhite} />}
                 data-cy="header-media-home-btn"
                 paddingLeft={2}
                 paddingRight={2}

@@ -6,7 +6,11 @@ import { media } from '../../constants/media'
 import { useRouter } from 'next/router'
 import { getMedia } from '../../utils/dataHelper'
 
-export const Layout: React.FC = ({ children }) => {
+type Props = {
+  children: React.ReactNode
+}
+
+export const Layout: React.FC<Props> = ({ children }) => {
   const { query, pathname } = useRouter()
 
   const currentMedia = query.media as media

@@ -3,10 +3,14 @@ import { useCallback, useMemo } from 'react'
 import { useInfiniteQuery } from 'react-query'
 import { GetArticlesByDateAndCatRequest, ArticleListResponse } from '../types/api'
 
+type QueryFunctionInput = {
+  pageParam?: string | null
+}
+
 export function useArticlesQuery(initData: ArticleListResponse, queryParams: GetArticlesByDateAndCatRequest) {
   const queryKey = ['archive', queryParams]
   const fetchArticleList = useCallback(
-    async ({ pageParam }) => {
+    async ({ pageParam }: QueryFunctionInput) => {
       const resp = await fetch(
         '/api/article?' +
           new URLSearchParams({ ...reject(isNil, queryParams), ...(pageParam ? { nextCursor: pageParam } : {}) })

@@ -2,7 +2,11 @@
 import { chakra, Text, Heading, Image } from '@chakra-ui/react'
 import { MDXProvider } from '@mdx-js/react'
 
-export const Markdown: React.FC = ({ children }) => (
+type Props = {
+  children: React.ReactNode
+}
+
+export const Markdown: React.FC<Props> = ({ children }) => (
   <MDXProvider
     components={{
       // https://mdxjs.com/table-of-components

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Scrollbars } from 'react-custom-scrollbars'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 
 const renderScrollThumb = ({ style, ...props }: { style: React.CSSProperties }) => {
   const thumbStyle = {
@@ -11,7 +11,11 @@ const renderScrollThumb = ({ style, ...props }: { style: React.CSSProperties }) 
   return <div style={{ ...style, ...thumbStyle }} {...props} />
 }
 
-const HScrollBar: React.FC = ({ children }) => {
+type Props = {
+  children: React.ReactNode
+}
+
+const HScrollBar: React.FC<Props> = ({ children }) => {
   return (
     <Scrollbars autoHeight universal renderThumbHorizontal={renderScrollThumb}>
       {children}

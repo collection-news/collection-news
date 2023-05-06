@@ -1,5 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import React from 'react'
 import logoBlack from '../assets/logoBlack.svg'
 
