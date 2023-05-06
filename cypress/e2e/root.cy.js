@@ -16,7 +16,7 @@ describe('Index page check', () => {
 
   specify.skip('Show articles btn should navigate', () => {
     cy.visit('/')
-    cy.get('[data-cy="show-articles-btn"]').click({ multiple: true })
+    cy.get('[data-cy="show-articles-btn"]').click()
     cy.url().should('match', /.+\/appledaily/)
   })
 
