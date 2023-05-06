@@ -11,8 +11,8 @@ jobs:
     name: Cypress integration test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 18
       - name: setup env
@@ -23,10 +23,9 @@ jobs:
         env:
           VERCEL_PROJECT_JSON: ${{ secrets.VERCEL_PROJECT_JSON }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      - uses: cypress-io/github-action@v2
+      - uses: cypress-io/github-action@v5
         id: cypress
         with:
-          # spec: cypress/integration/sanity/**/*
           browser: chrome
           headless: true
           build: npm run build
