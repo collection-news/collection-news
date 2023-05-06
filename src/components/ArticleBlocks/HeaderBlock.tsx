@@ -3,6 +3,7 @@ import { Heading } from '@chakra-ui/react'
 
 type Props = {
   level: number
+  children: React.ReactNode
 }
 
 export const HeaderBlock: React.FC<Props> = ({ level, children }) => {

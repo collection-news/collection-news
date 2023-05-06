@@ -1,7 +1,7 @@
 import { Box, Center } from '@chakra-ui/react'
 import React from 'react'
 import { use100vh } from 'react-div-100vh'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import coverImage from '../assets/coverImage.svg'
 
 const Banner: React.FC = () => {

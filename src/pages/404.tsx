@@ -1,5 +1,5 @@
 import { Box, Button, Center, Flex, Heading } from '@chakra-ui/react'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import Link from 'next/link'
 import React from 'react'
 import logoError from '../assets/logoError.svg'

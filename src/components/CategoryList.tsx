@@ -81,8 +81,7 @@ const BasicCategoryBtn = forwardRef(({ children, count, ...rest }: BasicCategory
       <Button
         ref={ref}
         as="a"
-        isFullWidth
-        width="mix"
+        width="full"
         bg="theme.300"
         size="sm"
         _hover={{ bg: 'theme.500' }}
