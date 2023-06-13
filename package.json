@@ -15,7 +15,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.74.0",
+    "@aws-sdk/client-dynamodb": "3.351.0",
     "@aws-sdk/lib-dynamodb": "3.74.0",
     "@aws-sdk/util-dynamodb": "3.74.0",
     "@chakra-ui/icons": "2.0.19",
