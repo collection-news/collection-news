@@ -44,12 +44,23 @@ export async function getArticle({
 }): Promise<Article | undefined> {
   const tableName = mediaToTableName(media)
   if (!tableName) return undefined
+  if (applyDcmaFilter(media, articleId)) return undefined
 
   const resp = await ddbDocClient.get({
     Key: { articleId },
     TableName: tableName,
   })
   return resp.Item ? unGZipArticle(replaceCDNDomainForArticle(resp.Item as Article)) : resp.Item
+}
+
+const DMCA_LIST: Record<media, string[]> = {
+  [media.APPLE_DAILY]: ['LVVT76AUCUKY5VPKVPL4XX7XBY'],
+  [media.THE_STAND_NEWS]: [],
+}
+
+function applyDcmaFilter(media: media, articleId: string): boolean {
+  if (!!process.env.DISABLE_DMCA_FILTER) return false
+  return DMCA_LIST[media]?.includes(articleId)
 }
 
 type LastEvaluatedKeyType = {
