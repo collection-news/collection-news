@@ -218,7 +218,7 @@ export async function getArticleIds(
     // Specifies the values that define the range of the retrieved items.
     KeyConditionExpression: 'publishDate = :publishDate',
     ProjectionExpression: 'articleId',
-    ReturnConsumedCapacity: 'TOTAL',
+    ReturnConsumedCapacity: 'TOTAL' as const,
     ...(nextCursor ? { ExclusiveStartKey: startKey2lastEvaluatedKey(nextCursor) } : {}),
     // Filter that returns only episodes that meet previous criteria and have the subtitle 'The Return'
     // FilterExpression: 'contains (Subtitle, :topic)',
