@@ -15,7 +15,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.74.0",
+    "@aws-sdk/client-dynamodb": "^3.549.0",
     "@aws-sdk/lib-dynamodb": "3.74.0",
     "@aws-sdk/util-dynamodb": "3.74.0",
     "@chakra-ui/icons": "2.0.19",
@@ -24,13 +24,13 @@
     "@emotion/styled": "11.10.8",
     "@mdx-js/loader": "2.3.0",
     "@mdx-js/react": "2.3.0",
-    "@next/mdx": "13.4.1",
+    "@next/mdx": "13.5.6",
     "date-fns": "2.28.0",
     "dayjs": "1.11.1",
     "dotenv": "16.0.0",
     "framer-motion": "6.3.0",
     "immer": "9.0.12",
-    "next": "13.4.1",
+    "next": "13.5.6",
     "ramda": "0.28.0",
     "randomcolor": "^0.6.2",
     "react": "18.2.0",
@@ -45,18 +45,18 @@
     "react-schemaorg": "2.0.0",
     "react-use": "17.4.0",
     "sitemap": "7.1.1",
-    "string-strip-html": "9.1.11",
+    "string-strip-html": "^13.4.8",
     "yup": "0.32.11"
   },
   "devDependencies": {
-    "@commitlint/cli": "16.2.3",
+    "@commitlint/cli": "^19.2.1",
     "@commitlint/config-conventional": "16.2.1",
     "@types/mdx-js__react": "1.5.5",
     "@types/ramda": "0.28.11",
     "@types/randomcolor": "^0.5.6",
     "@types/react": "18.2.5",
     "@types/react-custom-scrollbars": "4.0.10",
-    "cypress": "^11.2.0",
+    "cypress": "^13.7.2",
     "eslint": "8.13.0",
     "eslint-config-next": "13.4.1",
     "eslint-config-prettier": "8.5.0",
@@ -67,7 +67,7 @@
     "schema-dts": "1.1.0",
     "ts-node": "10.7.0",
     "typescript": "4.6.3",
-    "vercel": "24.1.0"
+    "vercel": "^33.7.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
