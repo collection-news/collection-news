@@ -123,7 +123,7 @@ const Index: React.FC = () => {
                 display="inline-block"
               />
             </a>
-            <a href="https://github.com/appledailybackup/collection-news" target="_blank" rel="noreferrer">
+            <a href="https://github.com/collection-news/collection-news" target="_blank" rel="noreferrer">
               <IconButton aria-label="GitHub repository" isRound variant="link" size="lg" icon={<AiFillGithub />} />
             </a>
           </Flex>
