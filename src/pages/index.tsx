@@ -75,7 +75,7 @@ const Index: React.FC = () => {
                 </ContentWrapper>
                 <Flex justifyContent="center" mt="4">
                   <Link href={`/${key}`} key={key}>
-                    <Button size="md" data-cy="show-articles-btn">
+                    <Button size="md" data-cy={`show-articles-btn-${key}`}>
                       查閱所有文章
                     </Button>
                   </Link>

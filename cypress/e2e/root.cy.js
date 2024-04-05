@@ -5,7 +5,8 @@ describe('Index page check', () => {
     cy.visit('/')
     cy.get('[data-cy="media-tab-appledaily-btn"]').should('exist')
     cy.get('[data-cy="media-tab-thestandnews-btn"]').should('exist')
-    cy.get('[data-cy="show-articles-btn"]').should('exist')
+    cy.get('[data-cy="show-articles-btn-appledaily"]').should('exist')
+    cy.get('[data-cy="show-articles-btn-thestandnews"]').should('exist')
     cy.get('[data-cy="header-nav-btn"]').should('exist')
   })
 
@@ -14,9 +15,9 @@ describe('Index page check', () => {
     cy.get('[data-cy="media-tab-thestandnews-btn"]').should('exist').click()
   })
 
-  specify.skip('Show articles btn should navigate', () => {
+  specify('Show articles btn should navigate', () => {
     cy.visit('/')
-    cy.get('[data-cy="show-articles-btn"]').click()
+    cy.get('[data-cy="show-articles-btn-appledaily"]').click()
     cy.url().should('match', /.+\/appledaily/)
   })
 
