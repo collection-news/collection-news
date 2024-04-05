@@ -25,15 +25,16 @@ function useURLAndLogoSrc() {
 
 export const NonArticleHead: React.FC<NonArticleHeadProps> = ({ title }) => {
   const { url, logoSrc } = useURLAndLogoSrc()
+  const desc = '《蘋果日報》/《立場新聞》文章存檔'
   return (
     <Head>
       <title>{title}</title>
       <meta name="title" content={title} />
-      <meta name="description" content="" />
+      <meta name="description" content={desc} />
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="article" />
       <meta property="og:title" content={title} key="title" />
-      <meta property="og:description" content="" />
+      <meta property="og:description" content={desc} />
       <meta property="og:url" content={url} />
       <meta property="og:site_name" content="聞庫" />
       <meta property="og:image" content={logoSrc} />
@@ -41,7 +42,7 @@ export const NonArticleHead: React.FC<NonArticleHeadProps> = ({ title }) => {
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content={url} />
       <meta property="twitter:title" content={title} />
-      <meta property="twitter:description" content="" />
+      <meta property="twitter:description" content={desc} />
       <meta property="twitter:image" content={logoSrc} />
     </Head>
   )
