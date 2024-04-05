@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     resp = await getArticleIds({ date, media: media as media }, { nextCursor: nextCursor })
     // write static pages to sitemap
     resp.ids.forEach(id => {
-      sitemapStream.write({ url: `/${media}/articles/${id}`, changefreq: 'daily', priority: 1 })
+      sitemapStream.write({ url: `/${media}/articles/${id}`, changefreq: 'never', priority: 1 })
     })
     hasMore = resp.hasMore
     nextCursor = resp.nextCursor

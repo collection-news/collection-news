@@ -62,7 +62,7 @@ export const getStaticProps: GetStaticProps<ArticleListPageIndexProps> = async (
       currentCategory: getCategory(categoryList, category) || null,
       currentMedia: getMedataMetaForPros(currentMedia),
     },
-    revalidate: 3600,
+    revalidate: false,
   }
 }
 
