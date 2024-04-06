@@ -27,7 +27,7 @@
     "@next/mdx": "13.5.6",
     "date-fns": "2.28.0",
     "dayjs": "1.11.1",
-    "dotenv": "16.0.0",
+    "dotenv": "16.4.5",
     "framer-motion": "6.3.0",
     "immer": "9.0.12",
     "next": "13.5.6",
