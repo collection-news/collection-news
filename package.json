@@ -25,7 +25,7 @@
     "@mdx-js/loader": "2.3.0",
     "@mdx-js/react": "2.3.0",
     "@next/mdx": "13.5.6",
-    "date-fns": "2.28.0",
+    "date-fns": "3.6.0",
     "dayjs": "1.11.11",
     "dotenv": "16.4.5",
     "framer-motion": "6.3.0",
