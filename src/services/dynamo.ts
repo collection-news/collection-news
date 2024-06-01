@@ -2,7 +2,7 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import { fromIni } from '@aws-sdk/credential-provider-ini'
 import { DynamoDBDocument, QueryCommandOutput } from '@aws-sdk/lib-dynamodb'
 import { NativeAttributeValue } from '@aws-sdk/util-dynamodb'
-import * as R from 'ramda'
+import { pathOr } from 'ramda'
 
 import { Article, BaseArticle } from '../types/article'
 import { ArticleIdsResponse, ArticleListResponse, DynamoDBOption, GetArticlesByDateAndCatRequest } from '../types/api'
@@ -240,6 +240,6 @@ export async function getLatestGoogleIndexCount(): Promise<number> {
     ScanIndexForward: false,
   }
   const resp = await ddbDocClient.query(input)
-  const indexedCount = R.pathOr(0, ['Items', 0, 'searchInformation', 'totalResults'])(resp)
+  const indexedCount = pathOr(0, ['Items', 0, 'searchInformation', 'totalResults'])(resp)
   return indexedCount
 }
