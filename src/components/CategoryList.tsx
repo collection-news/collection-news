@@ -1,5 +1,6 @@
 import { Button, ButtonGroup, ButtonProps, Text, Flex, Tooltip } from '@chakra-ui/react'
 import Link from 'next/link'
+import { isNil, reject } from 'ramda'
 import * as React from 'react'
 import { forwardRef } from 'react'
 import HScrollBar from './HScrollBar'
@@ -76,7 +77,15 @@ type BasicCategoryBtnProps = {
 const BasicCategoryBtn = forwardRef(({ children, count, ...rest }: BasicCategoryBtnProps, ref: any) => {
   return (
     <Tooltip label={`${count}篇文章`}>
-      <Button ref={ref} width="full" bg="theme.300" size="sm" _hover={{ bg: 'theme.500' }} {...rest}>
+      <Button
+        ref={ref}
+        width="full"
+        bg="theme.300"
+        size="sm"
+        _hover={{ bg: 'theme.500' }}
+        color="white"
+        {...reject(isNil, rest)}
+      >
         <Text px="0">{children}</Text>
       </Button>
     </Tooltip>
