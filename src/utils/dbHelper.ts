@@ -1,4 +1,4 @@
-import produce from 'immer'
+import { produce } from 'immer'
 import { omit } from 'ramda'
 import { media } from '../constants/media'
 import zlib from 'zlib'
