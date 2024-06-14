@@ -53,3 +53,5 @@ const ArticlePage = ({ article }: Props) => (
 )
 
 export default ArticlePage
+
+export const runtime = 'experimental-edge'

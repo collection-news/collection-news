@@ -12,3 +12,5 @@ Allow: /
 Disallow: /api/*
 	`)
 }
+
+export const runtime = 'experimental-edge'

@@ -37,3 +37,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     throw err
   })
 }
+
+export const runtime = 'experimental-edge'
