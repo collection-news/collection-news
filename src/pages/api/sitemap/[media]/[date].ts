@@ -8,6 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // ensure response is XML & gzip encoded
   res.setHeader('Content-Type', 'application/xml')
   res.setHeader('Content-Encoding', 'gzip')
+  res.setHeader('Cache-Control', 'public, max-age=31536000, s-maxage=31536000, immutable')
 
   const sitemapStream = new SitemapStream({ hostname: process.env.APP_DOMAIN })
   const pipeline = sitemapStream.pipe(createGzip())
