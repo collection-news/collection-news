@@ -19,6 +19,7 @@ export const Header = ({
   mediaMeta?: MediaMeta
   dropdownShowMainPage: boolean
 }) => {
+  const showSearch = featureFlags.showSearchBtn
   return (
     <Box as="header" h="header" bg="theme.500" position="sticky" top="0" zIndex="overlay">
       <Flex align="center" h="full">
@@ -43,7 +44,29 @@ export const Header = ({
                 paddingRight={2}
               />
             </Link>
+            {/* <Link
+              href={{
+                pathname: '/[media]/history/[year]',
+                query: { media: mediaMeta.key, year: maxYearForToday(mediaMeta.range[1]) },
+              }}
+            >
+              <Button data-cy="history-btn" colorScheme="theme">
+                當年今日
+              </Button>
+            </Link> */}
           </>
+        )}
+        <Spacer />
+        {showSearch && (
+          <ChLink href="/search">
+            <IconButton
+              aria-label="Search"
+              icon={<BsSearch />}
+              size="lg"
+              colorScheme="theme"
+              data-cy="header-search-btn"
+            />
+          </ChLink>
         )}
       </Flex>
     </Box>
