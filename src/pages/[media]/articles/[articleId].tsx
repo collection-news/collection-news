@@ -21,7 +21,6 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (!article) {
     return {
       notFound: true,
-      revalidate: false,
     }
   }
   return {

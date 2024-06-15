@@ -44,7 +44,7 @@ export const Header = ({
                 paddingRight={2}
               />
             </Link>
-            {/* <Link
+            <Link
               href={{
                 pathname: '/[media]/history/[year]',
                 query: { media: mediaMeta.key, year: maxYearForToday(mediaMeta.range[1]) },
@@ -53,7 +53,7 @@ export const Header = ({
               <Button data-cy="history-btn" colorScheme="theme">
                 當年今日
               </Button>
-            </Link> */}
+            </Link>
           </>
         )}
         <Spacer />
