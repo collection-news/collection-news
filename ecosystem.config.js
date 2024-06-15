@@ -7,6 +7,9 @@ module.exports = {
       args: 'start',
       error_file: '/dev/null',
       out_file: '/dev/null',
+      env: {
+        TZ: 'Asia/Hong_Kong',
+      },
     },
   ],
 }
