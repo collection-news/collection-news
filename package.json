@@ -30,7 +30,7 @@
     "dotenv": "16.4.5",
     "framer-motion": "6.3.0",
     "immer": "10.1.1",
-    "next": "13.5.6",
+    "next": "14.2.4",
     "ramda": "0.30.0",
     "randomcolor": "^0.6.2",
     "react": "18.3.1",
