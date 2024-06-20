@@ -3,6 +3,10 @@ const withMDX = require('@next/mdx')({
 })
 
 module.exports = withMDX({
+  cacheHandler:
+    process.env.NODE_ENV === 'production' && process.env.ENABLE_CUSTOM_ISR_CACHE_HANDLER
+      ? require.resolve('./cache-handler.mjs')
+      : undefined,
   reactStrictMode: true,
   poweredByHeader: false,
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
