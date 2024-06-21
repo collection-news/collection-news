@@ -16,6 +16,9 @@ CacheHandler.onCreation(async ({ buildId }) => {
   })
 
   const uploadToS3 = async (path, value) => {
+    if (!value.value) {
+      return
+    }
     const payloadBuffer = await compress(JSON.stringify(value))
     const s3UploadParams = {
       Bucket: process.env.APP_ISR_CACHE_BUCKET_NAME,
@@ -45,7 +48,7 @@ CacheHandler.onCreation(async ({ buildId }) => {
     return JSON.parse(jsonString)
   }
 
-  const handler = {
+  const s3Handler = {
     async get(key) {
       const _key = keyGenerator(buildId, key)
       return await fetchFromS3(_key)
@@ -66,8 +69,38 @@ CacheHandler.onCreation(async ({ buildId }) => {
     },
   }
 
+  const inMemMap = new Map()
+
+  const nullHandler = {
+    async get(key) {
+      if (inMemMap.has(key)) {
+        return inMemMap.get(key)
+      } else {
+        throw new Error('cache miss and fallback to next handler')
+      }
+    },
+    async set(key, value) {
+      if (!value.value) {
+        // Set only when value is null to avoid load on S3 for 404 route
+        inMemMap.set(key, value)
+      }
+    },
+    async revalidateTag(tag) {
+      // Iterate over all entries in the cache
+      for (const [key, { tags }] of inMemMap) {
+        // If the value's tags include the specified tag, delete this entry
+        if (tags.includes(tag)) {
+          await inMemMap.delete(key)
+        }
+      }
+    },
+    async delete(key) {
+      inMemMap.delete(key)
+    },
+  }
+
   return {
-    handlers: [handler],
+    handlers: [nullHandler, s3Handler],
   }
 })
 
