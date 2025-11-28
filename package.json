@@ -8,7 +8,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint --cache",
+    "lint": "next lint",
     "setenv": "vercel env pull .env.local",
     "v": "vercel",
     "cypress:open": "cypress open",
