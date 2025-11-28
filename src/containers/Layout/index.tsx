@@ -11,6 +11,10 @@ type Props = {
 }
 
 export const Layout: React.FC<Props> = ({ children }) => {
+  const isWithinGrayscaleWindow = () => {
+    const y = new Date().getFullYear()
+    return y === 2025
+  }
   const { query, pathname } = useRouter()
 
   const currentMedia = query.media as media
@@ -18,7 +22,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
   const dropdownShowMainPage = pathname !== '/'
 
   return (
-    <Box position="relative">
+    <Box position="relative" filter={isWithinGrayscaleWindow() ? 'grayscale(100%)' : 'none'}>
       <Header mediaMeta={mediaMeta} dropdownShowMainPage={dropdownShowMainPage} />
       {children}
     </Box>
