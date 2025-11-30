@@ -1,9 +1,7 @@
 import { dayjs } from './dayjs'
 
 export function getTodayOfTheHistory(year: string): string {
-  return dayjs()
-    .year(+year)
-    .format('YYYYMMDD')
+  return dayjs().year(+year).format('YYYYMMDD')
 }
 
 export function maxYearForToday(lastDay: string): number {
