@@ -1,6 +1,6 @@
 import { isNil, reject } from 'ramda'
 import { useCallback, useMemo } from 'react'
-import { useInfiniteQuery } from 'react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { GetArticlesByDateAndCatRequest, ArticleListResponse } from '../types/api'
 
 type QueryFunctionInput = {
@@ -24,11 +24,14 @@ export function useArticlesQuery(initData: ArticleListResponse, queryParams: Get
     [queryParams]
   )
 
-  const queryProps = useInfiniteQuery(queryKey, fetchArticleList, {
-    getNextPageParam: (lastPage, pages) => {
+  const queryProps = useInfiniteQuery({
+    queryKey,
+    queryFn: fetchArticleList,
+    initialPageParam: null,
+    getNextPageParam: lastPage => {
       return lastPage.nextCursor
     },
-    initialData: { pages: [{ data: initData.articles, nextCursor: initData.nextCursor }], pageParams: [] },
+    initialData: { pages: [{ data: initData.articles, nextCursor: initData.nextCursor }], pageParams: [null] },
     refetchInterval: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

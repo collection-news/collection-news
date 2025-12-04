@@ -1,10 +1,10 @@
-import { IconButton, Flex, Button, Tag, Badge } from '@chakra-ui/react'
+import { IconButton, Flex, Tag } from '@chakra-ui/react'
 import React from 'react'
 import { Carousel as RCarousel } from 'react-responsive-carousel'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 
 type Props = {
-  children: React.ReactChild[]
+  children: React.ReactNode
 }
 
 export const Carousel: React.FC<Props> = ({ children }) => {
@@ -52,7 +52,7 @@ export const Carousel: React.FC<Props> = ({ children }) => {
         />
       )}
     >
-      {children}
+      {children as any}
     </RCarousel>
   )
 }

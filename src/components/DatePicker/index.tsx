@@ -1,5 +1,4 @@
 import { Button, Popover, PopoverCloseButton, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react'
-import * as React from 'react'
 import { DayPicker, SelectSingleEventHandler } from 'react-day-picker'
 import { zhTW } from 'date-fns/locale'
 import { AiOutlineCalendar } from 'react-icons/ai'
@@ -9,7 +8,7 @@ import 'react-day-picker/dist/style.css'
 import colors from '../../theme/foundations/colors'
 
 type DatePickerProps = {
-  onSelect: SelectSingleEventHandler
+  onSelect: NonNullable<SelectSingleEventHandler>
   range: [Date, Date]
 }
 

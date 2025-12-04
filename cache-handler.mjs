@@ -1,6 +1,6 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
 import { fromIni } from '@aws-sdk/credential-provider-ini'
-import { CacheHandler } from '@neshca/cache-handler'
+import { CacheHandler } from '@fortedigital/nextjs-cache-handler'
 import { compress, uncompress } from 'snappy'
 
 CacheHandler.onCreation(async ({ buildId }) => {

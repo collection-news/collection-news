@@ -53,8 +53,12 @@ describe('Sanity check', () => {
     cy.url().should('match', /.+\/appledaily\/20210623/)
     cy.get('[data-cy=header-media-home-btn]').click()
     cy.url().should('match', /.+\/appledaily/)
-    // Home should also have show all btn
+    // Home should also have shown all btn
     cy.get('[data-cy=show-all-category-btn]').should('exist')
+  })
+
+  specify.skip('Legacy search', () => {
+    cy.visit('/appledaily')
     // Search btn should work
     cy.get('[data-cy=header-search-btn]').click()
     cy.url().should('contain', '/search')

@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import { chakra, Text, Heading, Image } from '@chakra-ui/react'
 import { MDXProvider } from '@mdx-js/react'
 

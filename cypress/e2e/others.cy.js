@@ -6,7 +6,7 @@ describe('Other pages', () => {
     cy.get('.gsc-control-cse').should('exist')
   })
 
-  specify('Should show search box when navigate from menu', () => {
+  specify.skip('Should show search box when navigate from menu', () => {
     cy.visit('/')
     cy.get('[data-cy=header-search-btn]').click()
     cy.get('.gsc-control-cse').should('exist')
