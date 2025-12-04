@@ -12,6 +12,10 @@ export function getDateParamFromDate(date: Date | string): string {
   return dayjs(date).format('YYYYMMDD')
 }
 
+export function getDayPartFromDate(date: Date | string): string {
+  return dayjs(date).format('YYYY/MM/DD')
+}
+
 export function getDateFromDateParam(date: string): Date {
   return getDate(date).toDate()
 }

@@ -4,9 +4,11 @@ import { AiOutlineShareAlt } from 'react-icons/ai'
 
 import { useWebShare } from '../hooks'
 
-export const NativeShareBtn: React.FC = () => {
+const NativeShareBtn: React.FC = () => {
   const { canShare, onShare } = useWebShare()
   return canShare ? (
     <IconButton aria-label="share" icon={<AiOutlineShareAlt />} variant="link" onClick={onShare} />
   ) : null
 }
+
+export default NativeShareBtn

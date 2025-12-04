@@ -1,25 +1,26 @@
-import { Box, Button, Flex, IconButton, Spacer, Link as ChLink } from '@chakra-ui/react'
+import { Box, Button, Flex, IconButton, Spacer, useDisclosure } from '@chakra-ui/react'
 import Link from 'next/link'
 import * as React from 'react'
-import Image from 'next/image'
 import { BsSearch } from 'react-icons/bs'
 
 import { maxYearForToday } from '../../utils/date'
-import { featureFlags } from '../../utils/config'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import { NavDropdown } from '../../components/NavDropdown'
 import { MediaMeta } from '../../types/mediaMeta'
 import { mediaDescMap } from '../../constants/mediaMeta/desc'
 import Logo from '../../components/Logo'
+import { SearchModal } from '../../components/Search/SearchModal'
 
 export const Header = ({
   mediaMeta,
+  showSearch,
   dropdownShowMainPage,
 }: {
   mediaMeta?: MediaMeta
+  showSearch: boolean
   dropdownShowMainPage: boolean
 }) => {
-  const showSearch = featureFlags.showSearchBtn
+  const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Box as="header" h="header" bg="theme.500" position="sticky" top="0" zIndex="overlay">
       <Flex align="center" h="full">
@@ -58,15 +59,17 @@ export const Header = ({
         )}
         <Spacer />
         {showSearch && (
-          <ChLink href="/search">
+          <>
             <IconButton
               aria-label="Search"
               icon={<BsSearch />}
               size="lg"
               colorScheme="theme"
               data-cy="header-search-btn"
+              onClick={onOpen}
             />
-          </ChLink>
+            <SearchModal isOpen={isOpen} onClose={onClose} />
+          </>
         )}
       </Flex>
     </Box>

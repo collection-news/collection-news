@@ -37,7 +37,7 @@ function replaceAppleDailyUrlDomain2CDN(url: string) {
   }
 }
 
-const replaceUrlDomain2CDN = (url: string, mediaKey: media) => {
+export const replaceUrlDomain2CDN = (url: string, mediaKey: media) => {
   switch (mediaKey) {
     case media.APPLE_DAILY:
       return replaceAppleDailyUrlDomain2CDN(url)

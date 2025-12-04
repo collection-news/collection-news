@@ -1,0 +1,8 @@
+.highlighted-title {
+  background-color: var(--chakra-colors-yellow-200);
+}
+
+.highlighted-content {
+  background-color: var(--chakra-colors-yellow-200);
+  font-weight: 500;
+}

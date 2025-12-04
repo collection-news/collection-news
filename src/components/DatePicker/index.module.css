@@ -1,9 +1,8 @@
-.day {
-  border-radius: 2px;
-  width: 100%;
-  height: 100%;
+.day:hover:not([disabled]) {
+  background-color: #edff7a;
 }
 
-.wrapper .day:hover:not([disabled]) {
-  background-color: #bebebe;
+.root {
+  --rdp-accent-color: #1d201f;
+  --rdp-day_button-border-radius: 1%;
 }

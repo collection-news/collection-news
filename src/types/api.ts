@@ -1,6 +1,19 @@
 import { media } from '../constants/media'
 import { Article } from './article'
 
+export type MeiliSearchArticle = {
+  id: string
+  title: string
+  content: string
+  publish_date: string
+  publish_ts: string
+  category: string | null
+  author: string | null
+  tags: string[]
+  media: media
+  coverUrl: string | null
+}
+
 export type ArticleListResponse = {
   articles: Article[]
   hasMore: boolean

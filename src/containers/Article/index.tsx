@@ -1,5 +1,6 @@
 import { Box, Code, Divider, Fade, Flex, Heading, Tag, Text } from '@chakra-ui/react'
 import React from 'react'
+import dynamic from 'next/dynamic'
 
 import { HeaderBlock, HTMLBlock, ImageBlock, ListBlock, TableBlock, VideoBlock } from '../../components/ArticleBlocks'
 import { Article as ArticleType, ContentElement, Story } from '../../types/article'
@@ -9,7 +10,10 @@ import { isEmpty, trim } from 'ramda'
 import { getFullFormatFromTs } from '../../utils/date'
 import { Carousel } from '../../components/Carousel'
 import { useWindowScroll } from 'react-use'
-import { NativeShareBtn } from '../../components/NativeShareBtn'
+
+const NativeShareBtn = dynamic(() => import('../../components/NativeShareBtn'), {
+  ssr: false,
+})
 
 type Props = {
   article: ArticleType
