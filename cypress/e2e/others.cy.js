@@ -1,14 +1,8 @@
 /// <reference types="cypress" />
 
 describe('Other pages', () => {
-  specify('Should load /search', () => {
-    cy.visit('/search')
-    cy.get('.gsc-control-cse').should('exist')
-  })
-
-  specify.skip('Should show search box when navigate from menu', () => {
-    cy.visit('/')
-    cy.get('[data-cy=header-search-btn]').click()
+  specify('Should load /google', () => {
+    cy.visit('/google')
     cy.get('.gsc-control-cse').should('exist')
   })
 

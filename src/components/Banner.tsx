@@ -1,4 +1,4 @@
-import { Box, Center, Input, InputGroup, InputLeftElement, InputRightElement, Button } from '@chakra-ui/react'
+import { Box, Center, Input, InputGroup, InputLeftElement, InputRightElement, Button, Icon } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { BsSearch } from 'react-icons/bs'
 import React from 'react'
@@ -45,8 +45,10 @@ const Banner: React.FC = () => {
         </Box>
         {featureFlags.enableSearchFeature && (
           <InputGroup size="lg" maxW="600px" bg="white" borderRadius={borderRadius} boxShadow="lg">
-            <InputLeftElement pointerEvents="none">
-              <BsSearch color="gray.300" />
+            <InputLeftElement pointerEvents="none" color="gray.500" fontSize="1.25rem" pt={1} pl={2}>
+              <Icon>
+                <BsSearch />
+              </Icon>
             </InputLeftElement>
             <Input
               placeholder={SEARCH_PLACEHOLDER}
@@ -54,6 +56,7 @@ const Banner: React.FC = () => {
               onChange={e => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               borderRadius={borderRadius}
+              pl={12}
               bg="transparent"
               color="black"
               _focus={{ boxShadow: 'none' }}

@@ -3,6 +3,7 @@ import colors from './foundations/colors'
 import sizes from './foundations/sizes'
 import space from './foundations/space'
 import Button from './components/button'
+import { menuTheme } from './components/menu'
 import styles from './styles'
 
 export const theme = extendTheme({
@@ -10,5 +11,5 @@ export const theme = extendTheme({
   styles,
   space,
   sizes,
-  components: { Button },
+  components: { Button, Menu: menuTheme },
 })

@@ -19,7 +19,9 @@ export const SearchResults = () => {
     return (
       <Center py={10}>
         <VStack spacing={4}>
-          <Text color="red.500">無法載入文章，請稍後再試</Text>
+          <Text color="danger.500" fontWeight={700}>
+            無法載入文章，請稍後再試
+          </Text>
           <RetryButton onRetry={refresh} />
         </VStack>
       </Center>

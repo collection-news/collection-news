@@ -1,4 +1,3 @@
-import debounce from 'debounce'
 import Link from 'next/link'
 import { Box, Button, IconButton, Spacer, Icon } from '@chakra-ui/react'
 import { GoHomeFill } from 'react-icons/go'
@@ -8,8 +7,7 @@ import { CategoryFilter } from './CategoryFilter'
 import { SearchBox } from './SearchBox'
 import { SortSelect } from './SortSelect'
 import { SearchHelpTips } from './SearchHelpTips'
-
-const queryHook = debounce((query, search) => search(query), 200, { immediate: true })
+import { useDebouncedCallback } from 'use-debounce'
 
 interface SearchHeaderProps {
   onClose: () => void
@@ -17,6 +15,12 @@ interface SearchHeaderProps {
 }
 
 export const SearchHeader = ({ onClose, isPageView }: SearchHeaderProps) => {
+  const queryHook = useDebouncedCallback(
+    (query, search) => search(query),
+    // delay in ms
+    200,
+    { leading: true, trailing: true }
+  )
   return (
     <Box p={4} borderBottomWidth="1px">
       <Box display="flex" alignItems="center" gap={2}>
@@ -25,7 +29,7 @@ export const SearchHeader = ({ onClose, isPageView }: SearchHeaderProps) => {
         </Box>
         <SearchHelpTips />
         {!isPageView ? (
-          <Button onClick={onClose} display={{ base: 'flex', md: 'none' }} variant="ghost">
+          <Button onClick={onClose} display={{ base: 'flex', md: 'none' }} px={1} variant="ghost">
             取消
           </Button>
         ) : (
