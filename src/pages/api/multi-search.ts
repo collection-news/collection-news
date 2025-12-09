@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { MultiSearchResponse } from 'meilisearch'
 import { MeiliSearchArticle } from '../../types/api'
 import { replaceUrlDomain2CDN } from '../../utils/dbHelper'
+import { base64Decode } from '../../utils/searchQuery'
 
 export const config = {
   api: {
@@ -35,8 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { q } = req.query
     if (typeof q === 'string') {
       try {
-        const decoded = Buffer.from(q, 'base64').toString('utf-8')
-        body = JSON.parse(decoded)
+        body = base64Decode(q)
       } catch (e) {
         console.error('Failed to parse query param', e)
         return res.status(400).json({ error: 'Invalid query parameter' })

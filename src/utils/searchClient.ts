@@ -1,4 +1,5 @@
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
+import { base64Encode } from './searchQuery'
 
 // We use the existing /api/search proxy by using custom httpClient
 // so the actual config does not matter
@@ -13,20 +14,17 @@ export const { searchClient } = instantMeiliSearch(
     },
     httpClient: async (url, opts) => {
       try {
-        let proxyPath = (url as URL).pathname === '/multi-search' ? '/api/multi-search' : '/api/search'
+        let proxyPath = '/api/multi-search'
 
         if (opts?.body) {
           // Encode the body to Base64 and append it as a query parameter for caching purposes
+          // Use URI-safe encoding so `+`/`/`/`=` don't get mangled by query parsing.
           const encodedBody = base64Encode(opts.body as string)
           proxyPath += `?q=${encodedBody}`
         }
 
         const response = await fetch(proxyPath, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: opts?.body,
+          method: 'GET',
         })
         return await response.json()
       } catch (e) {
@@ -36,10 +34,3 @@ export const { searchClient } = instantMeiliSearch(
     },
   }
 )
-
-function base64Encode(str: string) {
-  const bytes = new TextEncoder().encode(str)
-  let binary = ''
-  for (let b of bytes) binary += String.fromCharCode(b)
-  return btoa(binary)
-}
