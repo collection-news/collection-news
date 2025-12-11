@@ -61,9 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ;(data as MultiSearchResponse<MeiliSearchArticle>).results.forEach(result => {
         result.hits.forEach(hit => (hit.coverUrl = hit.coverUrl && replaceUrlDomain2CDN(hit.coverUrl, hit.media)))
       })
-      // Cache successful responses for 1 hour (3600 seconds) on shared caches like Cloudflare.
-      // `s-maxage` is for shared caches, `max-age` is for the client's browser.
-      res.setHeader('Cache-Control', 's-maxage=3600, max-age=0, public')
+      res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=604800')
     }
     return res.status(response.status).json(data)
   } catch (error) {
