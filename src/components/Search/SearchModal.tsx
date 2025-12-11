@@ -1,6 +1,6 @@
 import { Modal, ModalOverlay, ModalContent, ModalBody, Box, useBreakpointValue } from '@chakra-ui/react'
 import { useEffect } from 'react'
-import { InstantSearch, Configure } from 'react-instantsearch'
+import { InstantSearch } from 'react-instantsearch'
 import { createInstantSearchRouterNext } from 'react-instantsearch-router-nextjs'
 import singletonRouter from 'next/router'
 import { SearchResults } from './SearchResults'
@@ -88,7 +88,6 @@ export const SearchModal = ({ isOpen, isPageView = false, onClose = noop, useRou
               }
             }
           >
-            <Configure />
             <Box
               position={isSmallViewport ? 'sticky' : 'static'}
               top={0}
