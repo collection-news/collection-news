@@ -8,23 +8,45 @@ import { Article } from '../types/article'
 const ASSET_CDN_HOST = process.env.APP_ASSET_CDN_HOST
 const resizeParams = '/cdn-cgi/image/fit=scale-down,width=640,metadata=none,onerror=redirect,f=auto'
 
+/**
+ * Extracts the Apple Daily resizer path from the given URL if it matches specific criteria.
+ * This is to cater the malform coverUrl data inside meilisearch
+ * @param {string} url - The URL from which to extract the resizer path.
+ * @return {string | null} Returns the extracted resizer path if the hostname and pathname match the Apple Daily resizer format; otherwise, returns null.
+ */
+export function extractAppleDailyResizerPath(url: string): string | null {
+  try {
+    const parsed = new URL(url)
+    const isResizerHost = parsed.hostname === 'hk.appledaily.com'
+    const isResizerPath = parsed.pathname.startsWith('/resizer/')
+
+    if (!isResizerHost || !isResizerPath) return null
+
+    const appleDailyIndex = parsed.pathname.indexOf('/appledaily/')
+    return appleDailyIndex >= 0 ? parsed.pathname.slice(appleDailyIndex) : null
+  } catch (error) {
+    return null
+  }
+}
+
 function replaceDefaultUrlDomain2CDN(url: string) {
   try {
     const oldUrl = new URL(url)
     const newURL = new URL(url)
     ASSET_CDN_HOST && (newURL.host = ASSET_CDN_HOST)
-    ASSET_CDN_HOST && (newURL.pathname = resizeParams + '/' + oldUrl.hostname + newURL.pathname) // console.log(newURL.href)
+    ASSET_CDN_HOST && (newURL.pathname = resizeParams + '/' + oldUrl.hostname + newURL.pathname)
     return newURL.href
   } catch (error) {
     return url
   }
 }
+
 function replaceAppleDailyUrlDomain2CDN(url: string) {
   try {
     // more defensive to handle malform data
     const newURL = new URL(url)
     ASSET_CDN_HOST && (newURL.host = ASSET_CDN_HOST)
-    ASSET_CDN_HOST && (newURL.pathname = resizeParams + newURL.pathname)
+    ASSET_CDN_HOST && (newURL.pathname = resizeParams + (extractAppleDailyResizerPath(url) ?? newURL.pathname))
     return newURL.href
   } catch (error) {
     const regex = new RegExp(/^[A-Z0-9]*\.(jpg|png|gif|jpeg)$/, 'g')
