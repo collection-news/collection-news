@@ -74,7 +74,7 @@
     "@types/randomcolor": "^0.5.9",
     "@types/react": "19.2.7",
     "@types/react-custom-scrollbars": "4.0.13",
-    "cypress": "^13.17.0",
+    "cypress": "^15.7.1",
     "eslint": "9.39.1",
     "eslint-config-next": "16.0.10",
     "eslint-config-prettier": "10.1.8",
