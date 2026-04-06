@@ -44,7 +44,7 @@ export async function getArticle({
 }): Promise<Article | undefined> {
   const tableName = mediaToTableName(media)
   if (!tableName) return undefined
-  if (applyDcmaFilter(media, articleId)) return undefined
+  if (applyDmcaFilter(media, articleId)) return undefined
 
   const resp = await ddbDocClient.get({
     Key: { articleId },
@@ -54,11 +54,15 @@ export async function getArticle({
 }
 
 const DMCA_LIST: Record<media, string[]> = {
-  [media.APPLE_DAILY]: ['LVVT76AUCUKY5VPKVPL4XX7XBY'],
+  [media.APPLE_DAILY]: [
+    // 'LVVT76AUCUKY5VPKVPL4XX7XBY',
+    'FWFJALT3QHRPG5JAVZ7XXXXMOI',
+    '5LKZR5HSYOU2G7QYRYS2SJSVSE',
+  ],
   [media.THE_STAND_NEWS]: [],
 }
 
-function applyDcmaFilter(media: media, articleId: string): boolean {
+function applyDmcaFilter(media: media, articleId: string): boolean {
   if (!!process.env.DISABLE_DMCA_FILTER) return false
   return DMCA_LIST[media]?.includes(articleId)
 }
