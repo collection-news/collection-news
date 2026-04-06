@@ -1,5 +1,5 @@
 import React from 'react'
-import { Scrollbars } from 'react-custom-scrollbars-2'
+import Scrollbars from 'react-custom-scrollbars-next'
 
 const renderScrollThumb = ({ style, ...props }: { style: React.CSSProperties }) => {
   const thumbStyle = {
