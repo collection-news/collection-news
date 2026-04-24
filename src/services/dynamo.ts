@@ -56,8 +56,8 @@ export async function getArticle({
 const DMCA_LIST: Record<media, string[]> = {
   [media.APPLE_DAILY]: [
     // 'LVVT76AUCUKY5VPKVPL4XX7XBY',
-    'FWFJALT3QHRPG5JAVZ7XXXXMOI',
-    '5LKZR5HSYOU2G7QYRYS2SJSVSE',
+    // 'FWFJALT3QHRPG5JAVZ7XXXXMOI',
+    // '5LKZR5HSYOU2G7QYRYS2SJSVSE',
   ],
   [media.THE_STAND_NEWS]: [],
 }
