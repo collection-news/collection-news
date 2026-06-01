@@ -6,7 +6,8 @@ import zlib from 'zlib'
 import { Article } from '../types/article'
 
 const ASSET_CDN_HOST = process.env.APP_ASSET_CDN_HOST
-const resizeParams = '/cdn-cgi/image/fit=scale-down,width=640,metadata=none,onerror=redirect,f=auto'
+
+// const resizeParams = '/cdn-cgi/image/fit=scale-down,width=640,metadata=none,onerror=redirect,f=auto'
 
 /**
  * Extracts the Apple Daily resizer path from the given URL if it matches specific criteria.
@@ -34,7 +35,8 @@ function replaceDefaultUrlDomain2CDN(url: string) {
     const oldUrl = new URL(url)
     const newURL = new URL(url)
     ASSET_CDN_HOST && (newURL.host = ASSET_CDN_HOST)
-    ASSET_CDN_HOST && (newURL.pathname = resizeParams + '/' + oldUrl.hostname + newURL.pathname)
+    // ASSET_CDN_HOST && (newURL.pathname = resizeParams + '/' + oldUrl.hostname + newURL.pathname)
+    ASSET_CDN_HOST && (newURL.pathname = '/' + oldUrl.hostname + newURL.pathname)
     return newURL.href
   } catch (error) {
     return url
@@ -46,13 +48,15 @@ function replaceAppleDailyUrlDomain2CDN(url: string) {
     // more defensive to handle malform data
     const newURL = new URL(url)
     ASSET_CDN_HOST && (newURL.host = ASSET_CDN_HOST)
-    ASSET_CDN_HOST && (newURL.pathname = resizeParams + (extractAppleDailyResizerPath(url) ?? newURL.pathname))
+    ASSET_CDN_HOST && (newURL.pathname = extractAppleDailyResizerPath(url) ?? newURL.pathname)
+    // ASSET_CDN_HOST && (newURL.pathname = resizeParams + (extractAppleDailyResizerPath(url) ?? newURL.pathname))
     return newURL.href
   } catch (error) {
     const regex = new RegExp(/^[A-Z0-9]*\.(jpg|png|gif|jpeg)$/, 'g')
     const shouldReplace = regex.test(url)
     if (shouldReplace && ASSET_CDN_HOST) {
-      return `https://${ASSET_CDN_HOST}${resizeParams}/appledaily-ipfs-media/${url}`
+      // return `https://${ASSET_CDN_HOST}${resizeParams}/appledaily-ipfs-media/${url}`
+      return `https://${ASSET_CDN_HOST}/appledaily-ipfs-media/${url}`
     } else {
       return url
     }
