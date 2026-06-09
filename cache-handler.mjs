@@ -1,21 +1,18 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
-import { fromIni } from '@aws-sdk/credential-provider-ini'
 import { CacheHandler } from '@fortedigital/nextjs-cache-handler'
 import { compress, uncompress } from 'snappy'
 
 CacheHandler.onCreation(async ({ buildId }) => {
   const s3Client = new S3Client({
-    region: process.env.APP_ISR_CACHE_REGION,
-    credentials: process.env.DEV_AWS_PROFILE
-      ? fromIni({ profile: process.env.DEV_AWS_PROFILE })
-      : {
-          accessKeyId: process.env.APP_AWS_ACCESS_KEY_ID || '',
-          secretAccessKey: process.env.APP_AWS_SECRET_ACCESS_KEY || '',
-          sessionToken: process.env.APP_AWS_SESSION_TOKEN,
-        },
+    region: 'auto',
+    endpoint: `https://${process.env.APP_R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    credentials: {
+      accessKeyId: process.env.APP_R2_ACCESS_KEY_ID || '',
+      secretAccessKey: process.env.APP_R2_SECRET_ACCESS_KEY || '',
+    },
   })
 
-  const uploadToS3 = async (path, value) => {
+  const uploadToObjectStore = async (path, value) => {
     if (!value.value) {
       return
     }
@@ -29,7 +26,7 @@ CacheHandler.onCreation(async ({ buildId }) => {
     await s3Client.send(putObjectCommand)
   }
 
-  const deleteFromS3 = async path => {
+  const deleteFromObjectStore = async path => {
     const deleteObjectCommand = new DeleteObjectCommand({
       Bucket: process.env.APP_ISR_CACHE_BUCKET_NAME,
       Key: path,
@@ -37,7 +34,7 @@ CacheHandler.onCreation(async ({ buildId }) => {
     await s3Client.send(deleteObjectCommand)
   }
 
-  const fetchFromS3 = async path => {
+  const fetchFromObjectStore = async path => {
     const getObjectCommand = new GetObjectCommand({
       Bucket: process.env.APP_ISR_CACHE_BUCKET_NAME,
       Key: path,
@@ -51,11 +48,11 @@ CacheHandler.onCreation(async ({ buildId }) => {
   const s3Handler = {
     async get(key) {
       const _key = keyGenerator(buildId, key)
-      return await fetchFromS3(_key)
+      return await fetchFromObjectStore(_key)
     },
     async set(key, value) {
       const _key = keyGenerator(buildId, key)
-      await uploadToS3(_key, value)
+      await uploadToObjectStore(_key, value)
     },
     async revalidateTag(tag) {
       // TODO: we don't support revalidation at the moment
@@ -65,7 +62,7 @@ CacheHandler.onCreation(async ({ buildId }) => {
     // It will be called when the get method returns expired data.
     async delete(key) {
       const _key = keyGenerator(buildId, key)
-      await deleteFromS3(_key)
+      await deleteFromObjectStore(_key)
     },
   }
 
@@ -105,7 +102,7 @@ CacheHandler.onCreation(async ({ buildId }) => {
 })
 
 function keyGenerator(buildId, key) {
-  return `${buildId}${key}`
+  return `isr-cache/${buildId}${key}`
 }
 
 export default CacheHandler
