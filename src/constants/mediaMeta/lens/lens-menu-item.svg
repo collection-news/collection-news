@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 850 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g id="Logo" transform="matrix(1.581339,0,0,1.581339,-411.879169,-242.121927)">
+        <g transform="matrix(0.26625,0,0,0.26625,265.18,178.68)">
+            <path d="M112,512L312,166L712,166L912,512L712,858L312,858L112,512ZM184,512L348,796L676,796L840,512L676,228L348,228L184,512Z" style="fill:rgb(251,250,242);"/>
+        </g>
+        <g transform="matrix(0.26625,0,0,0.26625,265.18,178.68)">
+            <path d="M512,276C641.466,276 748,382.534 748,512C748,641.466 641.466,748 512,748C382.534,748 276,641.466 276,512C276,382.534 382.534,276 512,276ZM512,328C411.061,328 328,411.061 328,512C328,612.939 411.061,696 512,696C612.939,696 696,612.939 696,512C696,411.061 612.939,328 512,328Z" style="fill:rgb(251,250,242);"/>
+        </g>
+        <g transform="matrix(0.26625,0,0,0.26625,265.18,178.68)">
+            <path d="M512,276C596.074,276.136 673.963,321.189 716,394L671,420C638.234,363.248 577.531,328.124 512,328L512,276Z" style="fill:rgb(237,255,122);fill-rule:nonzero;"/>
+        </g>
+        <g transform="matrix(0.26625,0,0,0.26625,265.18,178.68)">
+            <path d="M512,512L640,586L512,660L512,512Z" style="fill:rgb(251,250,242);fill-rule:nonzero;"/>
+        </g>
+    </g>
+    <g transform="matrix(1.46432,0,0,1.46432,-522.329038,-209.68255)">
+        <g transform="matrix(133.333333,0,0,133.333333,919.985018,368.619703)">
+        </g>
+        <text x="653.318px" y="368.62px" style="font-family:'GlowSansTC-Normal-Bold', 'Glow Sans TC', sans-serif;font-weight:700;font-size:133.333px;fill:rgb(251,250,242);">鏡片</text>
+    </g>
+</svg>

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import collectionNewsLogoWhite from '../assets/collectionNewsLogoWhite.svg'
 import { mediaDescMap } from '../constants/mediaMeta/desc'
 import Logo from './Logo'
+import lensLogoWhite from '../constants/mediaMeta/lens/lens-menu-item.svg'
 
 type Props = {
   showMainPage?: boolean
@@ -53,6 +54,19 @@ export const NavDropdown: React.FC<Props> = ({ children, showMainPage = true }) 
             />
           </Link>
         ))}
+        <Link key="lens" href={`https://lens.collection.news`}>
+          <IconButton
+            justifyContent="flex-start"
+            aria-label="鏡片"
+            colorScheme="theme"
+            icon={<Logo src={lensLogoWhite} />}
+            data-cy={`header-media-lens-btn`}
+            w="full"
+            h="full"
+            paddingLeft={2}
+            onClick={close}
+          />
+        </Link>
       </PopoverContent>
     </Popover>
   )
