@@ -13,22 +13,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
       - uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run test
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm test
       - name: setup env
         run: |
           mkdir -p .vercel
           echo "$VERCEL_PROJECT_JSON" > .vercel/project.json
-          npm run setenv -- --token "$VERCEL_TOKEN"
+          pnpm setenv -- --token "$VERCEL_TOKEN"
         env:
           VERCEL_PROJECT_JSON: ${{ secrets.VERCEL_PROJECT_JSON }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      - run: npm run build
+      - run: pnpm build
         env:
           APP_AWS_ACCESS_KEY_ID: ${{ secrets.APP_AWS_ACCESS_KEY_ID }}
           APP_AWS_SECRET_ACCESS_KEY: ${{ secrets.APP_AWS_SECRET_ACCESS_KEY }}

@@ -34,7 +34,8 @@
 ### Setup your environment
 
 ```bash
-npm install
+mise install
+pnpm install --frozen-lockfile
 cp .env.example .env.local
 ```
 
@@ -44,7 +45,7 @@ cp .env.example .env.local
 ### Start local development
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 ## :building_construction: Project and page structure

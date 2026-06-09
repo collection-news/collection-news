@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'nextjs',
-      script: 'npm',
+      script: 'pnpm',
       cwd: '/var/www/collection-news/',
       args: 'start',
       instances: 1,
