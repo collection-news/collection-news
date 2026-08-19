@@ -25,7 +25,7 @@ jobs:
         run: |
           mkdir -p .vercel
           echo "$VERCEL_PROJECT_JSON" > .vercel/project.json
-          pnpm setenv -- --token "$VERCEL_TOKEN"
+          pnpm setenv --token "$VERCEL_TOKEN"
         env:
           VERCEL_PROJECT_JSON: ${{ secrets.VERCEL_PROJECT_JSON }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
