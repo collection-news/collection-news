@@ -7,6 +7,7 @@ import Image from 'next/image'
 import coverImage from '../assets/coverImage.svg'
 import { SEARCH_PLACEHOLDER, MEILI_INDEX_NAME } from '../constants/text'
 import { featureFlags } from '../utils/config'
+import { SisterSiteLinks } from './SisterSiteLinks'
 
 const Banner: React.FC = () => {
   const bannerHeight = use100vh()
@@ -31,46 +32,53 @@ const Banner: React.FC = () => {
   const borderRadius = 'full'
 
   return (
-    <Center bg="theme.500" color="white" h={bannerHeightStyle} pb={featureFlags.enableSearchFeature ? '20vh' : 0}>
-      <Box w="100%" maxW="600px" px="4" display="flex" flexDirection="column" alignItems="center">
-        <Box w="100%" maxW="500px" mb={8}>
-          <Image
-            src={coverImage}
-            alt="cover"
-            style={{
-              maxWidth: '100%',
-              height: 'auto',
-            }}
-          />
-        </Box>
-        {featureFlags.enableSearchFeature && (
-          <InputGroup size="lg" maxW="600px" bg="white" borderRadius={borderRadius} boxShadow="lg">
-            <InputLeftElement pointerEvents="none" color="gray.500" fontSize="1.25rem" pt={1} pl={2}>
-              <Icon>
-                <BsSearch />
-              </Icon>
-            </InputLeftElement>
-            <Input
-              placeholder={SEARCH_PLACEHOLDER}
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              onKeyDown={handleKeyDown}
-              borderRadius={borderRadius}
-              pl={12}
-              bg="transparent"
-              color="black"
-              _focus={{ boxShadow: 'none' }}
-              data-cy="index-search-input"
+    // Short screens need room below the fixed hero for the links, without recentering the search.
+    <Box bg="theme.500" sx={{ '@media (max-height: 480px)': { paddingBottom: 24 } }}>
+      <Center bg="theme.500" color="white" h={bannerHeightStyle} pb={featureFlags.enableSearchFeature ? '20vh' : 0}>
+        <Box w="100%" maxW="600px" px="4" display="flex" flexDirection="column" alignItems="center" position="relative">
+          <Box w="100%" maxW="500px" mb={8}>
+            <Image
+              src={coverImage}
+              alt="cover"
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+              }}
             />
-            <InputRightElement width="4.5rem">
-              <Button onClick={handleSearch} borderRadius={borderRadius} colorScheme="gray" variant="ghost">
-                搜尋
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-        )}
-      </Box>
-    </Center>
+          </Box>
+          {featureFlags.enableSearchFeature && (
+            <InputGroup size="lg" maxW="600px" bg="white" borderRadius={borderRadius} boxShadow="lg">
+              <InputLeftElement pointerEvents="none" color="gray.500" fontSize="1.25rem" pt={1} pl={2}>
+                <Icon>
+                  <BsSearch />
+                </Icon>
+              </InputLeftElement>
+              <Input
+                placeholder={SEARCH_PLACEHOLDER}
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
+                borderRadius={borderRadius}
+                pl={12}
+                bg="transparent"
+                color="black"
+                _focus={{ boxShadow: 'none' }}
+                data-cy="index-search-input"
+              />
+              <InputRightElement width="4.5rem">
+                <Button onClick={handleSearch} borderRadius={borderRadius} colorScheme="gray" variant="ghost">
+                  搜尋
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          )}
+          {/* Keep promotions outside the centered stack so the logo and search do not move. */}
+          <Box position="absolute" top="100%" mt="6" insetInline="4">
+            <SisterSiteLinks />
+          </Box>
+        </Box>
+      </Center>
+    </Box>
   )
 }
 
