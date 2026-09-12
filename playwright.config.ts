@@ -17,6 +17,8 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     serviceWorkers: 'block',
     timezoneId: 'Asia/Hong_Kong',
+    // Functional checks should not depend on exit-animation timing in headless WebKit.
+    reducedMotion: 'reduce',
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },

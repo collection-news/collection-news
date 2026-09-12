@@ -36,6 +36,13 @@ After an interrupted run, stop the test-owned server before restarting. Inspect
 failures in `test-results` with `pnpm exec playwright show-trace <trace.zip>`.
 Rebuilding replaces only `.test-app`, leaving the normal `.next` build intact.
 
+Functional browser tests request reduced motion through the app's existing CSS.
+This avoids missed exit-animation events in headless Linux WebKit; these suites
+do not validate animation timing. Before testing Escape, wait for the dialog or
+menu's `--layer-index` CSS property: visibility and focus can precede Zag's handler
+registration. Between pagination scrolls, allow rendering frames so the observer
+sees the appended content move its sentinel out of view.
+
 ## Test boundaries
 
 | Location | Scope | Replaced dependencies |

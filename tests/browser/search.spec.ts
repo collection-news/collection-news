@@ -37,6 +37,8 @@ test('modal search resets on reopen and restores keyboard focus after Escape', a
   await expect(input).toBeFocused()
   await input.fill('archive')
   await expect(page.getByTestId('search-article-card')).toHaveCount(20)
+  // Focus and results can arrive before Zag installs the dialog's Escape handler.
+  await expect(page.getByRole('dialog', { name: '搜尋文章', exact: true })).toHaveCSS('--layer-index', '0')
   await page.keyboard.press('Escape')
   await expect(input).toHaveCount(0)
   await expect(open).toBeFocused()
@@ -72,6 +74,11 @@ test('modal scrolling requests the next offset and appends distinct hits', async
     .getByRole('link')
     .evaluateAll(elements => elements.map(element => element.getAttribute('href')))
   expect(new Set(links).size).toBe(40)
+  // Let IntersectionObserver see the appended page move the sentinel out of view
+  // before scrolling it back in. DOM counts can update between rendering frames.
+  await page.evaluate(
+    () => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
+  )
   await page.locator('#search-results-container').evaluate(element => {
     element.scrollTop = element.scrollHeight
   })
@@ -236,6 +243,8 @@ test('nested filter Escape closes the filter before the modal and returns focus'
   await input.fill('文化')
   await input.press('ArrowLeft')
   await expect(input).toBeFocused()
+  // Zag registers the nested dismissable layer on a rendering frame.
+  await expect(page.getByRole('menu')).toHaveCSS('--layer-index', '1')
   await input.press('Escape')
   await expect(input).not.toBeVisible()
   await expect(dialog).toBeVisible()
