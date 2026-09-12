@@ -1,10 +1,7 @@
 import { Box, Flex, Link, Tooltip } from '@chakra-ui/react'
 import Image from 'next/image'
 
-const sisterSites = [
-  { name: '鏡片', href: 'https://lens.collection.news/', icon: '/sister-sites/lens.svg', size: 32 },
-  { name: '文宣牆', href: 'https://wall.collection.news/', icon: '/sister-sites/wall.webp', size: 36 },
-]
+import { sisterSites } from '../constants/sisterSites'
 
 export const SisterSiteLinks = () => (
   <Flex as="nav" aria-label="姊妹網站" justify="center" gap="6">
