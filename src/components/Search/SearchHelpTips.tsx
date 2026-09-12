@@ -1,4 +1,4 @@
-import { IconButton, Popover, Text, VStack, Code, Box, CloseButton } from '@chakra-ui/react'
+import { Icon, IconButton, Popover, Text, VStack, Code, Box, CloseButton } from '@chakra-ui/react'
 import { BsQuestionCircle } from 'react-icons/bs'
 
 export const SearchHelpTips = () => {
@@ -12,21 +12,23 @@ export const SearchHelpTips = () => {
     >
       <Popover.Trigger asChild>
         <IconButton aria-label="Search tips" variant="ghost" size="md" colorPalette="gray">
-          <BsQuestionCircle />
+          <Icon boxSize="4" asChild>
+            <BsQuestionCircle />
+          </Icon>
         </IconButton>
       </Popover.Trigger>
       <Popover.Positioner>
-        <Popover.Content width="300px">
+        <Popover.Content width="300px" fontSize="md" lineHeight={1.5} borderWidth="1px" boxShadow="popover">
           <Popover.Arrow>
             <Popover.ArrowTip />
           </Popover.Arrow>
           <Popover.CloseTrigger asChild position="absolute" top="1" right="1">
             <CloseButton size="sm" />
           </Popover.CloseTrigger>
-          <Popover.Title fontWeight="bold" px="3" py="2" borderBottomWidth="1px">
+          <Popover.Title fontWeight="bold" lineHeight={1.5} px="3" py="2" borderBottomWidth="1px">
             搜尋小貼士
           </Popover.Title>
-          <Popover.Body>
+          <Popover.Body px="3" py="2">
             <VStack align="start" gap={3}>
               <Box>
                 <Text fontWeight="bold" fontSize="sm">

@@ -29,7 +29,7 @@ export function SearchBox(props: UseSearchBoxProps) {
 
   return (
     <InputGroup
-      startElement={<BsSearch />}
+      startElement={<BsSearch size={16} />}
       endElement={
         value.length > 0 ? (
           <IconButton aria-label="Clear search" size="sm" variant="ghost" onClick={handleClear} color="gray.500">
@@ -37,7 +37,7 @@ export function SearchBox(props: UseSearchBoxProps) {
           </IconButton>
         ) : undefined
       }
-      endElementProps={{ px: 0 }}
+      endElementProps={{ px: 2 }}
     >
       <Input
         autoFocus
@@ -49,6 +49,10 @@ export function SearchBox(props: UseSearchBoxProps) {
         borderRadius="sm"
         bg="white"
         color="black"
+        lineHeight={1.5}
+        css={{ '--focus-color': '#3182CE' }}
+        _focus={{ borderColor: 'var(--focus-color)', boxShadow: '0 0 0 1px var(--focus-color)' }}
+        _focusVisible={{ outline: 'none' }}
         _placeholder={{ color: 'gray.400' }}
         data-cy="modal-search-input"
       />

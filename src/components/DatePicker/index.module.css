@@ -1,3 +1,7 @@
+.day {
+  padding: 1px;
+}
+
 .day:hover:not([disabled]) {
   background-color: #edff7a;
 }
