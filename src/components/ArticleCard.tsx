@@ -29,7 +29,7 @@ const VideoCard: React.FC<{ story: Video; category?: CategoryItem }> = ({ story,
       <Flex
         justifyContent="flex-end"
         flexDirection="column"
-        border="1px"
+        borderWidth="1px"
         borderColor="theme.100"
         boxShadow="base"
         minWidth={72}
@@ -67,7 +67,7 @@ const StoryCard: React.FC<{ story: Story; category?: CategoryItem }> = ({ story,
   return (
     <Link href={`/${story.media}/articles/${story.articleId}`}>
       <Box
-        border="1px"
+        borderWidth="1px"
         borderColor="theme.100"
         boxShadow="base"
         _hover={{ cursor: 'pointer' }}

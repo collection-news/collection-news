@@ -31,7 +31,18 @@ const Index: React.FC = () => {
                 overflow="auto"
                 p="2"
                 justifyContent="center"
-                separator={<Box w="8" borderTopWidth="2px" borderColor="theme.500" borderRadius="sm" />}
+                separator={
+                  <Box
+                    role="separator"
+                    aria-orientation="horizontal"
+                    w="8"
+                    borderColor="#808080"
+                    opacity={0.6}
+                    borderRadius="sm"
+                    // HStack supplies a vertical separator; this divider remains horizontal.
+                    css={{ '&': { borderTopWidth: '2px', borderInlineStartWidth: 0 } }}
+                  />
+                }
               >
                 {mediaMap.map(({ key, brandName, range: [, lastDay] }) => (
                   <Tabs.Trigger

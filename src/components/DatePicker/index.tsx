@@ -40,7 +40,7 @@ export const DatePicker = ({ onSelect, range: [firstDay, lastDay] }: DatePickerP
         </Button>
       </Popover.Trigger>
       <Popover.Positioner>
-        <Popover.Content borderRadius="sm">
+        <Popover.Content borderRadius="sm" fontSize="md" lineHeight={1.5} boxShadow="calendar">
           <DayPicker
             selected={selected}
             onSelect={_onSelect}

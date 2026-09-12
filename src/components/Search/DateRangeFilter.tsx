@@ -56,7 +56,7 @@ export const DateRangeFilter = () => {
           </Button>
         </Popover.Trigger>
         <Popover.Positioner>
-          <Popover.Content width="auto" p={0}>
+          <Popover.Content width="auto" p={0} fontSize="md" lineHeight={1.5} boxShadow="calendar">
             <Popover.Body p={0} display="flex">
               <Box p={2}>
                 <DayPicker

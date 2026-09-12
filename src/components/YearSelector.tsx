@@ -30,16 +30,22 @@ export const YearSelector = ({ selectedYear, range: [start, end] }: Props) => {
             <Button
               flexShrink={0}
               size={selected ? 'md' : 'sm'}
-              bg={selected ? 'theme.500' : ''}
+              bg={selected ? 'theme.500' : 'transparent'}
               color={selected ? 'white' : 'gray.400'}
               fontWeight={selected ? 'bold' : 'semibold'}
-              _hover={{ color: selected ? 'white' : 'gray.500' }}
+              _hover={{
+                bg: selected ? 'theme.500' : 'gray.100',
+                color: selected ? 'white' : 'gray.500',
+              }}
+              _focusVisible={{ outline: '2px solid', outlineColor: 'theme.500', outlineOffset: '2px' }}
               my={2}
               borderRadius="sm"
               asChild
               key={year}
             >
-              <Link href={{ pathname, query: { ...query, year } }}>{year}</Link>
+              <Link href={{ pathname, query: { ...query, year } }} aria-current={selected ? 'page' : undefined}>
+                {year}
+              </Link>
             </Button>
           )
         })}

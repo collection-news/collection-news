@@ -27,7 +27,7 @@ export const ProgressBar = () => {
   return open ? (
     <Portal>
       <Progress.Root
-        size="xs"
+        shape="square"
         value={null}
         top="0"
         position="fixed"
@@ -35,10 +35,12 @@ export const ProgressBar = () => {
         w="full"
         zIndex="overlay"
         colorPalette="brand"
-        bg="theme.500"
       >
-        <Progress.Track>
-          <Progress.Range />
+        <Progress.Track h="1" bg="theme.500" boxShadow="none">
+          <Progress.Range
+            bg="transparent"
+            backgroundImage="linear-gradient(to right, transparent 0%, {colors.brand.500} 50%, transparent 100%)"
+          />
         </Progress.Track>
       </Progress.Root>
     </Portal>

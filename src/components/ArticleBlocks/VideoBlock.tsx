@@ -9,7 +9,7 @@ type Props = {
 export const VideoBlock: React.FC<Props> = ({ streams }) => {
   return (
     <Flex mb={4} justify="center">
-      <Box border="1px" borderRadius="sm" borderColor="theme.400" bgColor="theme.400" w={['80%', '80%', '60%']}>
+      <Box borderWidth="1px" borderRadius="sm" borderColor="theme.400" bgColor="theme.400" w={['80%', '80%', '60%']}>
         <video controls>
           {streams.map(({ streamType, url }, index) => (
             <source src={url} type={`video/${streamType}`} key={index} />
