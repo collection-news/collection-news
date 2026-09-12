@@ -64,7 +64,7 @@
     "react-infinite-scroll-component": "6.1.1",
     "react-instantsearch": "^7.49.0",
     "react-instantsearch-router-nextjs": "^7.49.0",
-    "react-intersection-observer": "^10.1.0",
+    "react-intersection-observer": "^11.0.1",
     "react-responsive-carousel": "3.2.23",
     "react-schemaorg": "2.0.1",
     "react-use": "17.6.1",
