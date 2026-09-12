@@ -33,6 +33,8 @@
 
 ### Setup your environment
 
+Use Node 24.15 or newer within the Node 24 release line, and pnpm 11.
+
 ```bash
 mise install
 pnpm install --frozen-lockfile

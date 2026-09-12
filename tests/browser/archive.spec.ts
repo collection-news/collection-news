@@ -65,14 +65,19 @@ test('archive scrolling appends one page and stops without duplicates', async ({
   await expect(page).toHaveURL(/\/appledaily\/20210623$/)
 })
 
-test('short lists can be loaded manually and empty categories terminate', async ({ page }) => {
+test('short lists fill the viewport automatically and empty categories terminate', async ({ page }) => {
+  const requests: URL[] = []
+  page.on('request', request => {
+    if (request.url().includes('/api/article?')) requests.push(new URL(request.url()))
+  })
   await page.setViewportSize({ width: 1366, height: 1366 })
   await page.goto('/appledaily/20210623/culture')
-  await expect(page.getByTestId('article-card')).toHaveCount(2)
-  await page.getByRole('button', { name: 'F5', exact: true }).click()
+  // The observer sees the end of a short list without needing a scroll or manual click.
   await expect(page.getByTestId('article-card')).toHaveCount(3)
   await expect(page.getByTestId('article-list-view-loading-block')).toHaveCount(0)
   await expect(page.getByTestId('article-list-view-ending-block')).toBeVisible()
+  expect(requests).toHaveLength(1)
+  expect(requests[0].searchParams.get('nextCursor')).toBe('fixture:2')
   await page.goto('/appledaily/20210623/unknown')
   await expect(page.getByTestId('article-card')).toHaveCount(0)
   await expect(page.getByTestId('article-list-view-ending-block')).toBeVisible()

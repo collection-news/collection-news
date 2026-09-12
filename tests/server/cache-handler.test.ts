@@ -14,6 +14,9 @@ vi.mock('@aws-sdk/client-s3', async importOriginal => {
 })
 import '../../cache-handler.mjs'
 
+// Registration happens at import time; Vitest clears mock history before each test.
+const createHandlers = mocks.onCreation.mock.calls[0][0]
+
 type CacheValue = { value: unknown; lastModified?: number; tags?: string[] }
 type Handler = {
   get: (key: string) => Promise<CacheValue>
@@ -27,7 +30,7 @@ let storage: Handler
 beforeEach(async () => {
   mocks.send.mockReset()
   vi.stubEnv('APP_ISR_CACHE_BUCKET_NAME', 'fixture-cache')
-  const created = await mocks.onCreation.mock.calls[0][0]({ buildId: 'test-build' })
+  const created = await createHandlers({ buildId: 'test-build' })
   ;[memory, storage] = created.handlers
 })
 
@@ -87,7 +90,7 @@ describe('optional cache handler, with a mocked storage client', () => {
 
   it('keeps separate builds and memory instances isolated', async () => {
     await memory.set('/missing', { value: null })
-    const next = await mocks.onCreation.mock.calls[0][0]({ buildId: 'other-build' })
+    const next = await createHandlers({ buildId: 'other-build' })
     await expect(next.handlers[0].get('/missing')).rejects.toThrow('cache miss')
     await next.handlers[1].set('/article', { value: 'new entry' })
     expect(mocks.send.mock.calls[0][0].input.Key).toBe('isr-cache/other-build/article')
