@@ -97,7 +97,7 @@
     "lint-staged": "17.5.1",
     "schema-dts": "2.0.0",
     "ts-node": "10.9.2",
-    "typescript": "5.9.3",
+    "typescript": "7.0.2",
     "vercel": "59.16.0",
     "vitest": "5.0.0"
   },
