@@ -7,10 +7,15 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  testing:
-    name: Sanity check
+  quality:
+    name: Unit, component and server tests
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
@@ -21,16 +26,62 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
-      - run: pnpm test
-      - name: setup env
+      - run: pnpm test:types
+      - run: pnpm test:coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: coverage/
+          retention-days: 14
+
+  browser:
+    name: Playwright (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: chromium
+            browser: chromium
+          - project: firefox
+            browser: firefox
+          - project: webkit
+            browser: webkit
+          - project: mobile
+            browser: webkit
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
+      - run: pnpm test:browser:build
+      - run: pnpm exec playwright test --project=${{ matrix.project }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-${{ matrix.project }}
+          path: |
+            playwright-report/
+            test-results/
+            .test-app/server.log
+          include-hidden-files: true
+          retention-days: 14
+
+  testing:
+    # Preserve the existing required check name without changing branch protection.
+    name: Sanity check
+    needs: [quality, browser]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every test job to pass
         run: |
-          mkdir -p .vercel
-          echo "$VERCEL_PROJECT_JSON" > .vercel/project.json
-          pnpm setenv --token "$VERCEL_TOKEN"
-        env:
-          VERCEL_PROJECT_JSON: ${{ secrets.VERCEL_PROJECT_JSON }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      - run: pnpm build
-        env:
-          APP_AWS_ACCESS_KEY_ID: ${{ secrets.APP_AWS_ACCESS_KEY_ID }}
-          APP_AWS_SECRET_ACCESS_KEY: ${{ secrets.APP_AWS_SECRET_ACCESS_KEY }}
+          test '${{ needs.quality.result }}' = 'success'
+          test '${{ needs.browser.result }}' = 'success'

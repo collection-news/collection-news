@@ -1,0 +1,38 @@
+name: Live read-only DynamoDB checks
+
+# Deliberately separate from PR checks; Meilisearch is never exposed or contacted.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - name: Read existing application configuration
+        run: |
+          mkdir -p .vercel
+          printf '%s' "$VERCEL_PROJECT_JSON" > .vercel/project.json
+          pnpm setenv --token "$VERCEL_TOKEN"
+        env:
+          VERCEL_PROJECT_JSON: ${{ secrets.VERCEL_PROJECT_JSON }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - run: pnpm test:live
+        env:
+          APP_AWS_ACCESS_KEY_ID: ${{ secrets.APP_AWS_ACCESS_KEY_ID }}
+          APP_AWS_SECRET_ACCESS_KEY: ${{ secrets.APP_AWS_SECRET_ACCESS_KEY }}
+          APP_AWS_SESSION_TOKEN: ${{ secrets.APP_AWS_SESSION_TOKEN }}
+      - name: Remove downloaded configuration
+        if: always()
+        run: rm -f .env.local .vercel/project.json

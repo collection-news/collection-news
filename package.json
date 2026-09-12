@@ -17,9 +17,13 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:types": "tsc -p tsconfig.test.json",
+    "test:browser:build": "node tests/support/build-app.mjs",
+    "test:browser": "pnpm test:browser:build && playwright test --project=chromium",
+    "test:browser:all": "pnpm test:browser:build && playwright test",
+    "test:live": "playwright test --config=playwright.live.config.ts",
     "setenv": "vercel env pull .env.local",
     "v": "vercel",
-    "cypress:open": "cypress open",
     "prepare": "husky"
   },
   "dependencies": {
@@ -73,17 +77,19 @@
   "devDependencies": {
     "@commitlint/cli": "20.5.0",
     "@commitlint/config-conventional": "20.5.0",
+    "@playwright/test": "1.63.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/mdx": "2.0.13",
     "@types/mdx-js__react": "1.5.8",
+    "@types/node": "24.13.4",
     "@types/ramda": "0.31.1",
     "@types/randomcolor": "^0.5.9",
     "@types/react": "19.2.14",
     "@types/react-custom-scrollbars": "4.0.13",
-    "cypress": "^13.17.0",
+    "@vitest/coverage-v8": "4.1.2",
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.2",
     "eslint-config-prettier": "10.1.8",
@@ -97,7 +103,7 @@
     "ts-node": "10.9.2",
     "typescript": "5.9.3",
     "vercel": "49.2.0",
-    "vitest": "^4.1.2"
+    "vitest": "4.1.2"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

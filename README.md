@@ -48,6 +48,16 @@ cp .env.example .env.local
 pnpm dev
 ```
 
+### Tests
+
+Run `pnpm test:coverage` for unit, component, and server contracts;
+`pnpm test:browser` for an isolated production build with Playwright; or
+`pnpm test:browser:all` for the complete browser matrix. These suites need no AWS
+or Meilisearch connection. `pnpm test:live` separately performs guarded, read-only
+DynamoDB checks using the existing environment.
+
+See [testing architecture, commands, CI, and preserved legacy behavior](docs/testing.md).
+
 ## :building_construction: Project and page structure
 
 * 昔日新聞 - News for that date sort by time desc
