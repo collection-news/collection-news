@@ -17,7 +17,9 @@ export const getArticleDesc = (article: Article): string => {
     return ''
   } else {
     const block = article.contentElements.find(({ type }) => type === 'text' || type === 'html') as
-      TextBlock | HTMLBlock | undefined
+      | TextBlock
+      | HTMLBlock
+      | undefined
     return stripHtml(block?.content || '').result
   }
 }

@@ -37,9 +37,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-# eslint
-.eslintcache
-
 # others
 public/*.xml
 .idea/

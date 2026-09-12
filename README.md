@@ -48,6 +48,29 @@ cp .env.example .env.local
 pnpm dev
 ```
 
+### Linting and formatting
+
+```bash
+pnpm lint          # Check lint rules and formatting; also runs in CI
+pnpm lint:fix      # Apply safe lint fixes and formatting
+pnpm format       # Format supported files
+pnpm format:check # Check formatting only
+```
+
+Biome replaces ESLint and Prettier. The pre-commit hook checks and fixes staged
+JavaScript, TypeScript, JSON/JSONC, and CSS files. Generated output is excluded;
+Markdown, MDX, YAML, and other unsupported files are outside this check.
+Use the Biome editor extension for formatting on save.
+
+`biome.json` explicitly enables the migrated React Hooks, accessibility, and
+Next.js rules rather than introducing Biome's full recommended preset. It retains
+the existing formatting style and leaves import sorting disabled. This is not
+full ESLint parity: React Compiler diagnostics (including purity, immutability,
+refs, and effect state updates), several legacy React rules, and some Next.js
+checks (including internal HTML links and document/head restrictions) have no
+direct migrated equivalent. Type checking and browser tests remain separate gates.
+See [Biome's migration guide](https://biomejs.dev/guides/migrate-eslint-prettier/).
+
 ### Tests
 
 Run `pnpm test:coverage` for unit, component, and server contracts;

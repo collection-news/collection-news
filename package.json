@@ -13,7 +13,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "biome check .",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -26,7 +26,10 @@
     "setenv": "vercel env pull .env.local",
     "v": "vercel",
     "prepare": "pnpm theme:types && husky",
-    "theme:types": "chakra typegen src/theme/index.ts"
+    "theme:types": "chakra typegen src/theme/index.ts",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "format:check": "biome format ."
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1131.0",
@@ -73,6 +76,7 @@
     "yup": "1.7.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.13",
     "@chakra-ui/cli": "3.37.0",
     "@commitlint/cli": "20.5.3",
     "@commitlint/config-conventional": "20.5.3",
@@ -89,15 +93,9 @@
     "@types/react": "19.3.0",
     "@types/react-custom-scrollbars": "4.0.13",
     "@vitest/coverage-v8": "4.1.11",
-    "eslint": "9.39.5",
-    "eslint-config-next": "16.3.5",
-    "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-prettier": "5.5.6",
-    "globals": "16.5.0",
     "husky": "9.1.7",
     "jsdom": "^27.4.0",
     "lint-staged": "16.4.0",
-    "prettier": "3.9.6",
     "schema-dts": "1.1.5",
     "ts-node": "10.9.2",
     "typescript": "5.9.3",
@@ -105,11 +103,8 @@
     "vitest": "4.1.11"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --cache --fix"
-    ],
-    "*.{json,less,scss,css}": [
-      "prettier --write"
+    "*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,json,jsonc,css}": [
+      "biome check --write --no-errors-on-unmatched"
     ]
   }
 }
