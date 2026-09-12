@@ -86,7 +86,7 @@
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",
     "@types/mdx": "2.0.14",
-    "@types/node": "24.13.4",
+    "@types/node": "26.5.1",
     "@types/ramda": "0.31.1",
     "@types/randomcolor": "^0.5.9",
     "@types/react": "19.3.0",
