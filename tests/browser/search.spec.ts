@@ -201,19 +201,27 @@ test('combined publisher and category refinements are preserved when clearing on
   await expect(page.getByTestId('search-article-card').nth(1)).toContainText('appledaily archive story 3')
 })
 
-test.describe('intentional offline search upstream', () => {
-  test.use({ expectedPageError: 'map' })
-  test('records the existing HTTP-error exception and recovers after reload (LEGACY-04)', async ({ page }) => {
-    const failedResponse = '**/api/multi-search?*'
-    await page.route(failedResponse, route => route.fulfill({ status: 500, json: { error: 'Internal Server Error' } }))
-    const error = page.waitForEvent('pageerror')
-    await page.goto('/search?apple-articles%5Bquery%5D=archive')
-    expect((await error).message).toContain('map')
-    await page.unroute(failedResponse)
-    await page.reload()
+for (const view of ['page', 'modal'] as const) {
+  test(`${view}: search HTTP failure recovers through retry without reload`, async ({ page }) => {
+    let unavailable = true
+    await page.route('**/api/multi-search?*', route =>
+      unavailable ? route.fulfill({ status: 500, json: { error: 'Internal Server Error' } }) : route.fallback()
+    )
+    if (view === 'page') {
+      await page.goto('/search?apple-articles%5Bquery%5D=archive')
+    } else {
+      await page.goto('/appledaily')
+      await page.getByTestId('header-search-btn').click()
+      await page.getByTestId('modal-search-input').fill('archive')
+    }
+    await expect(page.getByText('無法載入文章，請稍後再試')).toBeVisible()
+    unavailable = false
+    await page.getByRole('button', { name: '重試', exact: true }).click()
     await expect(page.getByTestId('search-article-card')).toHaveCount(20)
+    await expect(page.getByTestId('modal-search-input')).toHaveValue('archive')
+    await expect(page.getByText('無法載入文章，請稍後再試')).not.toBeVisible()
   })
-})
+}
 
 test('nested filter Escape closes the filter before the modal and returns focus', async ({ page }) => {
   await page.goto('/appledaily')

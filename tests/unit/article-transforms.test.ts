@@ -94,16 +94,12 @@ describe('compressed articles', () => {
     )
   })
 
-  it('characterizes the unchecked gzip error callback (LEGACY-06)', () => {
-    let callback: (error: Error | null, buffer?: Buffer) => void = () => {
-      throw new Error('callback not registered')
-    }
-    vi.spyOn(zlib, 'gunzip').mockImplementation(((_input: unknown, cb: typeof callback) => {
-      callback = cb
-    }) as typeof zlib.gunzip)
-    void unGZipArticle(story({ contentElementsGziped: Buffer.from('corrupt') }))
-    // Capture the callback so the known uncaught exception cannot escape the test process.
-    expect(() => callback(new Error('invalid gzip'))).toThrow(TypeError)
+  it('rejects corrupt gzip and can decode the next valid article', async () => {
+    await expect(unGZipArticle(story({ contentElementsGziped: Buffer.from('corrupt') }))).rejects.toThrow()
+    const contentElements = [{ type: 'text', content: 'Recovered' }]
+    await expect(
+      unGZipArticle(story({ contentElementsGziped: zlib.gzipSync(JSON.stringify(contentElements)) }))
+    ).resolves.toMatchObject({ contentElements })
   })
 
   it('characterizes compressed body images being unpacked after CDN rewriting (LEGACY-07)', async () => {

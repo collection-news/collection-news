@@ -99,8 +99,8 @@ Cypress cases were skipped, and all four search cases were excluded from CI.
 The original live baseline passed 9 unit tests and 12 browser tests; search failed
 because its intentionally inaccessible upstream returned connection refusal.
 
-The current suite defines 174 Vitest cases, 41 browser cases run across four
-projects (164 executions), a separate development smoke subset, and 6 separately
+The current suite defines 177 Vitest cases, 47 browser cases run across four
+projects (188 executions), a separate development smoke subset, and 6 separately
 invoked live contracts. The initial
 Vitest baseline is 66.17% statements, 61% branches, 56.43% functions, and 67.18%
 lines. Global thresholds round down to whole percentages; critical modules have
@@ -120,8 +120,8 @@ generation and storage boundaries must remain represented.
 
 Browser assertions use roles/accessibility names or existing `data-cy` hooks.
 There are no fixed sleep assertions, default retries, skipped search tests, or
-blanket browser-exception suppression. The one search-outage characterization
-requires its specific known exception; all other cases reject page errors.
+blanket browser-exception suppression. Every browser case rejects page errors,
+including search outage and recovery tests.
 Hydration errors logged to the browser console also fail the offline suite.
 Mobile WebKit is emulation, not physical iPhone validation. Google tests verify
 our page/container; they do not test Google's widget implementation. Native share
@@ -153,12 +153,22 @@ are silently skipped to hide these cases.
 | LEGACY-01 | Unsupported media produces an empty DynamoDB listing with a phantom continuation cursor                                               | `tests/server/dynamo.test.ts`                                                                        |
 | LEGACY-02 | API media/date/limit validation and route date/year patterns are permissive                                                           | Article API and date/schema tests                                                                    |
 | LEGACY-03 | Article API dependency failures are returned as 400                                                                                   | Article API tests                                                                                    |
-| LEGACY-04 | Search HTTP error JSON reaches the adapter and triggers an unhandled `map` error; reload succeeds after restoring the fixture service | Search client and browser outage tests; the component's existing error/retry UI is tested separately |
 | LEGACY-05 | Archive pre-render paths use numeric array keys as publisher slugs                                                                    | Static page loader tests; production fixture build retains this behavior                             |
-| LEGACY-06 | A gzip error callback dereferences a missing buffer                                                                                   | Transformation test captures the callback exception without crashing the test process                |
 | LEGACY-07 | Compressed body images are unpacked after CDN rewriting and retain their original URLs                                                | Transformation test                                                                                  |
 | LEGACY-08 | Remote tag invalidation is a no-op; memory invalidation expects tags to be present                                                    | Cache handler tests                                                                                  |
-| LEGACY-09 | Article pagination accepts HTTP error JSON as page data rather than rejecting it                                                      | React Query hook test; actual network rejection/recovery is covered separately                       |
+
+Resolved legacy cases:
+
+- **LEGACY-06:** corrupt gzip rejects the article read instead of throwing from an
+  asynchronous callback. Regression tests exercise real corrupt gzip, invalid
+  JSON, and a subsequent valid decode.
+- **LEGACY-09:** pagination rejects HTTP failures and malformed page envelopes
+  before caching them. Tests preserve loaded articles and the continuation cursor,
+  then verify recovery without duplicates, including a browser retry after the
+  automatic retries are exhausted.
+- **LEGACY-04:** the search client rejects HTTP failures before parsing results;
+  InstantSearch catches failures and displays the existing retry interface.
+  Browser tests recover without reload in both the search page and modal.
 
 The removal filter currently has no active IDs. Tests cover public reads without
 editing that production list. Native database indexing, query-expression

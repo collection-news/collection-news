@@ -57,6 +57,15 @@ describe('DynamoDB article reads', () => {
     expect(await getArticle({ media: media.APPLE_DAILY, articleId: 'fixture-video' })).toEqual(video())
   })
 
+  it('rejects a corrupt stored body without preventing subsequent article reads', async () => {
+    sdk.get
+      .mockResolvedValueOnce({ Item: story({ contentElementsGziped: Buffer.from('corrupt') }) })
+      .mockResolvedValueOnce({ Item: story() })
+    const key = { media: media.APPLE_DAILY, articleId: 'fixture-story' }
+    await expect(getArticle(key)).rejects.toThrow()
+    await expect(getArticle(key)).resolves.toMatchObject({ articleId: key.articleId })
+  })
+
   it('propagates a database rejection', async () => {
     sdk.get.mockRejectedValue(new Error('read unavailable'))
     await expect(getArticle({ media: media.APPLE_DAILY, articleId: 'fixture-story' })).rejects.toThrow(

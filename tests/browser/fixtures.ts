@@ -3,12 +3,10 @@ import { searchResponse, type SearchQuery } from '../fixtures/search'
 
 type Fixtures = {
   searchRequests: SearchQuery[]
-  expectedPageError: string | null
   isolation: void
 }
 
 export const test = base.extend<Fixtures>({
-  expectedPageError: [null, { option: true }],
   searchRequests: async ({ context }, provide) => {
     const requests: SearchQuery[] = []
     await context.route('**/api/multi-search?*', async route => {
@@ -21,7 +19,7 @@ export const test = base.extend<Fixtures>({
     await provide(requests)
   },
   isolation: [
-    async ({ context, page, expectedPageError, searchRequests: _requests }, runTest) => {
+    async ({ context, page, searchRequests: _requests }, runTest) => {
       const errors: string[] = []
       const unexpectedRequests: string[] = []
       page.on('pageerror', error => errors.push(error.message))
@@ -52,12 +50,7 @@ export const test = base.extend<Fixtures>({
       })
       await runTest()
       expect(unexpectedRequests, 'Unexpected external browser requests').toEqual([])
-      if (expectedPageError) {
-        expect(errors.length, 'Expected legacy failure was not observed').toBeGreaterThan(0)
-        for (const error of errors) expect(error).toContain(expectedPageError)
-      } else {
-        expect(errors, 'Unexpected browser exceptions').toEqual([])
-      }
+      expect(errors, 'Unexpected browser exceptions').toEqual([])
     },
     { auto: true },
   ],

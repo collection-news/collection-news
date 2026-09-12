@@ -26,6 +26,7 @@ export const { searchClient } = instantMeiliSearch(
         const response = await fetch(proxyPath, {
           method: 'GET',
         })
+        if (!response.ok) throw new Error(`Search request failed (${response.status})`)
         return await response.json()
       } catch (e) {
         console.error(e)

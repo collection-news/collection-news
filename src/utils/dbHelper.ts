@@ -92,8 +92,9 @@ export function replaceCDNDomainForArticle(article: Article): Article {
 export async function unGZipArticle(article: Article): Promise<Article> {
   if (article.type !== 'story' || !article?.contentElementsGziped) return article
   const buffer = article.contentElementsGziped
-  const result: string = await new Promise(resolve => {
+  const result: string = await new Promise((resolve, reject) => {
     zlib.gunzip(buffer, (err, buffer) => {
+      if (err) return reject(err)
       resolve(buffer.toString('utf8'))
     })
   })

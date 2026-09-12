@@ -13,7 +13,7 @@ const MemoizedSearchArticleCard = React.memo<SearchArticleCardProps>(SearchArtic
 
 export const SearchResults = () => {
   const { items, isLastPage, showMore } = useInfiniteHits<MeiliSearchArticle>()
-  const { status, error, refresh } = useInstantSearch()
+  const { status, error, refresh } = useInstantSearch({ catchError: true })
 
   if (error) {
     return (

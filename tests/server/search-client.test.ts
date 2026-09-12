@@ -50,7 +50,10 @@ it('propagates a network rejection to the caller', async () => {
   await expect(search('offline')).rejects.toThrow('MeiliSearchRequestError')
 })
 
-it('characterizes HTTP errors being parsed as success data before adapter rejection (LEGACY-04)', async () => {
-  vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ error: 'Internal Server Error' }, { status: 500 }))
-  await expect(search('unavailable')).rejects.toThrow('map')
+it('rejects HTTP errors before processing search results', async () => {
+  const response = Response.json({ error: 'Internal Server Error' }, { status: 500 })
+  const parse = vi.spyOn(response, 'json')
+  vi.spyOn(globalThis, 'fetch').mockResolvedValue(response)
+  await expect(search('unavailable')).rejects.toThrow('MeiliSearchRequestError')
+  expect(parse).not.toHaveBeenCalled()
 })

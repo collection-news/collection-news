@@ -79,14 +79,29 @@ describe('article pagination hook', () => {
     expect(result.current.flattedData.map(article => article.articleId)).toEqual(['other'])
   })
 
-  it('characterizes HTTP error JSON being accepted as a page (LEGACY-09)', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ error: 'unavailable' }, { status: 500 }))
+  it.each([
+    Response.json({ error: 'unavailable' }, { status: 500 }),
+    Response.json({ articles: [null], nextCursor: null }),
+    Response.json({ error: 'invalid successful response' }),
+  ])('rejects invalid pages and retries the same cursor without losing articles', async response => {
+    const fetch = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(response)
     const { result } = renderHook(() => useArticlesQuery(initial, query), { wrapper: queryWrapper() })
     await act(async () => {
       await result.current.fetchNextPage()
     })
-    await waitFor(() => expect(result.current.flattedData).toHaveLength(2))
-    expect(result.current.flattedData[1]).toBeUndefined()
-    expect(result.current.isError).toBe(false)
+    await waitFor(() => expect(result.current.isFetchNextPageError).toBe(true))
+    expect(result.current.flattedData.map(article => article.articleId)).toEqual(['first'])
+    expect(result.current.hasNextPage).toBe(true)
+    fetch.mockResolvedValueOnce(
+      Response.json({ articles: [story({ articleId: 'second' })], hasMore: false, nextCursor: null })
+    )
+    await act(async () => {
+      await result.current.fetchNextPage()
+    })
+    await waitFor(() =>
+      expect(result.current.flattedData.map(article => article.articleId)).toEqual(['first', 'second'])
+    )
+    expect(fetch.mock.calls[1][0]).toBe(fetch.mock.calls[0][0])
+    expect(result.current.hasNextPage).toBe(false)
   })
 })

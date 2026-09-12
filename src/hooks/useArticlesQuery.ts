@@ -15,7 +15,16 @@ export function useArticlesQuery(initData: ArticleListResponse, queryParams: Get
         '/api/article?' +
           new URLSearchParams({ ...reject(isNil, queryParams), ...(pageParam ? { nextCursor: pageParam } : {}) })
       )
+      if (!resp.ok) throw new Error(`Article request failed (${resp.status})`)
       const data = (await resp.json()) as ArticleListResponse
+      if (
+        !data ||
+        !Array.isArray(data.articles) ||
+        data.articles.some(article => !article || typeof article.articleId !== 'string') ||
+        (data.nextCursor !== null && typeof data.nextCursor !== 'string')
+      ) {
+        throw new Error('Invalid article page response')
+      }
       return {
         data: data.articles,
         nextCursor: data.nextCursor,

@@ -124,3 +124,23 @@ test('a transient pagination network failure retains visible articles and retrie
   expect(attempts).toBe(2)
   await expect(page.getByTestId('article-list-view-ending-block')).toBeVisible()
 })
+
+test('pagination HTTP failure preserves the archive and retries successfully', async ({ page }) => {
+  let attempts = 0
+  let unavailable = true
+  await page.route('**/api/article?*', route => {
+    attempts += 1
+    return unavailable ? route.fulfill({ status: 500, json: { error: 'unavailable' } }) : route.fallback()
+  })
+  await page.goto('/thestandnews/20211229/politics')
+  await expect(page.getByTestId('article-card')).toHaveCount(18)
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+  await expect.poll(() => attempts, { timeout: 15_000 }).toBe(4)
+  await expect(page.getByTestId('article-card')).toHaveCount(18)
+  unavailable = false
+  await page.getByTestId('article-list-view-loading-block').getByRole('button').click()
+  await expect(page.getByTestId('article-card').first()).toContainText('thestandnews archive story 1')
+  await expect(page.getByTestId('article-card')).toHaveCount(24)
+  expect(attempts).toBe(5)
+  await expect(page.getByTestId('article-list-view-ending-block')).toBeVisible()
+})
