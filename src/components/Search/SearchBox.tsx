@@ -9,10 +9,12 @@ export function SearchBox(props: UseSearchBoxProps) {
   // Local state to keep UI responsive
   const [value, setValue] = React.useState(query)
 
-  // Sync local state with upstream query changes (e.g. from URL or reset)
-  React.useEffect(() => {
+  // Sync URL/reset changes before rendering the input, while preserving local edits.
+  const [previousQuery, setPreviousQuery] = React.useState(query)
+  if (query !== previousQuery) {
+    setPreviousQuery(query)
     setValue(query)
-  }, [query])
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value
