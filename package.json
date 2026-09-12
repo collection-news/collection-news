@@ -51,7 +51,7 @@
     "dotenv": "17.4.2",
     "immer": "11.1.18",
     "instantsearch.js": "4.116.0",
-    "meilisearch": "^0.57.0",
+    "meilisearch": "^0.62.0",
     "next": "16.3.5",
     "ramda": "0.32.0",
     "randomcolor": "^0.6.2",
