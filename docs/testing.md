@@ -96,6 +96,22 @@ fix; keep the details beside the executable tests.
 
 ## Live checks and CI
 
+Two archive scenarios remain enabled locally but are skipped when `CI` is set:
+direct archive/article navigation with browser history, and history year/category
+navigation ending in an article-card click. Both publishers are quarantined across
+all four browser projects (16 skipped executions). Article-card clicks still
+intermittently fail to navigate despite rendered-link checks; see
+[run 34725539001](https://github.com/collection-news/collection-news/actions/runs/34725539001).
+This remains unresolved. CI retains archive categories, pagination, direct article
+content, and modal-result navigation, but loses these end-to-end archive click and
+Back/Forward scenarios. Remove the skips after the click failure is understood and
+the scenarios pass repeated Linux CI runs. Reproduce locally with:
+
+```sh
+pnpm test:browser:build
+env -u CI pnpm exec playwright test tests/browser/archive.spec.ts --grep 'direct archive load|history year' --repeat-each=5
+```
+
 `pnpm test:live` reads existing `.env.local` and AWS credentials. Its SDK guard
 rejects commands other than `GetItem` and `Query` before credentials or transport
 are used. It does not seed data, change infrastructure, contact search or start
