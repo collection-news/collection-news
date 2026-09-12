@@ -1,18 +1,4 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  Heading,
-  HStack,
-  IconButton,
-  Image as ChakraImage,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from '@chakra-ui/react'
+import { Box, Button, Flex, Heading, HStack, IconButton, Image as ChakraImage, Tabs, Separator } from '@chakra-ui/react'
 import Link from 'next/link'
 import React from 'react'
 import { ContentWrapper } from '../components/ContentWrapper'
@@ -38,17 +24,20 @@ const Index: React.FC = () => {
             我們失去了甚麼？
           </Heading>
         </Flex>
-        <Tabs variant="unstyled">
-          <TabList mt="6" mb="4">
+        <Tabs.Root unstyled defaultValue={mediaMap[0].key}>
+          <Tabs.List mt="6" mb="4">
             <ContentWrapper>
               <HStack
                 overflow="auto"
-                divider={<Divider w="8" borderWidth="2px" borderColor="theme" borderRadius="sm" />}
                 p="2"
                 justifyContent="center"
+                separator={<Box w="8" borderTopWidth="2px" borderColor="theme.500" borderRadius="sm" />}
               >
                 {mediaMap.map(({ key, brandName, range: [, lastDay] }) => (
-                  <Tab
+                  <Tabs.Trigger
+                    value={key}
+                    px="4"
+                    py="2"
                     key={key}
                     _selected={{ color: 'white', bg: 'theme.500' }}
                     data-cy={`media-tab-${key}-btn`}
@@ -58,32 +47,28 @@ const Index: React.FC = () => {
                       <Box fontSize="lg">{brandName}</Box>
                       <Box fontSize="sm" whiteSpace="nowrap">{`${getZhFormatFromDateParam(lastDay)}`}</Box>
                     </Box>
-                  </Tab>
+                  </Tabs.Trigger>
                 ))}
               </HStack>
             </ContentWrapper>
-          </TabList>
-          <TabPanels>
-            {mediaDescMap.map(({ key, description, collectionNewsDescription }) => (
-              <TabPanel key={key} p="0" bg="theme.500" py="6" px="2">
-                <ContentWrapper>
-                  <Box color="white">
-                    <Box textAlign="center">{description}</Box>
-                    <Divider my="4" />
-                    <Box textAlign="center">{collectionNewsDescription}</Box>
-                  </Box>
-                </ContentWrapper>
-                <Flex justifyContent="center" mt="4">
-                  <Link href={`/${key}`} key={key}>
-                    <Button size="md" data-cy={`show-articles-btn-${key}`}>
-                      查閱所有文章
-                    </Button>
-                  </Link>
-                </Flex>
-              </TabPanel>
-            ))}
-          </TabPanels>
-        </Tabs>
+          </Tabs.List>
+          {mediaDescMap.map(({ key, description, collectionNewsDescription }) => (
+            <Tabs.Content value={key} key={key} p="0" bg="theme.500" py="6" px="2">
+              <ContentWrapper>
+                <Box color="white">
+                  <Box textAlign="center">{description}</Box>
+                  <Separator my="4" />
+                  <Box textAlign="center">{collectionNewsDescription}</Box>
+                </Box>
+              </ContentWrapper>
+              <Flex justifyContent="center" mt="4">
+                <Button size="md" data-cy={`show-articles-btn-${key}`} asChild key={key}>
+                  <Link href={`/${key}`}>查閱所有文章</Link>
+                </Button>
+              </Flex>
+            </Tabs.Content>
+          ))}
+        </Tabs.Root>
       </Box>
       <Box py="6">
         <Flex justifyContent="center" mb="6">
@@ -123,9 +108,11 @@ const Index: React.FC = () => {
                 display="inline-block"
               />
             </a>
-            <a href="https://github.com/collection-news/collection-news" target="_blank" rel="noreferrer">
-              <IconButton aria-label="GitHub repository" isRound variant="link" size="lg" icon={<AiFillGithub />} />
-            </a>
+            <IconButton aria-label="GitHub repository" borderRadius="full" variant="plain" size="lg" asChild>
+              <a href="https://github.com/collection-news/collection-news" target="_blank" rel="noreferrer">
+                <AiFillGithub />
+              </a>
+            </IconButton>
           </Flex>
         </ContentWrapper>
       </Box>

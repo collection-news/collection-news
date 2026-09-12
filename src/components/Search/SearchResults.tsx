@@ -1,4 +1,4 @@
-import { Box, Stack, Text, Spinner, Center, VStack } from '@chakra-ui/react'
+import { Box, Stack, Text, Spinner, Center, VStack, VisuallyHidden } from '@chakra-ui/react'
 import * as React from 'react'
 import { MeiliSearchArticle } from '../../types/api'
 import { SearchArticleCard, Props as SearchArticleCardProps } from './SearchArticleCard'
@@ -18,7 +18,7 @@ export const SearchResults = () => {
   if (error) {
     return (
       <Center py={10}>
-        <VStack spacing={4}>
+        <VStack gap={4}>
           <Text color="danger.500" fontWeight={700}>
             無法載入文章，請稍後再試
           </Text>
@@ -31,7 +31,9 @@ export const SearchResults = () => {
   if (status === 'loading' && items.length === 0) {
     return (
       <Center py={10}>
-        <Spinner size="xl" color="theme.500" />
+        <Spinner size="xl" color="theme.500">
+          <VisuallyHidden>Loading...</VisuallyHidden>
+        </Spinner>
       </Center>
     )
   }
@@ -55,7 +57,7 @@ export const SearchResults = () => {
       endMessage={<End />}
       scrollableTarget="search-results-container"
     >
-      <Stack spacing={4} pb={4}>
+      <Stack gap={4} pb={4}>
         {items.map(article => (
           <MemoizedSearchArticleCard key={article.id} article={article} />
         ))}

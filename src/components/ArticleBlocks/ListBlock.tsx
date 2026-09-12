@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
-import { ListItem, OrderedList, UnorderedList } from '@chakra-ui/react'
+import React from 'react'
+import { List } from '@chakra-ui/react'
 
 type Props<T extends {}> = {
   listType: 'ordered' | 'unordered'
@@ -8,13 +8,17 @@ type Props<T extends {}> = {
 }
 
 export const ListBlock = <T extends {}>({ listType, items, itemRender }: Props<T>) => {
-  const ListEle = useMemo(() => (listType === 'ordered' ? OrderedList : UnorderedList), [listType])
-
   return (
-    <ListEle>
+    <List.Root
+      as={listType === 'ordered' ? 'ol' : 'ul'}
+      listStyleType={listType === 'ordered' ? 'decimal' : 'disc'}
+      ms="1em"
+    >
       {items.map((item, index) => (
-        <ListItem key={index}>{itemRender(item)}</ListItem>
+        <List.Item key={index} _marker={{ color: 'inherit' }}>
+          {itemRender(item)}
+        </List.Item>
       ))}
-    </ListEle>
+    </List.Root>
   )
 }

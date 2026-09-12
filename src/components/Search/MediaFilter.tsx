@@ -1,4 +1,5 @@
-import { Button, Menu, MenuButton, MenuItem, MenuItemOption, MenuList } from '@chakra-ui/react'
+import { Button, Menu } from '@chakra-ui/react'
+import { MenuTrigger } from '../ui/MenuTrigger'
 import { FiChevronDown } from 'react-icons/fi'
 import { useClearRefinements, useRefinementList } from 'react-instantsearch'
 import type { TransformItems } from 'instantsearch.js/es/types'
@@ -24,23 +25,36 @@ export const MediaFilter = () => {
   const label = isAll ? '媒體: 全部' : `媒體: ${selectedItems.map(i => i.label).join(', ')}`
 
   return (
-    <Menu closeOnSelect={false}>
-      <MenuButton as={Button} size="sm" variant="outline" rightIcon={<FiChevronDown />}>
-        {label}
-      </MenuButton>
-      <MenuList>
-        <MenuItem onClick={() => clear()}>全部</MenuItem>
-        {items.map(item => (
-          <MenuItemOption
-            key={item.value}
-            value={item.value}
-            isChecked={item.isRefined}
-            onClick={() => refine(item.value)}
-          >
-            {item.label} ({item.count})
-          </MenuItemOption>
-        ))}
-      </MenuList>
-    </Menu>
+    <Menu.Root
+      positioning={{ strategy: 'fixed', hideWhenDetached: true }}
+      lazyMount
+      unmountOnExit
+      closeOnSelect={false}
+    >
+      <MenuTrigger>
+        <Button size="sm" variant="outline">
+          {label}
+          <FiChevronDown />
+        </Button>
+      </MenuTrigger>
+      <Menu.Positioner>
+        <Menu.Content>
+          <Menu.Item onSelect={() => clear()} value="item-0">
+            全部
+          </Menu.Item>
+          {items.map(item => (
+            <Menu.CheckboxItem
+              key={item.value}
+              value={item.value}
+              checked={item.isRefined}
+              onCheckedChange={() => refine(item.value)}
+            >
+              {item.label} ({item.count})
+              <Menu.ItemIndicator />
+            </Menu.CheckboxItem>
+          ))}
+        </Menu.Content>
+      </Menu.Positioner>
+    </Menu.Root>
   )
 }

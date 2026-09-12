@@ -25,6 +25,11 @@ export const test = base.extend<Fixtures>({
       const errors: string[] = []
       const unexpectedRequests: string[] = []
       page.on('pageerror', error => errors.push(error.message))
+      page.on('console', message => {
+        if (message.type() === 'error' && /hydration|hydrated|server rendered HTML/i.test(message.text())) {
+          errors.push(message.text())
+        }
+      })
       await context.route('**/*', async route => {
         const url = new URL(route.request().url())
         // WebKit also reports local blob resources through routing; they never leave the browser.

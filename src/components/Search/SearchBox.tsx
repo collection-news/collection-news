@@ -1,4 +1,4 @@
-import { Input, InputGroup, InputLeftElement, InputRightElement, IconButton } from '@chakra-ui/react'
+import { Input, InputGroup, IconButton } from '@chakra-ui/react'
 import { BsSearch, BsX } from 'react-icons/bs'
 import * as React from 'react'
 import { SEARCH_PLACEHOLDER } from '../../constants/text'
@@ -26,34 +26,30 @@ export function SearchBox(props: UseSearchBoxProps) {
   }
 
   return (
-    <InputGroup size="lg">
-      <InputLeftElement pointerEvents="none">
-        <BsSearch color="gray.300" />
-      </InputLeftElement>
+    <InputGroup
+      startElement={<BsSearch />}
+      endElement={
+        value.length > 0 ? (
+          <IconButton aria-label="Clear search" size="sm" variant="ghost" onClick={handleClear} color="gray.500">
+            <BsX />
+          </IconButton>
+        ) : undefined
+      }
+      endElementProps={{ px: 0 }}
+    >
       <Input
+        autoFocus
+        size="lg"
         type="text"
         placeholder={SEARCH_PLACEHOLDER}
         value={value}
         onChange={handleChange}
-        autoFocus
         borderRadius="sm"
         bg="white"
         color="black"
         _placeholder={{ color: 'gray.400' }}
         data-cy="modal-search-input"
       />
-      {value.length > 0 && (
-        <InputRightElement>
-          <IconButton
-            aria-label="Clear search"
-            icon={<BsX />}
-            size="sm"
-            variant="ghost"
-            onClick={handleClear}
-            color="gray.500"
-          />
-        </InputRightElement>
-      )}
     </InputGroup>
   )
 }

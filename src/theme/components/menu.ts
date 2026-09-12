@@ -1,19 +1,16 @@
-import { menuAnatomy } from '@chakra-ui/anatomy'
-import { createMultiStyleConfigHelpers } from '@chakra-ui/react'
+import { defineSlotRecipe } from '@chakra-ui/react'
 
-const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(menuAnatomy.keys)
-
-// define the base component styles
-const baseStyle = definePartsStyle({
-  item: {
-    // this will style the MenuItem and MenuItemOption components
-    _hover: {
-      bg: 'brand.500',
-    },
-    _focus: {
-      bg: 'brand.500',
+export const menuRecipe = defineSlotRecipe({
+  slots: ['content', 'item'],
+  base: {
+    content: { minW: '3xs', bg: 'white', color: 'gray.800', borderWidth: '1px', py: '2', borderRadius: 'md' },
+    item: {
+      px: '3',
+      py: '1.5',
+      fontSize: 'md',
+      borderRadius: '0',
+      cursor: 'pointer',
+      _highlighted: { bg: 'brand.500' },
     },
   },
 })
-// export the base styles in the component theme
-export const menuTheme = defineMultiStyleConfig({ baseStyle })

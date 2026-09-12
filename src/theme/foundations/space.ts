@@ -1,6 +1,6 @@
 const space = {
-  header: '3rem',
-  headerAndCad: '5rem',
+  header: { value: '3rem' },
+  headerAndCad: { value: '5rem' },
 }
 
 export default space

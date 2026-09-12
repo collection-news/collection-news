@@ -1,4 +1,5 @@
-import { Button, Menu, MenuButton, MenuItemOption, MenuList, MenuOptionGroup } from '@chakra-ui/react'
+import { Button, Menu } from '@chakra-ui/react'
+import { MenuTrigger } from '../ui/MenuTrigger'
 import { FiChevronDown } from 'react-icons/fi'
 import { useSortBy } from 'react-instantsearch'
 import { MEILI_INDEX_NAME } from '../../constants/text'
@@ -21,17 +22,31 @@ export const SortSelect = () => {
         : '日期 (舊到新)'
 
   return (
-    <Menu>
-      <MenuButton as={Button} size="sm" variant="ghost" rightIcon={<FiChevronDown />}>
-        排序: {currentLabel}
-      </MenuButton>
-      <MenuList>
-        <MenuOptionGroup defaultValue={currentRefinement} type="radio" onChange={val => refine(val as string)}>
-          <MenuItemOption value={MEILI_INDEX_NAME}>相關度</MenuItemOption>
-          <MenuItemOption value={`${MEILI_INDEX_NAME}:publish_ts:desc`}>日期 (新到舊)</MenuItemOption>
-          <MenuItemOption value={`${MEILI_INDEX_NAME}:publish_ts:asc`}>日期 (舊到新)</MenuItemOption>
-        </MenuOptionGroup>
-      </MenuList>
-    </Menu>
+    <Menu.Root positioning={{ strategy: 'fixed', hideWhenDetached: true }} lazyMount unmountOnExit>
+      <MenuTrigger>
+        <Button size="sm" variant="ghost">
+          排序: {currentLabel}
+          <FiChevronDown />
+        </Button>
+      </MenuTrigger>
+      <Menu.Positioner>
+        <Menu.Content>
+          <Menu.RadioItemGroup value={currentRefinement} onValueChange={({ value }) => refine(value)}>
+            <Menu.RadioItem value={MEILI_INDEX_NAME}>
+              相關度
+              <Menu.ItemIndicator />
+            </Menu.RadioItem>
+            <Menu.RadioItem value={`${MEILI_INDEX_NAME}:publish_ts:desc`}>
+              日期 (新到舊)
+              <Menu.ItemIndicator />
+            </Menu.RadioItem>
+            <Menu.RadioItem value={`${MEILI_INDEX_NAME}:publish_ts:asc`}>
+              日期 (舊到新)
+              <Menu.ItemIndicator />
+            </Menu.RadioItem>
+          </Menu.RadioItemGroup>
+        </Menu.Content>
+      </Menu.Positioner>
+    </Menu.Root>
   )
 }

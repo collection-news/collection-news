@@ -19,7 +19,7 @@ export const RetryButton = ({ onRetry }: { onRetry: () => void }) => {
   }
 
   return (
-    <Button onClick={handleClick} isDisabled={count > 0} colorScheme="theme" size="sm">
+    <Button onClick={handleClick} disabled={count > 0} colorPalette="theme" size="sm">
       {count > 0 ? `重試 (${count})` : '重試'}
     </Button>
   )

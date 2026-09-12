@@ -27,20 +27,20 @@ export const YearSelector = ({ selectedYear, range: [start, end] }: Props) => {
         {yearList.map(year => {
           const selected = selectedYear === year
           return (
-            <Link key={year} href={{ pathname, query: { ...query, year } }}>
-              <Button
-                flexShrink={0}
-                size={selected ? 'md' : 'sm'}
-                bg={selected ? 'theme.500' : ''}
-                color={selected ? 'white' : 'gray.400'}
-                fontWeight={selected ? 'bold' : 'semibold'}
-                _hover={{ color: selected ? 'white' : 'gray.500' }}
-                my={2}
-                borderRadius="sm"
-              >
-                {year}
-              </Button>
-            </Link>
+            <Button
+              flexShrink={0}
+              size={selected ? 'md' : 'sm'}
+              bg={selected ? 'theme.500' : ''}
+              color={selected ? 'white' : 'gray.400'}
+              fontWeight={selected ? 'bold' : 'semibold'}
+              _hover={{ color: selected ? 'white' : 'gray.500' }}
+              my={2}
+              borderRadius="sm"
+              asChild
+              key={year}
+            >
+              <Link href={{ pathname, query: { ...query, year } }}>{year}</Link>
+            </Button>
           )
         })}
       </Flex>

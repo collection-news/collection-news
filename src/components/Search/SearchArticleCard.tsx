@@ -15,7 +15,7 @@ export type Props = {
 const MediaBadge = ({ media }: { media: MeiliSearchArticle['media'] }) => {
   const colorScheme = media === 'appledaily' ? 'orange' : 'teal'
   const label = media === 'appledaily' ? '蘋果日報' : '立場新聞'
-  return <Badge colorScheme={colorScheme}>{label}</Badge>
+  return <Badge colorPalette={colorScheme}>{label}</Badge>
 }
 
 export const SearchArticleCard = ({ article }: Props) => {
@@ -35,8 +35,8 @@ export const SearchArticleCard = ({ article }: Props) => {
           </AspectRatio>
         </Box>
         <Box p={4} flex="1">
-          <VStack align="flex-start" spacing={2}>
-            <Heading size="md" noOfLines={2} lineHeight="base">
+          <VStack align="flex-start" gap={2}>
+            <Heading size="md" lineClamp={2} lineHeight="base">
               <Link href={`/${article.media}/articles/${article.id}`} legacyBehavior passHref>
                 <LinkOverlay>
                   <Highlight
@@ -53,7 +53,7 @@ export const SearchArticleCard = ({ article }: Props) => {
                 {getDayPartFromDate(article.publish_date)}
               </Text>
             </Flex>
-            <Text fontSize="sm" color="gray.600" noOfLines={3}>
+            <Text fontSize="sm" color="gray.600" lineClamp={3}>
               <Snippet
                 attribute="content"
                 hit={article as Hit<MeiliSearchArticle>}

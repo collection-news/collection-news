@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
-import { Td, Table, Tbody, Thead, Tr, Th } from '@chakra-ui/react'
+import React from 'react'
+import { Table } from '@chakra-ui/react'
 
 type Props<T extends {}> = {
   header: T[]
@@ -9,23 +9,36 @@ type Props<T extends {}> = {
 
 export const TableBlock = <T extends {}>({ header, rows, itemRender }: Props<T>) => {
   return (
-    <Table variant="simple">
-      <Thead>
-        <Tr>
+    <Table.Root variant="line" fontSize="md">
+      <Table.Header>
+        <Table.Row>
           {header.map((item, i) => (
-            <Th key={i}>{itemRender(item)}</Th>
+            <Table.ColumnHeader
+              key={i}
+              px="6"
+              py="3"
+              fontSize="xs"
+              fontWeight="bold"
+              letterSpacing="wider"
+              textTransform="uppercase"
+              color="gray.600"
+            >
+              {itemRender(item)}
+            </Table.ColumnHeader>
           ))}
-        </Tr>
-      </Thead>
-      <Tbody>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
         {rows.map((row, rowIndex) => (
-          <Tr key={rowIndex}>
+          <Table.Row key={rowIndex}>
             {row.map((item, i) => (
-              <Td key={i}>{itemRender(item)}</Td>
+              <Table.Cell key={i} px="6" py="4">
+                {itemRender(item)}
+              </Table.Cell>
             ))}
-          </Tr>
+          </Table.Row>
         ))}
-      </Tbody>
-    </Table>
+      </Table.Body>
+    </Table.Root>
   )
 }

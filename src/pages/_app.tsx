@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import { Layout } from '../containers/Layout'
 import { ProgressBar } from '../components/ProgressBar'
-import { theme } from '../theme'
+import { system } from '../theme'
 import '../styles/globals.css'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import Head from 'next/head'
@@ -15,7 +15,7 @@ const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider value={system}>
       <QueryClientProvider client={queryClient}>
         <ProgressBar />
         <Head>

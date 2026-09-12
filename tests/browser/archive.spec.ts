@@ -36,7 +36,7 @@ for (const [publisher, date, category] of [
     await expect(page.getByTestId('article-card')).toHaveCount(18)
     await page.getByTestId(`category-${category}-btn`).click()
     await expect(page).toHaveURL(new RegExp(`/${publisher}/history/2019/${category}$`))
-    await page.getByRole('button', { name: '2018', exact: true }).click()
+    await page.getByRole('link', { name: '2018', exact: true }).click()
     await expect(page).toHaveURL(new RegExp(`/${publisher}/history/2018/${category}$`))
     await page.getByTestId('show-all-category-btn').click()
     await expect(page).toHaveURL(new RegExp(`/${publisher}/history/2018$`))

@@ -1,4 +1,4 @@
-import { Box, Center, Input, InputGroup, InputLeftElement, InputRightElement, Button, Icon } from '@chakra-ui/react'
+import { Box, Center, Input, InputGroup, Button, Icon } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { BsSearch } from 'react-icons/bs'
 import React from 'react'
@@ -33,7 +33,12 @@ const Banner: React.FC = () => {
 
   return (
     // Short screens need room below the fixed hero for the links, without recentering the search.
-    <Box bg="theme.500" sx={{ '@media (max-height: 480px)': { paddingBottom: 24 } }}>
+    <Box
+      bg="theme.500"
+      css={{
+        '@media (max-height: 480px)': { paddingBottom: 24 },
+      }}
+    >
       <Center bg="theme.500" color="white" h={bannerHeightStyle} pb={featureFlags.enableSearchFeature ? '20vh' : 0}>
         <Box w="100%" maxW="600px" px="4" display="flex" flexDirection="column" alignItems="center" position="relative">
           <Box w="100%" maxW="500px" mb={8}>
@@ -47,13 +52,26 @@ const Banner: React.FC = () => {
             />
           </Box>
           {featureFlags.enableSearchFeature && (
-            <InputGroup size="lg" maxW="600px" bg="white" borderRadius={borderRadius} boxShadow="lg">
-              <InputLeftElement pointerEvents="none" color="gray.500" fontSize="1.25rem" pt={1} pl={2}>
-                <Icon>
+            <InputGroup
+              maxW="600px"
+              bg="white"
+              borderRadius={borderRadius}
+              boxShadow="lg"
+              startElement={
+                <Icon color="gray.500" fontSize="1.25rem">
                   <BsSearch />
                 </Icon>
-              </InputLeftElement>
+              }
+              endElement={
+                <Button onClick={handleSearch} borderRadius={borderRadius} colorPalette="gray" variant="ghost">
+                  搜尋
+                </Button>
+              }
+              endElementProps={{ px: 0, width: '4.5rem' }}
+            >
               <Input
+                size="lg"
+                pe="4.5rem"
                 placeholder={SEARCH_PLACEHOLDER}
                 value={query}
                 onChange={e => setQuery(e.target.value)}
@@ -65,11 +83,6 @@ const Banner: React.FC = () => {
                 _focus={{ boxShadow: 'none' }}
                 data-cy="index-search-input"
               />
-              <InputRightElement width="4.5rem">
-                <Button onClick={handleSearch} borderRadius={borderRadius} colorScheme="gray" variant="ghost">
-                  搜尋
-                </Button>
-              </InputRightElement>
             </InputGroup>
           )}
           {/* Keep promotions outside the centered stack so the logo and search do not move. */}

@@ -5,7 +5,7 @@ import { useLifecycles } from 'react-use'
 
 export const ProgressBar = () => {
   const router = useRouter()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { open, onOpen, onClose } = useDisclosure()
   const routeChangeStart = () => {
     onOpen()
   }
@@ -24,19 +24,23 @@ export const ProgressBar = () => {
       router.events.off('routeChangeError', routeChangeEnd)
     }
   )
-  return isOpen ? (
+  return open ? (
     <Portal>
-      <Progress
+      <Progress.Root
         size="xs"
-        isIndeterminate
+        value={null}
         top="0"
         position="fixed"
         left="0"
         w="full"
         zIndex="overlay"
-        colorScheme="brand"
+        colorPalette="brand"
         bg="theme.500"
-      />
+      >
+        <Progress.Track>
+          <Progress.Range />
+        </Progress.Track>
+      </Progress.Root>
     </Portal>
   ) : null
 }

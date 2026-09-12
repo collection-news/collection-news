@@ -7,7 +7,9 @@ import { useWebShare } from '../hooks'
 const NativeShareBtn: React.FC = () => {
   const { canShare, onShare } = useWebShare()
   return canShare ? (
-    <IconButton aria-label="share" icon={<AiOutlineShareAlt />} variant="link" onClick={onShare} />
+    <IconButton aria-label="share" variant="plain" onClick={onShare}>
+      <AiOutlineShareAlt />
+    </IconButton>
   ) : null
 }
 

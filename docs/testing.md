@@ -11,6 +11,7 @@ pnpm test:coverage         # Same tests with enforced coverage thresholds
 pnpm test:types            # Typecheck application and test TypeScript
 pnpm test:browser          # Fresh isolated production build, then Chromium
 pnpm test:browser:all      # Fresh build, then Chromium, Firefox, WebKit, mobile WebKit
+pnpm test:browser:dev      # Fresh isolated app, then Chromium development smoke checks
 pnpm test:live             # Explicit real DynamoDB reads using the existing environment
 ```
 
@@ -30,6 +31,27 @@ starts and stops its own server on port 3100; it rejects an already-running serv
 instead of accidentally testing a development or live instance. The harness uses
 one `.test-app` directory, so run independent Playwright commands sequentially in
 one checkout; projects within a command run in parallel.
+
+Chakra's custom token and recipe declarations are generated with `pnpm theme:types`.
+Install preparation, type checking and both build commands run this automatically;
+do not commit generated files from `node_modules`. App and test providers share
+the system in `src/theme/index.ts`.
+
+Development and production retain Next's default Turbopack bundler.
+`tests/support/serve-dev-app.mjs` prepares the fixture app and starts `next dev`
+for `pnpm test:browser:dev`. This lane catches development hydration warnings
+during repeated direct loads, navigation and search interactions that a
+production build may not expose. It recreates the same `.test-app` directory,
+so run it separately from production browser commands and rebuild afterward.
+The navigation regression covers Chakra style-cache differences caused by
+inconsistent ordering of equivalent style props.
+
+When changing the shared UI, preserve the light appearance under OS dark mode,
+dialog focus entry/return and search reset on reopen. Exercise nested filters
+with keyboard and touch: `MenuTrigger` preserves touch defaults needed for WebKit
+clicks, and nested overlays stay inside the dialog with fixed positioning.
+Image lifecycle tests cover failed-source recovery and loads completed before
+hydration. Keep these regressions when updating Chakra or replacing compositions.
 
 ## Layers and boundaries
 
@@ -77,8 +99,9 @@ Cypress cases were skipped, and all four search cases were excluded from CI.
 The original live baseline passed 9 unit tests and 12 browser tests; search failed
 because its intentionally inaccessible upstream returned connection refusal.
 
-The replacement defines 170 Vitest cases, 35 browser cases run across four
-projects (140 executions), and 6 separately invoked live contracts. The initial
+The current suite defines 174 Vitest cases, 41 browser cases run across four
+projects (164 executions), a separate development smoke subset, and 6 separately
+invoked live contracts. The initial
 Vitest baseline is 66.17% statements, 61% branches, 56.43% functions, and 67.18%
 lines. Global thresholds round down to whole percentages; critical modules have
 stronger thresholds.
@@ -99,6 +122,7 @@ Browser assertions use roles/accessibility names or existing `data-cy` hooks.
 There are no fixed sleep assertions, default retries, skipped search tests, or
 blanket browser-exception suppression. The one search-outage characterization
 requires its specific known exception; all other cases reject page errors.
+Hydration errors logged to the browser console also fail the offline suite.
 Mobile WebKit is emulation, not physical iPhone validation. Google tests verify
 our page/container; they do not test Google's widget implementation. Native share
 tests cover the browser API contract without opening a real system share sheet.

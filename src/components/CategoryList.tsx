@@ -1,8 +1,7 @@
-import { Button, ButtonGroup, ButtonProps, Text, Flex, Tooltip } from '@chakra-ui/react'
+import { Button, ButtonGroup, ButtonProps, Text, Flex } from '@chakra-ui/react'
 import Link from 'next/link'
-import { isNil, reject } from 'ramda'
-import * as React from 'react'
-import { forwardRef } from 'react'
+import type { ReactNode } from 'react'
+import { Tooltip } from './ui/Tooltip'
 import HScrollBar from './HScrollBar'
 import { getCategoryColor } from '../utils/dataHelper'
 import { CategoryItem } from '../types/mediaMeta'
@@ -14,81 +13,52 @@ type CategoryListProps = {
   total: number
 }
 
-export const CategoryList = ({ getHref, total, categoryList, currentCategory }: CategoryListProps) => {
-  return (
-    <Flex justifyContent="center" bg="theme.300" position="sticky" top="header" zIndex="sticky" color="white">
-      <Link href={{ pathname: getHref({}) }}>
-        <BasicCategoryBtn data-cy="show-all-category-btn" bg="theme.400" count={total}>
-          全部
-        </BasicCategoryBtn>
-      </Link>
-      <HScrollBar>
-        <ButtonGroup spacing="0">
-          {categoryList.map(({ chiName, engName, range: [, lastDay], count }) => (
-            <CategoryBtn
+export const CategoryList = ({ getHref, total, categoryList, currentCategory }: CategoryListProps) => (
+  <Flex justifyContent="center" bg="theme.300" position="sticky" top="header" zIndex="sticky" color="white">
+    <CategoryButton href={getHref({})} data-cy="show-all-category-btn" bg="theme.400" count={total}>
+      全部
+    </CategoryButton>
+    <HScrollBar>
+      <ButtonGroup gap="0">
+        {categoryList.map(({ chiName, engName, range: [, lastDay], count }) => {
+          const color = getCategoryColor(engName)
+          return (
+            <CategoryButton
               key={engName}
-              text={chiName}
-              category={engName}
-              color={getCategoryColor(engName)}
               href={getHref({ category: engName, date: lastDay })}
-              isInCategory={currentCategory?.engName === engName}
+              data-cy={`category-${engName}-btn`}
+              bg={currentCategory?.engName === engName ? color : 'theme.300'}
+              _hover={{ bg: color }}
               count={count}
-            />
-          ))}
-        </ButtonGroup>
-      </HScrollBar>
-    </Flex>
-  )
-}
+            >
+              {chiName}
+            </CategoryButton>
+          )
+        })}
+      </ButtonGroup>
+    </HScrollBar>
+  </Flex>
+)
 
-type CategoryBtnProps = {
-  text: string
-  category: string
-  color: string
-  href: string
-  isInCategory: boolean
-  count: number
-}
+type CategoryButtonProps = ButtonProps & { href: string; count: number; children: ReactNode }
 
-const CategoryBtn = ({ text, category, color, href, isInCategory, count }: CategoryBtnProps) => {
-  return (
-    <Link
-      href={{
-        pathname: href,
-      }}
+const CategoryButton = ({ children, count, href, ...props }: CategoryButtonProps) => (
+  <Tooltip content={`${count}篇文章`}>
+    <Button
+      width="auto"
+      flexShrink={0}
+      bg="theme.300"
+      size="sm"
+      color="white"
+      _hover={{ bg: 'theme.500' }}
+      {...props}
+      asChild
     >
-      <BasicCategoryBtn
-        _hover={{ bg: color }}
-        data-cy={`category-${category}-btn`}
-        bg={isInCategory ? color : undefined}
-        count={count}
-      >
-        {text}
-      </BasicCategoryBtn>
-    </Link>
-  )
-}
-
-type BasicCategoryBtnProps = {
-  children: React.ReactNode
-  count: number
-} & ButtonProps
-
-const BasicCategoryBtn = forwardRef(({ children, count, ...rest }: BasicCategoryBtnProps, ref: any) => {
-  return (
-    <Tooltip label={`${count}篇文章`}>
-      <Button
-        ref={ref}
-        width="full"
-        bg="theme.300"
-        size="sm"
-        _hover={{ bg: 'theme.500' }}
-        color="white"
-        {...reject(isNil, rest)}
-      >
-        <Text px="0">{children}</Text>
-      </Button>
-    </Tooltip>
-  )
-})
-BasicCategoryBtn.displayName = 'BasicCategoryBtn'
+      <Link href={href}>
+        <Text as="span" px="0">
+          {children}
+        </Text>
+      </Link>
+    </Button>
+  </Tooltip>
+)

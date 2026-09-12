@@ -23,7 +23,7 @@ export const ArticleListView = ({ articles, hasNextPage, fetchNextPage, isFetchi
       loader={<Loading isLoading={isFetching} onClick={fetchNextPage} />}
       endMessage={<End />}
     >
-      <SimpleGrid minChildWidth="288px" spacing={6} mb={6}>
+      <SimpleGrid minChildWidth="288px" gap={6} mb={6}>
         {articles.map(article => (
           <ArticleCard key={article.articleId} article={article} />
         ))}

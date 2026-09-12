@@ -1,7 +1,7 @@
 import { IconButton, Flex, Tag } from '@chakra-ui/react'
 import React from 'react'
 import { Carousel as RCarousel } from 'react-responsive-carousel'
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
 
 type Props = {
   children: React.ReactNode
@@ -18,11 +18,11 @@ export const Carousel: React.FC<Props> = ({ children }) => {
             borderRadius="sm"
             aria-label="prev"
             onClick={clickHandler}
-            colorScheme="theme"
+            colorPalette="theme"
             disabled={!hasPrev}
             size="sm"
           >
-            <ChevronLeftIcon />
+            <LuChevronLeft />
           </IconButton>
         </Flex>
       )}
@@ -32,16 +32,16 @@ export const Carousel: React.FC<Props> = ({ children }) => {
             borderRadius="sm"
             aria-label="next"
             onClick={clickHandler}
-            colorScheme="theme"
+            colorPalette="theme"
             disabled={!hasPrev}
             size="sm"
           >
-            <ChevronRightIcon />
+            <LuChevronRight />
           </IconButton>
         </Flex>
       )}
       renderIndicator={(clickHandler, isSelected, index, label) => (
-        <Tag
+        <Tag.Root
           borderRadius="0"
           size="sm"
           aria-label="next"

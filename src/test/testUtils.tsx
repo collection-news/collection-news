@@ -1,8 +1,8 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, type RenderOptions } from '@testing-library/react'
-import { ReactElement } from 'react'
-import { theme } from '../theme'
+import { ReactElement, ReactNode } from 'react'
+import { system } from '../theme'
 
 const createTestQueryClient = () =>
   new QueryClient({
@@ -15,12 +15,12 @@ const createTestQueryClient = () =>
 export function renderWithProviders(ui: ReactElement, options?: RenderOptions) {
   const client = createTestQueryClient()
 
-  return render(
-    <ChakraProvider theme={theme}>
-      <QueryClientProvider client={client}>{ui}</QueryClientProvider>
-    </ChakraProvider>,
-    options
+  const Wrapper = ({ children }: { children: ReactNode }) => (
+    <ChakraProvider value={system}>
+      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+    </ChakraProvider>
   )
+  return render(ui, { wrapper: Wrapper, ...options })
 }
 
 export * from '@testing-library/react'

@@ -6,5 +6,9 @@ type Props = {
 }
 
 export const ContentWrapper: React.FC<Props> = ({ children }) => {
-  return <Container maxW="container.lg">{children}</Container>
+  return (
+    <Container maxW="container.lg" px="4">
+      {children}
+    </Container>
+  )
 }

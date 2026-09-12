@@ -1,4 +1,4 @@
-import { Heading, Box, Divider } from '@chakra-ui/react'
+import { Heading, Box, Separator } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
@@ -145,7 +145,7 @@ export default function Home({
           <Box py={2} data-cy="list-view-date">
             {getZhFormatFromDateParam(currentDate)}
           </Box>
-          <Divider />
+          <Separator />
         </Box>
         <ArticleListView
           articles={flattedData}

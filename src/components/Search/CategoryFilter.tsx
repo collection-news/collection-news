@@ -1,16 +1,6 @@
-import {
-  Button,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItemOption,
-  MenuList,
-  Stack,
-} from '@chakra-ui/react'
+import { Button, Input, InputGroup, Menu, Stack } from '@chakra-ui/react'
 import { useState } from 'react'
+import { MenuTrigger } from '../ui/MenuTrigger'
 import { FiChevronDown, FiSearch } from 'react-icons/fi'
 import { useClearRefinements, useRefinementList } from 'react-instantsearch'
 import { categoryMap } from '../../constants/mediaMeta/categoryMap'
@@ -35,42 +25,55 @@ export const CategoryFilter = () => {
   })
 
   return (
-    <Menu closeOnSelect={false}>
-      <MenuButton as={Button} size="sm" variant="outline" rightIcon={<FiChevronDown />}>
-        {label}
-      </MenuButton>
-      <MenuList
-        zIndex={1500}
-        maxH="300px" // Limit height since list can be long
-        overflowY="auto"
-      >
-        <Stack px={3} py={2} position="sticky" top={0} bg="white" zIndex={1}>
-          <InputGroup size="sm">
-            <InputLeftElement pointerEvents="none">
-              <FiSearch color="gray.300" />
-            </InputLeftElement>
-            <Input
-              placeholder="搜尋分類..."
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
-              // Prevent menu usage of arrow keys/enter from hijacking the input
-              onKeyDown={e => e.stopPropagation()}
-            />
-          </InputGroup>
-        </Stack>
-        <MenuItem onClick={() => clear()}>全部</MenuItem>
-        {filteredItems.map(item => (
-          <MenuItemOption
-            key={item.value}
-            value={item.value}
-            isChecked={item.isRefined}
-            onClick={() => refine(item.value)}
-          >
-            {categoryMap[item.value] || item.label} ({item.count})
-          </MenuItemOption>
-        ))}
-        {filteredItems.length === 0 && <MenuItem isDisabled>找不到結果</MenuItem>}
-      </MenuList>
-    </Menu>
+    <Menu.Root
+      positioning={{ strategy: 'fixed', hideWhenDetached: true }}
+      lazyMount
+      unmountOnExit
+      closeOnSelect={false}
+    >
+      <MenuTrigger>
+        <Button size="sm" variant="outline">
+          {label}
+          <FiChevronDown />
+        </Button>
+      </MenuTrigger>
+      <Menu.Positioner>
+        <Menu.Content maxH="300px" overflowY="auto">
+          <Stack px={3} py={2} position="sticky" top={0} bg="white" zIndex={1}>
+            <InputGroup startElement={<FiSearch />}>
+              <Input
+                size="sm"
+                placeholder="搜尋分類..."
+                value={keyword}
+                onChange={e => setKeyword(e.target.value)}
+                // Prevent menu usage of arrow keys/enter from hijacking the input
+                onKeyDown={e => {
+                  if (e.key !== 'Escape' && e.key !== 'Tab') e.stopPropagation()
+                }}
+              />
+            </InputGroup>
+          </Stack>
+          <Menu.Item onSelect={() => clear()} value="item-0">
+            全部
+          </Menu.Item>
+          {filteredItems.map(item => (
+            <Menu.CheckboxItem
+              key={item.value}
+              value={item.value}
+              checked={item.isRefined}
+              onCheckedChange={() => refine(item.value)}
+            >
+              {categoryMap[item.value] || item.label} ({item.count})
+              <Menu.ItemIndicator />
+            </Menu.CheckboxItem>
+          ))}
+          {filteredItems.length === 0 && (
+            <Menu.Item disabled value="item-1">
+              找不到結果
+            </Menu.Item>
+          )}
+        </Menu.Content>
+      </Menu.Positioner>
+    </Menu.Root>
   )
 }

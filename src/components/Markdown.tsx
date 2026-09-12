@@ -7,13 +7,20 @@ type Props = {
 
 // Next's MDX compiler reads these through src/mdx-components.tsx.
 export const markdownComponents: MDXComponents = {
-  img: Image,
+  img: props => <Image {...props} alt={props.alt ?? ''} />,
   h1: p => <Heading my={6} as="h1" {...p} />,
   h2: p => <Heading my={4} as="h2" size="lg" {...p} />,
   h3: p => <Heading as="h3" size="md" my={4} {...p} />,
   h4: p => <Heading as="h4" size="sm" mt="4" mb="2" {...p} />,
   h5: p => <Heading as="h5" size="xs" {...p} />,
-  ol: p => <chakra.ol sx={{ listStylePosition: 'inside' }} {...p} />,
+  ol: p => (
+    <chakra.ol
+      css={{
+        listStylePosition: 'inside',
+      }}
+      {...p}
+    />
+  ),
   p: p => <Text as="p" mb={2} {...p} />,
   a: p => (
     <chakra.a

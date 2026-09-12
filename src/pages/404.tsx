@@ -15,9 +15,9 @@ const Custom404Page = () => (
           404 找不到
         </Heading>
         <Flex justifyContent="center">
-          <Link href="/">
-            <Button>回到主頁</Button>
-          </Link>
+          <Button asChild>
+            <Link href="/">回到主頁</Link>
+          </Button>
         </Flex>
       </Flex>
     </Center>

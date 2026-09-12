@@ -1,4 +1,4 @@
-import { Button, Popover, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react'
+import { Button, Popover, useDisclosure } from '@chakra-ui/react'
 import { DayPicker, SelectSingleEventHandler } from 'react-day-picker'
 import classNames from 'react-day-picker/style.module.css'
 import { zhTW } from 'react-day-picker/locale'
@@ -12,7 +12,7 @@ type DatePickerProps = {
 }
 
 export const DatePicker = ({ onSelect, range: [firstDay, lastDay] }: DatePickerProps) => {
-  const { onOpen, onClose, isOpen } = useDisclosure()
+  const { onOpen, onClose, open } = useDisclosure()
   const [selected, setSelected] = useState<Date | undefined>(undefined)
   const _onSelect: SelectSingleEventHandler = (day, selectedDay, modifiers, e) => {
     onSelect(day, selectedDay, modifiers, e)
@@ -20,33 +20,48 @@ export const DatePicker = ({ onSelect, range: [firstDay, lastDay] }: DatePickerP
     onClose()
   }
   return (
-    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy closeOnBlur closeOnEsc computePositionOnMount>
-      <PopoverTrigger>
-        <Button leftIcon={<AiOutlineCalendar />} colorScheme="theme" size="sm" borderRadius="sm">
+    <Popover.Root
+      open={open}
+      lazyMount
+      closeOnInteractOutside
+      closeOnEscape
+      onOpenChange={e => {
+        if (e.open) {
+          onOpen()
+        } else {
+          onClose()
+        }
+      }}
+    >
+      <Popover.Trigger asChild>
+        <Button colorPalette="theme" size="sm" borderRadius="sm">
+          <AiOutlineCalendar />
           選擇日期
         </Button>
-      </PopoverTrigger>
-      <PopoverContent borderRadius="sm">
-        <DayPicker
-          selected={selected}
-          onSelect={_onSelect}
-          defaultMonth={lastDay}
-          reverseYears
-          showOutsideDays
-          locale={zhTW}
-          mode="single"
-          captionLayout="dropdown"
-          navLayout="around"
-          startMonth={firstDay}
-          endMonth={lastDay}
-          disabled={[{ before: firstDay }, { after: lastDay }]}
-          classNames={{
-            ...classNames,
-            day: classes.day,
-            root: `${classNames.root} ${classes.root}`,
-          }}
-        />
-      </PopoverContent>
-    </Popover>
+      </Popover.Trigger>
+      <Popover.Positioner>
+        <Popover.Content borderRadius="sm">
+          <DayPicker
+            selected={selected}
+            onSelect={_onSelect}
+            defaultMonth={lastDay}
+            reverseYears
+            showOutsideDays
+            locale={zhTW}
+            mode="single"
+            captionLayout="dropdown"
+            navLayout="around"
+            startMonth={firstDay}
+            endMonth={lastDay}
+            disabled={[{ before: firstDay }, { after: lastDay }]}
+            classNames={{
+              ...classNames,
+              day: classes.day,
+              root: `${classNames.root} ${classes.root}`,
+            }}
+          />
+        </Popover.Content>
+      </Popover.Positioner>
+    </Popover.Root>
   )
 }

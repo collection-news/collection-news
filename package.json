@@ -9,7 +9,7 @@
   },
   "scripts": {
     "sitemap": "ts-node src/scripts/genSitemap.ts",
-    "prebuild": "pnpm run sitemap",
+    "prebuild": "pnpm theme:types && pnpm run sitemap",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -17,14 +17,16 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:types": "tsc -p tsconfig.test.json",
-    "test:browser:build": "node tests/support/build-app.mjs",
+    "test:types": "pnpm theme:types && tsc -p tsconfig.test.json",
+    "test:browser:build": "pnpm theme:types && node tests/support/build-app.mjs",
     "test:browser": "pnpm test:browser:build && playwright test --project=chromium",
     "test:browser:all": "pnpm test:browser:build && playwright test",
+    "test:browser:dev": "playwright test --config=playwright.dev.config.ts",
     "test:live": "playwright test --config=playwright.live.config.ts",
     "setenv": "vercel env pull .env.local",
     "v": "vercel",
-    "prepare": "husky"
+    "prepare": "pnpm theme:types && husky",
+    "theme:types": "chakra typegen src/theme/index.ts"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1025.0",
@@ -32,11 +34,8 @@
     "@aws-sdk/credential-provider-ini": "3.972.28",
     "@aws-sdk/lib-dynamodb": "3.1025.0",
     "@aws-sdk/util-dynamodb": "3.996.2",
-    "@chakra-ui/anatomy": "2.3.6",
-    "@chakra-ui/icons": "2.2.6",
-    "@chakra-ui/react": "2.10.9",
+    "@chakra-ui/react": "3.37.0",
     "@emotion/react": "11.14.0",
-    "@emotion/styled": "11.14.1",
     "@fortedigital/nextjs-cache-handler": "^2.5.3",
     "@mdx-js/loader": "3.1.1",
     "@mdx-js/react": "3.1.1",
@@ -47,7 +46,6 @@
     "date-fns": "4.1.0",
     "dayjs": "1.11.20",
     "dotenv": "17.4.1",
-    "framer-motion": "12.38.0",
     "immer": "11.1.4",
     "instantsearch.js": "4.93.0",
     "meilisearch": "^0.57.0",
@@ -75,6 +73,7 @@
     "yup": "1.7.1"
   },
   "devDependencies": {
+    "@chakra-ui/cli": "3.37.0",
     "@commitlint/cli": "20.5.0",
     "@commitlint/config-conventional": "20.5.0",
     "@playwright/test": "1.63.0",

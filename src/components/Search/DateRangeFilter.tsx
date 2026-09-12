@@ -1,4 +1,4 @@
-import { Box, Button, Popover, PopoverBody, PopoverContent, PopoverTrigger } from '@chakra-ui/react'
+import { Box, Button, Popover } from '@chakra-ui/react'
 import { format } from 'date-fns'
 import { useState } from 'react'
 import { DayPicker, DateRange } from 'react-day-picker'
@@ -41,36 +41,46 @@ export const DateRangeFilter = () => {
     <>
       {/* @ts-ignore - filters is a valid parameter for MeiliSearch */}
       {filter && <Configure filters={filter} />}
-      <Popover placement="bottom-start" isLazy>
-        <PopoverTrigger>
-          <Button size="sm" variant="outline" rightIcon={<FiChevronDown />}>
+      <Popover.Root
+        lazyMount
+        positioning={{
+          strategy: 'fixed',
+          hideWhenDetached: true,
+          placement: 'bottom-start',
+        }}
+      >
+        <Popover.Trigger asChild>
+          <Button size="sm" variant="outline">
             日期: {label}
+            <FiChevronDown />
           </Button>
-        </PopoverTrigger>
-        <PopoverContent width="auto" p={0}>
-          <PopoverBody p={0} display="flex">
-            <Box p={2}>
-              <DayPicker
-                mode="range"
-                captionLayout="dropdown"
-                navLayout="around"
-                selected={range}
-                onSelect={setRange}
-                locale={zhTW}
-                showOutsideDays
-                startMonth={firstDay}
-                endMonth={lastDay}
-                disabled={[{ before: firstDay }, { after: lastDay }]}
-                classNames={{
-                  ...classNames,
-                  day: datePickerClasses.day,
-                  root: `${classNames.root} ${datePickerClasses.root}`,
-                }}
-              />
-            </Box>
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
+        </Popover.Trigger>
+        <Popover.Positioner>
+          <Popover.Content width="auto" p={0}>
+            <Popover.Body p={0} display="flex">
+              <Box p={2}>
+                <DayPicker
+                  mode="range"
+                  captionLayout="dropdown"
+                  navLayout="around"
+                  selected={range}
+                  onSelect={setRange}
+                  locale={zhTW}
+                  showOutsideDays
+                  startMonth={firstDay}
+                  endMonth={lastDay}
+                  disabled={[{ before: firstDay }, { after: lastDay }]}
+                  classNames={{
+                    ...classNames,
+                    day: datePickerClasses.day,
+                    root: `${classNames.root} ${datePickerClasses.root}`,
+                  }}
+                />
+              </Box>
+            </Popover.Body>
+          </Popover.Content>
+        </Popover.Positioner>
+      </Popover.Root>
     </>
   )
 }

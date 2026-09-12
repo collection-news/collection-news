@@ -1,4 +1,4 @@
-import { Box, Code, Divider, Fade, Flex, Heading, Tag, Text } from '@chakra-ui/react'
+import { Box, Code, Flex, Heading, Tag, Text, Separator, Presence } from '@chakra-ui/react'
 import React from 'react'
 import dynamic from 'next/dynamic'
 
@@ -79,12 +79,20 @@ export const Article: React.FC<Props> = ({ article }) => {
       />
       <Heading data-cy="article-title" dangerouslySetInnerHTML={{ __html: article.title }} my={4} />
       <Box position="sticky" zIndex="sticky" top="header">
-        <Fade in={y > 80} unmountOnExit>
+        <Presence
+          present={y > 80}
+          unmountOnExit
+          animationName={{
+            _open: 'fade-in',
+            _closed: 'fade-out',
+          }}
+          animationDuration="moderate"
+        >
           <Box position="absolute" w="100%">
-            <Heading size="md" py={2} bg="bg.500" dangerouslySetInnerHTML={{ __html: article.title }} isTruncated />
-            <Divider />
+            <Heading size="md" py={2} bg="bg.500" dangerouslySetInnerHTML={{ __html: article.title }} truncate />
+            <Separator />
           </Box>
-        </Fade>
+        </Presence>
       </Box>
       <Flex direction="row">
         <Text color="gray.500" my={2}>
@@ -94,12 +102,12 @@ export const Article: React.FC<Props> = ({ article }) => {
       </Flex>
       <Box my={2}>
         {filterTag(article.tags || []).map((tag, index) => (
-          <Tag key={index} mr={2} borderRadius="sm" bg="brand.400">
+          <Tag.Root key={index} mr={2} borderRadius="sm" bg="brand.400">
             {tag}
-          </Tag>
+          </Tag.Root>
         ))}
       </Box>
-      <Divider my={4} />
+      <Separator my={4} />
       {article.introElements && !isEmpty(article.introElements) && (
         <Box my={8}>
           <Carousel>

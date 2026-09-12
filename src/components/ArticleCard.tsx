@@ -1,4 +1,5 @@
-import { AspectRatio, Box, Flex, Tag, Text, Tooltip } from '@chakra-ui/react'
+import { AspectRatio, Box, Flex, Tag, Text } from '@chakra-ui/react'
+import { Tooltip } from './ui/Tooltip'
 import * as React from 'react'
 import Link from 'next/link'
 
@@ -24,7 +25,7 @@ export const ArticleCard: React.FC<Props> = ({ article }) => {
 
 const VideoCard: React.FC<{ story: Video; category?: CategoryItem }> = ({ story, category }) => {
   return (
-    <Tooltip label="尚未支援影片文章" aria-label="Not supported article type">
+    <Tooltip content="尚未支援影片文章" aria-label="Not supported article type">
       <Flex
         justifyContent="flex-end"
         flexDirection="column"
@@ -42,15 +43,15 @@ const VideoCard: React.FC<{ story: Video; category?: CategoryItem }> = ({ story,
           <Text
             fontSize="md"
             fontWeight="bold"
-            noOfLines={2}
+            lineClamp={2}
             mb={2}
             dangerouslySetInnerHTML={{ __html: story.title }}
             minH={12}
           />
           <Flex align="center">
-            <Tag mr={2} size="sm" bgColor="gray.400" borderRadius="sm">
+            <Tag.Root mr={2} size="sm" bgColor="gray.400" borderRadius="sm">
               影片
-            </Tag>
+            </Tag.Root>
             <CategoryTag category={category} />
             {story.publishTimestamp && <Text fontSize="sm">{getFullFormatFromTs(story.publishTimestamp)}</Text>}
           </Flex>
@@ -81,7 +82,7 @@ const StoryCard: React.FC<{ story: Story; category?: CategoryItem }> = ({ story,
           <Text
             fontSize="md"
             fontWeight="bold"
-            noOfLines={2}
+            lineClamp={2}
             mb={2}
             dangerouslySetInnerHTML={{ __html: story.title }}
             minH={12}
@@ -98,8 +99,8 @@ const StoryCard: React.FC<{ story: Story; category?: CategoryItem }> = ({ story,
 
 const CategoryTag = ({ category }: { category?: CategoryItem }) => {
   return (
-    <Tag mr={2} size="sm" bgColor={category ? getCategoryColor(category.engName) : 'gray.300'} borderRadius="sm">
+    <Tag.Root mr={2} size="sm" bgColor={category ? getCategoryColor(category.engName) : 'gray.300'} borderRadius="sm">
       {category?.chiName || '未知'}
-    </Tag>
+    </Tag.Root>
   )
 }

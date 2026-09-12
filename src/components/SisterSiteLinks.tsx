@@ -1,4 +1,5 @@
-import { Box, Flex, Link, Tooltip } from '@chakra-ui/react'
+import { Box, Flex, Link } from '@chakra-ui/react'
+import { Tooltip } from './ui/Tooltip'
 import Image from 'next/image'
 
 import { sisterSites } from '../constants/sisterSites'
@@ -6,7 +7,15 @@ import { sisterSites } from '../constants/sisterSites'
 export const SisterSiteLinks = () => (
   <Flex as="nav" aria-label="姊妹網站" justify="center" gap="6">
     {sisterSites.map(({ name, href, icon, size }) => (
-      <Tooltip key={name} label={`${name}（在新分頁開啟）`} placement="bottom" openDelay={200} hasArrow>
+      <Tooltip
+        key={name}
+        content={`${name}（在新分頁開啟）`}
+        openDelay={200}
+        showArrow
+        positioning={{
+          placement: 'bottom',
+        }}
+      >
         <Link
           href={href}
           target="_blank"
@@ -20,11 +29,13 @@ export const SisterSiteLinks = () => (
           color="whiteAlpha.900"
           _hover={{ textDecoration: 'none' }}
           _focusVisible={{ outline: '2px solid', outlineColor: 'brand.500', outlineOffset: '3px' }}
-          sx={{
+          css={{
             transition: 'background-color 150ms ease-out, transform 150ms ease-out',
+
             '@media (hover: hover) and (pointer: fine)': {
               '&:hover': { backgroundColor: 'whiteAlpha.100', transform: 'translateY(-2px)' },
             },
+
             '@media (prefers-reduced-motion: reduce)': {
               transition: 'none',
               '&:hover': { transform: 'none' },

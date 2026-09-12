@@ -33,15 +33,13 @@ export const SearchHeader = ({ onClose, isPageView }: SearchHeaderProps) => {
             取消
           </Button>
         ) : (
-          <Link href="/">
-            <IconButton
-              aria-label="Home"
-              bg="bg.500"
-              color="black"
-              _hover={{ bg: 'gray.100' }}
-              icon={<Icon as={GoHomeFill} />}
-            />
-          </Link>
+          <IconButton aria-label="Home" bg="bg.500" color="black" _hover={{ bg: 'gray.100' }} asChild>
+            <Link href="/">
+              <Icon asChild>
+                <GoHomeFill />
+              </Icon>
+            </Link>
+          </IconButton>
         )}
       </Box>
       <Box mt={4} display="flex" gap={2} alignItems="center" flexWrap="wrap">

@@ -9,7 +9,7 @@ type LoadingProps = {
 export const Loading = ({ isLoading, onClick }: LoadingProps) => {
   return (
     <Flex data-cy="article-list-view-loading-block" align="center" justify="center">
-      <Button colorScheme="theme" isLoading={isLoading} onClick={onClick}>
+      <Button colorPalette="theme" loading={isLoading} onClick={onClick}>
         F5
       </Button>
     </Flex>
