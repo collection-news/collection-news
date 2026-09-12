@@ -42,7 +42,7 @@
     "@fortedigital/nextjs-cache-handler": "^3.3.0",
     "@mdx-js/loader": "3.1.1",
     "@mdx-js/react": "3.1.1",
-    "@meilisearch/instant-meilisearch": "^0.30.0",
+    "@meilisearch/instant-meilisearch": "^0.31.3",
     "@next/mdx": "16.3.5",
     "@tanstack/react-query": "^5.102.8",
     "@tanstack/react-query-devtools": "^5.102.8",
