@@ -68,7 +68,3 @@ export async function getArticleIds(
   const next = offset + ids.length
   return { ids, hasMore: next < articles.length, nextCursor: next < articles.length ? `fixture:${next}` : null }
 }
-
-export async function getLatestGoogleIndexCount() {
-  return 1234
-}

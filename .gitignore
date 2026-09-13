@@ -18,6 +18,8 @@ next-env.d.ts
 
 # production
 /build
+/release-out/
+/.release-work/
 
 # misc
 .DS_Store

@@ -21,7 +21,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
   const currentMedia = query.media as media
   const mediaMeta = getMedia(currentMedia)
   const dropdownShowMainPage = pathname !== '/'
-  const showSearch = featureFlags.enableSearchFeature && !['/', '/404', '/google'].includes(pathname)
+  const showSearch = featureFlags.enableSearchFeature && !['/', '/404'].includes(pathname)
 
   return (
     <Box position="relative" filter={isWithinGrayscaleWindow() ? 'grayscale(100%)' : 'none'}>

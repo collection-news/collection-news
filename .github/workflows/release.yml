@@ -1,0 +1,85 @@
+name: Build application release
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    uses: ./.github/workflows/sanity.yml
+    permissions:
+      contents: read
+
+  build:
+    needs: checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.19.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:release
+      - name: Build without service credentials
+        run: node scripts/release/package.mjs build --sha "$RELEASE_SHA"
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+      - name: Verify extracted runtime
+        run: node scripts/release/smoke.mjs release-out/collection-news-linux-amd64.tar.gz "$RELEASE_SHA"
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+      - name: Audit the final archive again
+        run: node scripts/release/package.mjs audit release-out/collection-news-linux-amd64.tar.gz
+      - uses: actions/upload-artifact@v7
+        with:
+          name: application-release-${{ github.sha }}
+          path: |
+            release-out/collection-news-linux-amd64.tar.gz
+            release-out/manifest.json
+            release-out/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 3
+
+  publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: application-release-${{ github.sha }}
+          path: release-out
+      - name: Publish verified release assets
+        working-directory: release-out
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          sha256sum --check SHA256SUMS
+          tag="app-${RELEASE_SHA}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo 'Release already exists; refusing to replace published bytes.' >&2
+            exit 1
+          fi
+          gh release create "$tag" --target "$RELEASE_SHA" --draft \
+            --title "$tag" --notes 'Verified Linux amd64 application runtime.' \
+            collection-news-linux-amd64.tar.gz manifest.json SHA256SUMS
+          gh release edit "$tag" --draft=false --latest=false

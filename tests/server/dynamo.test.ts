@@ -6,12 +6,7 @@ import { story, video } from '../fixtures/articles'
 const sdk = vi.hoisted(() => ({ get: vi.fn(), query: vi.fn() }))
 vi.mock('@aws-sdk/lib-dynamodb', () => ({ DynamoDBDocument: { from: () => sdk } }))
 
-import {
-  getArticle,
-  getArticleIds,
-  getArticlesByDateAndCat,
-  getLatestGoogleIndexCount,
-} from '../../src/services/dynamo'
+import { getArticle, getArticleIds, getArticlesByDateAndCat } from '../../src/services/dynamo'
 
 const request = { media: media.APPLE_DAILY, publishDate: '20210623' }
 const lastKey = { articleId: 'last', publishDate: '20210623', publishTimestamp: '2021-06-23T10:00:00Z' }
@@ -197,18 +192,5 @@ describe('sitemap and Google index reads', () => {
       hasMore: false,
       nextCursor: null,
     })
-  })
-
-  it('reads the most recent index count', async () => {
-    sdk.query.mockResolvedValue({ Items: [{ searchInformation: { totalResults: 1234 } }] })
-    expect(await getLatestGoogleIndexCount()).toBe(1234)
-    expect(sdk.query).toHaveBeenCalledWith(
-      expect.objectContaining({ TableName: 'test-index', Limit: 1, ScanIndexForward: false })
-    )
-  })
-
-  it('defaults an absent index count to zero', async () => {
-    sdk.query.mockResolvedValue({})
-    expect(await getLatestGoogleIndexCount()).toBe(0)
   })
 })

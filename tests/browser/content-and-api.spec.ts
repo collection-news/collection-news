@@ -76,10 +76,3 @@ test('build-time sitemap includes both archive boundaries and the static pages',
   expect(other.status()).toBe(200)
   expect((await other.text()).match(/<url>/g)).toHaveLength(3)
 })
-
-test('Google page renders its index count and integration container without loading Google', async ({ page }) => {
-  await page.goto('/google')
-  await expect(page.getByText('Google現己索引 1,234 篇文章')).toBeVisible()
-  await expect(page.locator('.gcse-search')).toHaveCount(1)
-  await expect(page.locator('script[src^="https://cse.google.com/cse.js"]')).toHaveCount(1)
-})

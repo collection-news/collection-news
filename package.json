@@ -29,7 +29,8 @@
     "theme:types": "chakra typegen src/theme/index.ts",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
-    "format:check": "biome format ."
+    "format:check": "biome format .",
+    "test:release": "node --test scripts/release/*.test.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1131.0",
@@ -96,6 +97,7 @@
     "jsdom": "^30.0.1",
     "lint-staged": "17.5.1",
     "schema-dts": "2.0.0",
+    "tar": "7.5.22",
     "tsx": "4.23.13",
     "typescript": "7.0.2",
     "vercel": "59.16.0",

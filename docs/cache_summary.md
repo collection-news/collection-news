@@ -8,7 +8,6 @@ Most content pages use **Static Site Generation (SSG)** or **Incremental Static 
 | :--- | :--- | :--- | :--- | :--- |
 | `/` | `index.tsx` | **SSG** | N/A | Generated at build time. Cached indefinitely until new deployment. |
 | `/search` | `search.tsx` | **SSG** | N/A | Static shell. Content is client-side rendered (CSR). |
-| `/google` | `google.tsx` | **ISR** | **7200s** (2 hours) | Generated at build time. Updates at most every 2 hours. `s-maxage=7200, stale-while-revalidate`. |
 | `/404` | `404.tsx` | **SSG** | N/A | Generated at build time. Cached indefinitely. |
 | `/[media]/...` | `[media]/[[...path]].tsx` | **SSG** | **None** (`false`) | List view. Generated on first request (`fallback: 'blocking'`) or build. Cached indefinitely. |
 | `/[media]/articles/[id]` | `[media]/articles/[articleId].tsx` | **SSG** | **None** (`false`) | Article view. Generated on first request (`fallback: 'blocking'`). Cached indefinitely. |

@@ -11,7 +11,6 @@ import { ContentWrapper } from '../../components/ContentWrapper'
 import { DatePicker } from '../../components/DatePicker'
 import { NonArticleHead } from '../../components/HtmlHead'
 import { media } from '../../constants/media'
-import { mediaMap } from '../../constants/mediaMeta'
 import { useArticlesQuery } from '../../hooks'
 import { getArticlesByDateAndCat } from '../../services/dynamo'
 import { ArticleListResponse, GetArticlesByDateAndCatRequest } from '../../types/api'
@@ -70,11 +69,9 @@ export const getStaticProps: GetStaticProps<ArticleListPageIndexProps> = async (
 // It may be called again, on a serverless function, if
 // the path has not been generated.
 export async function getStaticPaths() {
-  // Pre-render the last date at build time
-  // { fallback: blocking } will server-render pages
-  // on-demand if the path doesn't exist.
+  // Fetch archive data at runtime so release builds need no database credentials.
   return {
-    paths: Object.entries(mediaMap).map(([media, map]) => ({ params: { media, path: [map.range[1]] } })),
+    paths: [],
     fallback: 'blocking',
   }
 }

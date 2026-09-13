@@ -3,12 +3,13 @@ name: Sanity check
 on:
   push:
   pull_request:
+  workflow_call:
 
 permissions:
   contents: read
 
 concurrency:
-  group: tests-${{ github.ref }}
+  group: tests-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -27,6 +28,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm test:types
+      - run: pnpm test:release
       - run: pnpm test:coverage
       - uses: actions/upload-artifact@v7
         if: always()

@@ -36,6 +36,8 @@ export async function prepareTestApp() {
     'public',
     'tests/fixtures',
     'next.config.js',
+    'cache-handler.mjs',
+    'runtime-cache-handler.mjs',
     'tsconfig.json',
     'package.json',
     'pnpm-lock.yaml',
@@ -46,7 +48,7 @@ export async function prepareTestApp() {
   // Replace only this copy. The deployable source and production Next config are never edited.
   await writeFile(
     path.join(testAppDirectory, 'src/services/dynamo.ts'),
-    "export { getArticle, getArticlesByDateAndCat, getArticleIds, getLatestGoogleIndexCount } from '../../tests/fixtures/dynamo'\n"
+    "export { getArticle, getArticlesByDateAndCat, getArticleIds } from '../../tests/fixtures/dynamo'\n"
   )
   await writeFile(
     path.join(testAppDirectory, 'public/test-image.svg'),

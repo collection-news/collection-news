@@ -33,12 +33,6 @@ export const test = base.extend<Fixtures>({
         // WebKit also reports local blob resources through routing; they never leave the browser.
         if (url.protocol === 'blob:' && url.origin === 'http://127.0.0.1:3100') return route.fallback()
         if (['127.0.0.1', 'localhost'].includes(url.hostname) && url.port === '3100') return route.fallback()
-        if (url.hostname === 'cse.google.com' && url.pathname === '/cse.js') {
-          return route.fulfill({
-            contentType: 'application/javascript',
-            body: '// Third-party widget intentionally excluded from offline tests.',
-          })
-        }
         if (url.hostname === 'i.creativecommons.org' && route.request().resourceType() === 'image') {
           return route.fulfill({
             contentType: 'image/svg+xml',

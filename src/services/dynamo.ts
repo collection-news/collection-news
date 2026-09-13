@@ -2,7 +2,6 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import { fromIni } from '@aws-sdk/credential-provider-ini'
 import { DynamoDBDocument, QueryCommandOutput } from '@aws-sdk/lib-dynamodb'
 import { NativeAttributeValue } from '@aws-sdk/util-dynamodb'
-import { pathOr } from 'ramda'
 
 import { Article, BaseArticle } from '../types/article'
 import { ArticleIdsResponse, ArticleListResponse, DynamoDBOption, GetArticlesByDateAndCatRequest } from '../types/api'
@@ -229,21 +228,4 @@ export async function getArticleIds(
   }
   const resp = await ddbDocClient.query(input)
   return convertArticleIdsQueryResp(resp)
-}
-
-export async function getLatestGoogleIndexCount(): Promise<number> {
-  const input = {
-    TableName: process.env.APP_IDX_PROGRESS_TABLE_NAME,
-    Limit: 1,
-    ExpressionAttributeValues: {
-      ':kind': 'customsearch#search',
-    },
-    // Specifies the values that define the range of the retrieved items.
-    KeyConditionExpression: 'kind = :kind',
-    ProjectionExpression: 'searchInformation',
-    ScanIndexForward: false,
-  }
-  const resp = await ddbDocClient.query(input)
-  const indexedCount = pathOr(0, ['Items', 0, 'searchInformation', 'totalResults'])(resp)
-  return indexedCount
 }

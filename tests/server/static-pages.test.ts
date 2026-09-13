@@ -5,9 +5,8 @@ import { story } from '../fixtures/articles'
 vi.mock('../../src/services/dynamo', () => ({
   getArticle: vi.fn(),
   getArticlesByDateAndCat: vi.fn(),
-  getLatestGoogleIndexCount: vi.fn(),
 }))
-import { getArticle, getArticlesByDateAndCat, getLatestGoogleIndexCount } from '../../src/services/dynamo'
+import { getArticle, getArticlesByDateAndCat } from '../../src/services/dynamo'
 import {
   getStaticPaths as articlePaths,
   getStaticProps as articleProps,
@@ -17,7 +16,6 @@ import {
   getStaticPaths as historyPaths,
   getStaticProps as historyProps,
 } from '../../src/pages/[media]/history/[year]/[[...path]]'
-import { getStaticProps as googleProps } from '../../src/pages/google'
 
 const context = (params: GetStaticPropsContext['params']): GetStaticPropsContext => ({ params })
 const empty = { articles: [], hasMore: false, nextCursor: null }
@@ -25,7 +23,6 @@ const empty = { articles: [], hasMore: false, nextCursor: null }
 beforeEach(() => {
   vi.mocked(getArticle).mockReset().mockResolvedValue(story())
   vi.mocked(getArticlesByDateAndCat).mockReset().mockResolvedValue(empty)
-  vi.mocked(getLatestGoogleIndexCount).mockReset().mockResolvedValue(1234)
 })
 
 describe('article static generation', () => {
@@ -85,15 +82,15 @@ describe('archive static generation', () => {
     }
   )
 
-  it('characterizes numeric pre-rendered media paths from array keys (LEGACY-05)', async () => {
+  it('defers archive data reads until runtime', async () => {
     expect(await archivePaths()).toEqual({
-      paths: [{ params: { media: '0', path: ['20210623'] } }, { params: { media: '1', path: ['20211229'] } }],
+      paths: [],
       fallback: 'blocking',
     })
   })
 })
 
-describe('history and Google static generation', () => {
+describe('history static generation', () => {
   it('uses Hong Kong today in the chosen year and revalidates hourly', async () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-06-23T17:00:00Z'))
@@ -117,9 +114,5 @@ describe('history and Google static generation', () => {
 
   it('uses blocking fallback for history pages', async () => {
     expect(await historyPaths()).toEqual({ paths: [], fallback: 'blocking' })
-  })
-
-  it('renders the Google count and revalidates every two hours', async () => {
-    expect(await googleProps(context({}))).toEqual({ props: { indexedCount: 1234 }, revalidate: 7200 })
   })
 })
