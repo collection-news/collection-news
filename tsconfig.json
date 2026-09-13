@@ -13,7 +13,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "incremental": true
+    "incremental": true,
+    "types": ["node"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": [
@@ -26,13 +27,5 @@
     "**/*.spec.ts",
     "**/*.spec.tsx",
     "**/__tests__/**"
-  ],
-  "ts-node": {
-    "transpileOnly": true,
-    "files": true,
-    "compilerOptions": {
-      "module": "CommonJS",
-      "moduleResolution": "node"
-    }
-  }
+  ]
 }

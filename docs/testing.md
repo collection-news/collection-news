@@ -20,6 +20,11 @@ Install browser binaries with `pnpm exec playwright install`; Linux CI also uses
 typechecking and browser builds. Run `pnpm theme:types` if needed; do not commit
 generated files from `node_modules`.
 
+TypeScript 7 runs through `tsc`; Next.js 16.3 uses
+`experimental.useTypeScriptCli` to retain build-time checks without the old
+JavaScript compiler API. Sitemaps use `node --import tsx` in both the package
+script and the isolated build harness.
+
 For focused browser work:
 
 ```sh

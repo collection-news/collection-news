@@ -2,13 +2,13 @@
   "name": "collection-news",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@11.26.0",
+  "packageManager": "pnpm@12.4.1",
   "engines": {
     "node": ">=24.15.0 <25",
-    "pnpm": "11.x"
+    "pnpm": "12.x"
   },
   "scripts": {
-    "sitemap": "ts-node src/scripts/genSitemap.ts",
+    "sitemap": "node --import tsx src/scripts/genSitemap.ts",
     "prebuild": "pnpm theme:types && pnpm run sitemap",
     "dev": "next dev",
     "build": "next build",
@@ -42,7 +42,7 @@
     "@fortedigital/nextjs-cache-handler": "^3.3.0",
     "@mdx-js/loader": "3.1.1",
     "@mdx-js/react": "3.1.1",
-    "@meilisearch/instant-meilisearch": "^0.30.0",
+    "@meilisearch/instant-meilisearch": "^0.31.3",
     "@next/mdx": "16.3.5",
     "@tanstack/react-query": "^5.102.8",
     "@tanstack/react-query-devtools": "^5.102.8",
@@ -87,7 +87,7 @@
     "@testing-library/user-event": "^14.6.7",
     "@types/mdx": "2.0.14",
     "@types/node": "24.13.4",
-    "@types/ramda": "0.31.1",
+    "@types/ramda": "0.32.0",
     "@types/randomcolor": "^0.5.9",
     "@types/react": "19.3.0",
     "@types/react-custom-scrollbars": "4.0.13",
@@ -96,8 +96,8 @@
     "jsdom": "^30.0.1",
     "lint-staged": "17.5.1",
     "schema-dts": "2.0.0",
-    "ts-node": "10.9.2",
-    "typescript": "5.9.3",
+    "tsx": "4.23.13",
+    "typescript": "7.0.2",
     "vercel": "59.16.0",
     "vitest": "5.0.0"
   },

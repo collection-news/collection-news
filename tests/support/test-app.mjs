@@ -67,13 +67,7 @@ export function runNext(args, stdio = 'inherit') {
 }
 
 export function generateSitemaps() {
-  return runNode([
-    '--no-experimental-strip-types',
-    '--require',
-    path.join(root, 'node_modules/ts-node/register'),
-    '-e',
-    "require('./src/scripts/genSitemap.ts')",
-  ])
+  return runNode(['--import', 'tsx', 'src/scripts/genSitemap.ts'])
 }
 
 export function completion(child) {

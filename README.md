@@ -33,7 +33,8 @@
 
 ### Setup your environment
 
-Use Node 24.15 or newer within the Node 24 release line, and pnpm 11.
+Use Node 24.15 or newer within the Node 24 release line, and pnpm 12.4.1 (configured in `mise.toml`).
+Keep the pnpm version in `mise.toml` and `packageManager` synchronized.
 
 ```bash
 mise install

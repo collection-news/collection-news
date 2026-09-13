@@ -46,14 +46,17 @@ it('encodes CJK queries through the same-origin GET proxy and adapts results', a
 })
 
 it('propagates a network rejection to the caller', async () => {
-  vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('offline'))
-  await expect(search('offline')).rejects.toThrow('MeiliSearchRequestError')
+  const failure = new Error('offline')
+  vi.spyOn(globalThis, 'fetch').mockRejectedValue(failure)
+  await expect(search('offline')).rejects.toThrow('Request to https://example.com/multi-search has failed')
+  expect(console.error).toHaveBeenCalledWith(failure)
 })
 
 it('rejects HTTP errors before processing search results', async () => {
   const response = Response.json({ error: 'Internal Server Error' }, { status: 500 })
   const parse = vi.spyOn(response, 'json')
   vi.spyOn(globalThis, 'fetch').mockResolvedValue(response)
-  await expect(search('unavailable')).rejects.toThrow('MeiliSearchRequestError')
+  await expect(search('unavailable')).rejects.toThrow('Request to https://example.com/multi-search has failed')
+  expect(console.error).toHaveBeenCalledWith(expect.objectContaining({ message: 'Search request failed (500)' }))
   expect(parse).not.toHaveBeenCalled()
 })
