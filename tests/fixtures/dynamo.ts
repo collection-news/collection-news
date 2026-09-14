@@ -26,10 +26,17 @@ export function fixtureArticles(publisher: media, date: string, category?: strin
   )
 }
 
-function cursorOffset(cursor?: string | null) {
+function cursorOffset(articles: Article[], cursor?: string | null) {
   if (!cursor) return 0
-  if (!/^fixture:\d+$/.test(cursor)) throw new Error('Unexpected fixture cursor')
-  return Number(cursor.split(':')[1])
+  const key = JSON.parse(Buffer.from(cursor, 'base64').toString('utf8'))
+  const index = articles.findIndex(article => article.articleId === key.articleId)
+  if (index < 0) throw new Error('Unexpected fixture cursor')
+  return index + 1
+}
+
+function articleCursor(article: Article): string {
+  const { articleId, publishDate, publishTimestamp } = article
+  return Buffer.from(JSON.stringify({ articleId, publishDate, publishTimestamp })).toString('base64')
 }
 
 export async function getArticlesByDateAndCat(
@@ -39,14 +46,14 @@ export async function getArticlesByDateAndCat(
   if (!publishers.includes(request.media)) return structuredClone(emptyList)
   if (!/^20\d{6}$/.test(request.publishDate)) throw new Error('Unexpected fixture date')
   const articles = fixtureArticles(request.media, request.publishDate, request.category)
-  const offset = cursorOffset(options.nextCursor)
+  const offset = cursorOffset(articles, options.nextCursor)
   const pageSize = request.category === 'culture' ? 2 : 18
   const page = articles.slice(offset, offset + pageSize)
   const next = offset + page.length
   return {
     articles: page,
     hasMore: next < articles.length,
-    nextCursor: next < articles.length ? `fixture:${next}` : null,
+    nextCursor: next < articles.length ? articleCursor(articles[next - 1]) : null,
   }
 }
 
@@ -63,8 +70,12 @@ export async function getArticleIds(
   options: { nextCursor: string | null }
 ): Promise<ArticleIdsResponse> {
   const articles = fixtureArticles(request.media, request.date)
-  const offset = cursorOffset(options.nextCursor)
+  const offset = cursorOffset(articles, options.nextCursor)
   const ids = articles.slice(offset, offset + 10).map(article => article.articleId)
   const next = offset + ids.length
-  return { ids, hasMore: next < articles.length, nextCursor: next < articles.length ? `fixture:${next}` : null }
+  return {
+    ids,
+    hasMore: next < articles.length,
+    nextCursor: next < articles.length ? articleCursor(articles[next - 1]) : null,
+  }
 }

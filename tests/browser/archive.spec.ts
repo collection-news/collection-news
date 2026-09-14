@@ -77,7 +77,10 @@ test('archive scrolling appends one page and stops without duplicates', async ({
     .evaluateAll(cards => cards.map(card => card.closest('a')?.getAttribute('href')))
   expect(new Set(links).size).toBe(24)
   expect(requests).toHaveLength(1)
-  expect(requests[0].searchParams.get('nextCursor')).toBe('fixture:18')
+  expect(JSON.parse(Buffer.from(requests[0].searchParams.get('nextCursor')!, 'base64').toString())).toMatchObject({
+    articleId: 'appledaily-20210623-18',
+    publishDate: '20210623',
+  })
   await expect(page).toHaveURL(/\/appledaily\/20210623$/)
 })
 
@@ -93,7 +96,10 @@ test('short lists fill the viewport automatically and empty categories terminate
   await expect(page.getByTestId('article-list-view-loading-block')).toHaveCount(0)
   await expect(page.getByTestId('article-list-view-ending-block')).toBeVisible()
   expect(requests).toHaveLength(1)
-  expect(requests[0].searchParams.get('nextCursor')).toBe('fixture:2')
+  expect(JSON.parse(Buffer.from(requests[0].searchParams.get('nextCursor')!, 'base64').toString())).toMatchObject({
+    articleId: 'appledaily-20210623-2',
+    publishDate: '20210623',
+  })
   await page.goto('/appledaily/20210623/unknown')
   await expect(page.getByTestId('article-card')).toHaveCount(0)
   await expect(page.getByTestId('article-list-view-ending-block')).toBeVisible()
@@ -165,3 +171,21 @@ test('pagination HTTP failure preserves the archive and retries successfully', a
   expect(attempts).toBe(5)
   await expect(page.getByTestId('article-list-view-ending-block')).toBeVisible()
 })
+
+for (const publisher of ['appledaily', 'thestandnews']) {
+  test(`${publisher}: history pagination accepts the legacy year parameter`, async ({ page }) => {
+    const requests: URL[] = []
+    page.on('request', request => {
+      if (request.url().includes('/api/article?')) requests.push(new URL(request.url()))
+    })
+    await page.goto(`/${publisher}/history/2019`)
+    await expect(page.getByTestId('article-card')).toHaveCount(18)
+    await page.getByTestId('article-card').last().scrollIntoViewIfNeeded()
+    await expect(page.getByTestId('article-card')).toHaveCount(24)
+    await expect(page.getByTestId('article-list-view-ending-block')).toBeVisible()
+    expect(requests).toHaveLength(1)
+    expect(requests[0].searchParams.get('year')).toBe('2019')
+    const key = JSON.parse(Buffer.from(requests[0].searchParams.get('nextCursor')!, 'base64').toString())
+    expect(key.publishDate).toBe(requests[0].searchParams.get('publishDate'))
+  })
+}
