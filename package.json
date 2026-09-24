@@ -71,7 +71,7 @@
     "react-use": "17.6.1",
     "sitemap": "9.0.1",
     "snappy": "7.4.3",
-    "string-strip-html": "^13.7.3",
+    "string-strip-html": "^13.7.4",
     "use-debounce": "^10.1.1",
     "usehooks-ts": "^3.1.1",
     "yup": "1.7.1"

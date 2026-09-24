@@ -295,8 +295,8 @@ importers:
         specifier: 7.4.3
         version: 7.4.3
       string-strip-html:
-        specifier: ^13.7.3
-        version: 13.7.3
+        specifier: ^13.7.4
+        version: 13.7.4
       use-debounce:
         specifier: ^10.1.1
         version: 10.1.1(react@19.3.0)
@@ -4985,8 +4985,8 @@ packages:
     resolution: {integrity: sha512-ReKThaNjuQ+/lv5THXFjnsSGOYymHfwrryFDjdgNMV7SBRVS+z1q4f08/StgCJRWr4XvpMC2yTXsoCBvHYun+w==}
     engines: {node: '>=18.20.8'}
 
-  string-strip-html@13.7.3:
-    resolution: {integrity: sha512-rEAR3Z24fKMEY4ldi3hedK90ve+oXyY/1J6900q48DWcuHd4BukZUxFFVPgN5hQN1/32g8YpCm7JbRxLpx6Uyg==}
+  string-strip-html@13.7.4:
+    resolution: {integrity: sha512-Q5ZBs8J/m5lsV95i7YKMnEMeeuyEm1sJ2NdTZfQgag+bVCfa2n3i+wBOk1dxX8EGBzo0R2cc/b4WREdAUCHLdA==}
     engines: {node: '>=18.20.8'}
 
   string-width@7.2.0:
@@ -10689,7 +10689,7 @@ snapshots:
     dependencies:
       codsen-utils: 1.10.2
 
-  string-strip-html@13.7.3:
+  string-strip-html@13.7.4:
     dependencies:
       codsen-utils: 1.10.2
       html-entity-codec: 1.1.0
